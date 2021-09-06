@@ -75,13 +75,10 @@
           <div class="dc_text">选择文件</div>
           <el-upload class="upload-demo"
                      action="https://jsonplaceholder.typicode.com/posts/"
-                     :on-preview="handlePreview"
-                     :on-remove="handleRemove"
-                     :before-remove="beforeRemove"
+                    
+                    
                      multiple
-                     :limit="3"
-                     :on-exceed="handleExceed"
-                     :file-list="fileList">
+                     :limit="3">
             <el-button type="primary"
                        size="small"
                        icon="el-icon-upload2"

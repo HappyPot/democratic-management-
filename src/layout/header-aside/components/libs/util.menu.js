@@ -4,7 +4,6 @@
  * @param {Object} menu 菜单项
  */
 export function elMenuItem (h, menu) {
-  console.log('hhahahah1',menu)
   let icon = null
   if (menu.icon) icon = <i class={ `fa fa-${menu.icon}` }/>
   else if (menu.iconSvg) icon = <d2-icon-svg name={ menu.iconSvg }/>
@@ -23,7 +22,6 @@ export function elMenuItem (h, menu) {
  * @param {Object} menu 菜单项
  */
 export function elSubmenu (h, menu) {
-  console.log('啊啊啊啊啊啊',menu)
   let icon = null
   if (menu.icon) icon = <i slot="title" class={ `fa fa-${menu.icon}` }/>
   else if (menu.iconSvg) icon = <d2-icon-svg slot="title" name={ menu.iconSvg }/>

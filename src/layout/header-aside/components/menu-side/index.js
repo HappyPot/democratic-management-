@@ -11,6 +11,7 @@ export default {
     return <div class="d2-layout-header-aside-menu-side">
       <d2-scrollbar>
         <el-menu
+        style="padding-left:35px"
           collapse={ this.asideCollapse }
           collapseTransition={ this.asideTransition }
           uniqueOpened={ true }

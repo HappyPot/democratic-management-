@@ -50,9 +50,8 @@
         <el-table-column prop="status"
                          label="状态"
                          show-overflow-tooltip>
-          <template>
-            <!-- <template slot-scope="scope"> -->
-            <el-switch v-model="value1">
+          <template slot-scope="scope">
+            <el-switch v-model="tableData[scope.$index].status">
             </el-switch>
           </template>
         </el-table-column>
@@ -69,20 +68,15 @@
     <el-dialog title="批量导入"
                center
                :visible.sync="dialogImport"
-               width="30%"
-               :before-close="handleClose">
+               width="30%">
       <div class="dialogImport_content">
         <div class="dc_item">
           <div class="dc_text">选择文件</div>
           <el-upload class="upload-demo"
                      action="https://jsonplaceholder.typicode.com/posts/"
-                     :on-preview="handlePreview"
-                     :on-remove="handleRemove"
-                     :before-remove="beforeRemove"
+                    
                      multiple
-                     :limit="3"
-                     :on-exceed="handleExceed"
-                     :file-list="fileList">
+                     :limit="3">
             <el-button type="primary"
                        size="small"
                        icon="el-icon-upload2"
@@ -109,15 +103,15 @@
     <el-dialog title="新增单位"
                center
                :visible.sync="dialogAdd"
-               width="40%"
-               :before-close="handleClose">
+               width="40%">
       <div class="addNew">
         <div class="dc_item">
           <div class="dc_text">上级单位</div>
-          <el-select v-model="value"
+          <el-select v-model="superiorUnit"
                      class="dc_select"
+                     size="medium"
                      placeholder="请选择上级单位">
-            <el-option v-for="item in options"
+            <el-option v-for="item in superiorUnitOptions"
                        :key="item.value"
                        :label="item.label"
                        :value="item.value">
@@ -126,10 +120,11 @@
         </div>
         <div class="dc_item">
           <div class="dc_text">单位编号</div>
-          <el-select v-model="value"
+          <el-select v-model="unitNo"
                      class="dc_select"
+                     size="medium"
                      placeholder="请选择单位编号">
-            <el-option v-for="item in options"
+            <el-option v-for="item in unitNoOptions"
                        :key="item.value"
                        :label="item.label"
                        :value="item.value">
@@ -138,21 +133,22 @@
         </div>
         <div class="dc_item">
           <div class="dc_text">单位名称</div>
-          <el-input v-model="input"
+          <el-input v-model="unitName"
                     class="dc_select"
+                    size="medium"
                     placeholder="请输入单位名称"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
-          <el-input v-model="input"
-                    class="dc_select"
-                    placeholder="请输入单位名称"></el-input>
+          <el-input v-model="sortValue"
+                    size="medium"
+                    class="dc_select"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">是</el-radio>
-            <el-radio :label="6">否</el-radio>
+          <el-radio-group v-model="isDisableUnit">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -187,43 +183,50 @@ export default {
       tableData: [
         {
           id: 1,
-          status: '2016-05-03',
+          status: true,
           name: '01师'
         },
         {
           id: 2,
-          status: '2016-05-02',
+          status: true,
           name: '01师'
         },
         {
           id: 4,
-          status: '2016-05-04',
+          status: true,
           name: '01师'
         },
         {
           id: 5,
-          status: '2016-05-01',
+          status: true,
           name: '01师'
         },
         {
           id: 6,
-          status: '2016-05-08',
+          status: true,
           name: '01师'
         },
         {
           id: 7,
-          status: '2016-05-06',
+          status: true,
           name: '01师'
         },
         {
           id: 8,
-          status: '2016-05-07',
+          status: true,
           name: '01师'
         }
       ],
       multipleSelection: [],
       dialogImport: false,
-      dialogAdd: false
+      dialogAdd: false,
+      superiorUnit: '', //上级单位
+      superiorUnitOptions: [], //上级单位数组
+      unitNo: '', //单位编号
+      unitNoOptions: [], //单位编号
+      unitName: '', //单位名称
+      sortValue: '', //排序
+      isDisableUnit: false //单位是否禁用
     }
   },
   methods: {
