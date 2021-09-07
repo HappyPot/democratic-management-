@@ -6,7 +6,10 @@ import demoPlugins from './modules/demo-plugins'
 import demoComponents from './modules/demo-components'
 // 功能
 import demoPlayground from './modules/demo-playground'
+import democraticEvaluation from './modules/democratic-evaluation'
 import personnelManagement from './modules/personnel-management'
+import questionnaireInvestigation from './modules/questionnaire-investigation'
+import rolepermissions from './modules/role-permissions'
 
 /**
  * @description 给菜单数据补充上 path 字段
@@ -26,6 +29,9 @@ function supplementPath (menu) {
 // 菜单 侧边栏
 export const menuAside = supplementPath([
   personnelManagement,
+  democraticEvaluation,
+  questionnaireInvestigation,
+  rolepermissions
   // demoComponents,
   // demoPlugins,
   // demoPlayground
@@ -34,6 +40,9 @@ export const menuAside = supplementPath([
 // 菜单 顶栏
 export const menuHeader = supplementPath([
   personnelManagement,
+  democraticEvaluation,
+  questionnaireInvestigation,
+  rolepermissions
   // demoPlayground,
   // demoComponents,
   // demoPlugins,

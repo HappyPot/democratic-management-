@@ -5,7 +5,7 @@
         <div class="ul_item">
           <el-autocomplete class="inline-input"
                            size="medium"
-                           v-model="state2"
+                           v-model="searchValue"
                            :fetch-suggestions="querySearch"
                            placeholder="职务名称或者职务编码"
                            prefix-icon="el-icon-search"
@@ -20,7 +20,8 @@
         <div class="ul_item">
           <el-button type="danger"
                      size="medium"
-                     plain>删除</el-button>
+                     plain
+                     @click="delItem">删除</el-button>
 
         </div>
         <div class="ul_item_right"
@@ -49,9 +50,8 @@
         <el-table-column prop="status"
                          label="状态"
                          show-overflow-tooltip>
-          <template>
-            <!-- <template slot-scope="scope"> -->
-            <el-switch v-model="value1">
+          <template slot-scope="scope">
+            <el-switch v-model="tableData[scope.$index].status">
             </el-switch>
           </template>
         </el-table-column>
@@ -68,8 +68,7 @@
     <el-dialog title="批量导入"
                center
                :visible.sync="dialogImport"
-               width="30%"
-               :before-close="handleClose">
+               width="30%">
       <div class="dialogImport_content">
         <div class="dc_item">
           <div class="dc_text">选择文件</div>
@@ -103,15 +102,15 @@
     <el-dialog title="新增职务"
                center
                :visible.sync="dialogAdd"
-               width="40%"
-               :before-close="handleClose">
+               width="40%">
       <div class="addNew">
         <div class="dc_item">
-          <div class="dc_text">职务编码</div>
-          <el-select v-model="value"
+          <div class="dc_text">职务编号</div>
+          <el-select v-model="jobNo"
                      class="dc_select"
-                     placeholder="请选择职务编码">
-            <el-option v-for="item in options"
+                     size="medium"
+                     placeholder="请选择职务编号">
+            <el-option v-for="item in jobNoOptions"
                        :key="item.value"
                        :label="item.label"
                        :value="item.value">
@@ -120,21 +119,22 @@
         </div>
         <div class="dc_item">
           <div class="dc_text">职务名称</div>
-          <el-input v-model="input"
+          <el-input v-model="jobName"
                     class="dc_select"
+                    size="medium"
                     placeholder="请输入职务名称"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
-          <el-input v-model="input"
-                    class="dc_select"
-                    placeholder=""></el-input>
+          <el-input v-model="sortValue"
+                    size="medium"
+                    class="dc_select"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">是</el-radio>
-            <el-radio :label="6">否</el-radio>
+          <el-radio-group v-model="isDisableJob">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -162,51 +162,58 @@ export default {
   },
   data() {
     return {
-      value1: true,
+      searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
-      state2: '',
       tableData: [
         {
           id: 1,
-          status: '2016-05-03',
+          status: true,
           name: '董事长'
         },
         {
           id: 2,
-          status: '2016-05-02',
+          status: true,
           name: '董事长'
         },
         {
           id: 4,
-          status: '2016-05-04',
+          status: true,
           name: '董事长'
         },
         {
           id: 5,
-          status: '2016-05-01',
+          status: true,
           name: '董事长'
         },
         {
           id: 6,
-          status: '2016-05-08',
+          status: true,
           name: '董事长'
         },
         {
           id: 7,
-          status: '2016-05-06',
+          status: true,
           name: '董事长'
         },
         {
           id: 8,
-          status: '2016-05-07',
+          status: true,
           name: '董事长'
         }
       ],
       multipleSelection: [],
       dialogImport: false,
-      dialogAdd: false
+      dialogAdd: false,
+      jobNo: '', //职务编号
+      jobNoOptions: [], //职务编号
+      jobName: '', //职务名称
+      sortValue: '', //排序
+      isDisableJob: false //职务是否禁用
     }
+  },
+  mounted() {
+    this.restaurants = this.loadAll()
   },
   methods: {
     // 批量导入
@@ -217,6 +224,8 @@ export default {
     addNew() {
       this.dialogAdd = true
     },
+    // 删除
+    delItem() {},
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -348,9 +357,11 @@ export default {
         }
       ]
     },
+    // 补全后选择
     handleSelect(item) {
       console.log(item)
     },
+    // 联想补全
     querySearch(queryString, cb) {
       var restaurants = this.restaurants
       var results = queryString

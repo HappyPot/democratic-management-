@@ -26,7 +26,7 @@
         </el-tabs> -->
       </div>
     </div>
-    <div class="d2-multiple-page-control-btn"
+    <!-- <div class="d2-multiple-page-control-btn"
          flex-box="0">
       <el-dropdown size="default"
                    split-button
@@ -56,7 +56,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-    </div>
+    </div> -->
   </div>
 </template>
 

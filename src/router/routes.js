@@ -2,6 +2,9 @@ import playground from './modules/playground'
 import plugins from './modules/plugins'
 import components from './modules/components'
 import personnelManagement from './modules/personnelManagement'
+import democraticEvaluation from './modules/democraticEvaluation'
+import questionnaireInvestigation from './modules/questionnaireInvestigation'
+import rolepermissions from './modules/rolepermissions'
 
 import layoutHeaderAside from '@/layout/header-aside'
 
@@ -56,7 +59,10 @@ const frameIn = [
   // playground,
   // plugins,
   // components,
-  personnelManagement
+  personnelManagement,
+  democraticEvaluation,
+  questionnaireInvestigation,
+  rolepermissions
 ]
 
 /**

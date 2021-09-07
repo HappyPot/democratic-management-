@@ -13,7 +13,7 @@ export default {
   component: layoutHeaderAside,
   children: [
     { path: 'unitlist', name: 'unit-list', component: _import('PersonnelManagement/UnitList'), meta: { ...meta, title: '单位列表' } },
-    // { path: 'joblist', name: 'job-list', component: _import('PersonnelManagement/JobList'), meta: { ...meta, title: '职务列表' } },
-    // { path: 'departmentlist', name: 'department-list', component: _import('PersonnelManagement/DepartmentList'), meta: { ...meta, title: '部门列表' } },
+    { path: 'joblist', name: 'job-list', component: _import('PersonnelManagement/JobList'), meta: { ...meta, title: '职务列表' } },
+    { path: 'departmentlist', name: 'department-list', component: _import('PersonnelManagement/DepartmentList'), meta: { ...meta, title: '部门列表' } },
   ]
 }

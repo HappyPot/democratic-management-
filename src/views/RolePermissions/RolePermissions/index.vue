@@ -1,38 +1,34 @@
 <template>
   <d2-container class="page">
-    <div class="unit_list">
-      <div class="unit_list_search">
-        <div class="ul_item">
+    <div class="role_permissions">
+      <div class="rp_search">
+        <div class="rp_input">
           <el-autocomplete class="inline-input"
                            size="medium"
                            v-model="searchValue"
                            :fetch-suggestions="querySearch"
-                           placeholder="部门名称或者部门编码"
+                           placeholder="搜索关键词"
                            prefix-icon="el-icon-search"
                            :trigger-on-focus="false"
                            @select="handleSelect"></el-autocomplete>
         </div>
-        <div class="ul_item">
-          <el-button type="primary"
-                     size="medium"
-                     @click="addNew">新增</el-button>
-        </div>
-        <div class="ul_item">
-          <el-button type="danger"
-                     size="medium"
-                     plain
-                     @click="delItem">删除</el-button>
-
-        </div>
-        <div class="ul_item_right"
-             @click="batchImport">
-          <img src="../../system/index/image/import.png"
-               alt="">
-          批量导入
+        <div class="rp_input_right">
+          <div class="rp_input">
+            <el-button type="primary"
+                       size="medium"
+                       @click="addNew">新增</el-button>
+          </div>
+          <div class="rp_input">
+            <el-button type="danger"
+                       size="medium"
+                       plain
+                       @click="delItem">删除</el-button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="unit_content">
+    <!-- 表格 -->
+    <div class="sl_content">
       <el-table ref="multipleTable"
                 :data="tableData"
                 tooltip-effect="dark"
@@ -45,13 +41,21 @@
                          label="序号">
         </el-table-column>
         <el-table-column prop="name"
-                         label="部门名称">
+                         label="登录账号">
         </el-table-column>
-        <el-table-column prop="status"
-                         label="状态"
-                         show-overflow-tooltip>
+        <el-table-column prop="date"
+                         label="所属角色">
+        </el-table-column>
+        <el-table-column prop="date"
+                         label="单位名称">
+        </el-table-column>
+        <el-table-column prop="date"
+                         label="调查时间">
+        </el-table-column>
+        <el-table-column prop="date"
+                         label="是否启用">
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].status">
+            <el-switch v-model="tableData[scope.$index].isEnable">
             </el-switch>
           </template>
         </el-table-column>
@@ -60,69 +64,45 @@
           <template>
             <el-link type="primary"
                      style="margin-right:12px">编辑</el-link>
-            <el-link type="danger">删除</el-link>
+            <el-link type="danger"
+                     style="margin-right:12px">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog title="批量导入"
+    <!-- 统计 -->
+    <el-dialog title="添加账号"
                center
-               :visible.sync="dialogImport"
-               width="30%">
-      <div class="dialogImport_content">
-        <div class="dc_item">
-          <div class="dc_text">选择文件</div>
-          <el-upload class="upload-demo"
-                     action="https://jsonplaceholder.typicode.com/posts/"
-                     multiple
-                     :limit="3">
-            <el-button type="primary"
-                       size="small"
-                       icon="el-icon-upload2"
-                       plain>上传</el-button>
-          </el-upload>
-        </div>
-        <div class="dc_item">
-          <div class="dc_text">下载导入模板</div>
-          <el-button type="primary"
-                     size="small"
-                     plain>导入模板</el-button>
-        </div>
-      </div>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   size="medium"
-                   @click="dialogImport = false">确 定</el-button>
-        <el-button size="medium"
-                   @click="dialogImport = false">取 消</el-button>
-      </span>
-    </el-dialog>
-    <!--新增 -->
-    <el-dialog title="新增部门"
-               center
-               :visible.sync="dialogAdd"
-               width="40%">
+               class="dialogSelf"
+               :visible.sync="dialogAccount"
+               width="700px">
       <div class="addNew">
         <div class="dc_item">
-          <div class="dc_text">部门编号</div>
-          <el-select v-model="departmentListNo"
+          <div class="dc_text">登录账号</div>
+          <el-input v-model="loginAccount"
+                    class="dc_select"
+                    size="medium"
+                    placeholder="请输入登录账号"></el-input>
+        </div>
+        <div class="dc_item">
+          <div class="dc_text">初始密码</div>
+          <el-input v-model="initialPassword"
+                    class="dc_select"
+                    size="medium"
+                    placeholder="请输入初始密码"></el-input>
+        </div>
+        <div class="dc_item">
+          <div class="dc_text">选择单位</div>
+          <el-select v-model="unitNo"
                      class="dc_select"
                      size="medium"
-                     placeholder="请选择部门编号">
-            <el-option v-for="item in departmentListNoOptions"
+                     placeholder="请选择单位">
+            <el-option v-for="item in unitNoOptions"
                        :key="item.value"
                        :label="item.label"
                        :value="item.value">
             </el-option>
           </el-select>
-        </div>
-        <div class="dc_item">
-          <div class="dc_text">部门名称</div>
-          <el-input v-model="departmentName"
-                    class="dc_select"
-                    size="medium"
-                    placeholder="请输入部门名称"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
@@ -131,8 +111,8 @@
                     class="dc_select"></el-input>
         </div>
         <div class="dc_item">
-          <div class="dc_text">是否禁用</div>
-          <el-radio-group v-model="isDisableDepartment">
+          <div class="dc_text">账号状态</div>
+          <el-radio-group v-model="status">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -141,102 +121,56 @@
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
-                   size="medium"
-                   @click="dialogAdd = false">确 定</el-button>
-        <el-button size="medium"
-                   @click="dialogAdd = false">取 消</el-button>
+                   @click="dialogAccount = false">确 定</el-button>
+        <el-button @click="dialogAccount = false">取 消</el-button>
       </span>
     </el-dialog>
   </d2-container>
 </template>
-
 <script>
-import D2Badge from '../../system/index/components/d2-badge'
-import D2Help from '../../system/index/components/d2-help'
-import D2PageCover from '../../system/index/components/d2-page-cover'
 export default {
-  components: {
-    D2Badge,
-    D2Help,
-    D2PageCover
-  },
   data() {
     return {
-      searchValue: '', //搜索条件
+      status: false, //账号状态
+      sortValue: '', //序号
+      unitNo: '', //单位
+      unitNoOptions: [], //单位list
+      loginAccount: '', //登录账号
+      initialPassword: '', //初始密码
+      dialogAccount: false,
+      searchValue: '',
       restaurants: [],
-      state1: '',
       tableData: [
         {
           id: 1,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 2,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 4,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 5,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 6,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 7,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 8,
-          status: true,
-          name: '02项目'
+          date: '2021-10-01至2021-10-31',
+          status: 1,
+          name: '01师',
+          isEnable: false
         }
-      ],
-      multipleSelection: [],
-      dialogImport: false,
-      dialogAdd: false,
-      departmentListNo: '', //部门编号
-      departmentListNoOptions: [], //部门编号
-      departmentName: '', //部门名称
-      sortValue: '', //排序
-      isDisableDepartment: false //部门是否禁用
+      ]
     }
   },
   mounted() {
     this.restaurants = this.loadAll()
   },
   methods: {
-    // 批量导入
-    batchImport() {
-      this.dialogImport = true
-    },
     // 新增
     addNew() {
-      this.dialogAdd = true
+      this.dialogAccount = true
     },
-    // 删除
-    delItem() {},
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
-        })
-      } else {
-        this.$refs.multipleTable.clearSelection()
-      }
+    // 联想补全
+    querySearch(queryString, cb) {
+      var restaurants = this.restaurants
+      var results = queryString
+        ? restaurants.filter(this.createFilter(queryString))
+        : restaurants
+      // 调用 callback 返回建议列表的数据
+      cb(results)
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+    // 补全后选择
+    handleSelect(item) {
+      console.log(item)
     },
     loadAll() {
       return [
@@ -356,64 +290,29 @@ export default {
           address: '普陀区金沙江路1699号鑫乐惠美食广场A13'
         }
       ]
-    },
-    // 补全后选择
-    handleSelect(item) {
-      console.log(item)
-    },
-    // 联想补全
-    querySearch(queryString, cb) {
-      var restaurants = this.restaurants
-      var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants
-      // 调用 callback 返回建议列表的数据
-      cb(results)
-    },
-    createFilter(queryString) {
-      return restaurant => {
-        return (
-          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
-          0
-        )
-      }
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
-.unit_list_search {
+.rp_search {
   width: 100%;
   display: flex;
   align-items: center;
-  .ul_item {
-    margin-right: 12px;
-  }
-  .ul_item_right {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    font-size: 14px;
-    font-family: PingFang SC;
-    font-weight: 400;
-    line-height: 20px;
-    color: #1e263d;
-    opacity: 1;
-    cursor: pointer;
-    img {
-      width: 16px;
-      height: 16px;
-    }
-  }
+  justify-content: space-between;
 }
-
-.unit_content {
+.rp_input_right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rp_input {
+  margin: 0 6px;
+}
+.rp_content {
   padding-top: 20px;
-  padding-left: 24px;
-  padding-right: 24px;
 }
-.unit_content ::v-deep .el-table th,
+.rp_content ::v-deep .el-table th,
 .el-table tr {
   background: #f4f5f8 !important;
   font-size: 14px;
@@ -421,6 +320,29 @@ export default {
   line-height: 20px;
   color: #7984a7 !important;
   opacity: 1;
+}
+
+.rp_content {
+  .status {
+    width: 6px;
+    height: 6px;
+    display: inline-block;
+    border-radius: 100%;
+    margin-right: 4px;
+  }
+  .noStart {
+    background: #17bb79;
+  }
+  .start {
+    background: #e9b345;
+  }
+  .over {
+    background: #bfc3c8;
+  }
+  .status_tiem {
+    display: flex;
+    align-items: center;
+  }
 }
 .dc_item {
   margin-bottom: 16px;
@@ -435,27 +357,6 @@ export default {
   }
   .dc_select {
     width: 500px;
-  }
-}
-.page {
-  .logo {
-    width: 120px;
-  }
-  .btn-group {
-    color: $color-text-placehoder;
-    font-size: 12px;
-    line-height: 12px;
-    margin-top: 0px;
-    margin-bottom: 20px;
-    .btn-group__btn {
-      color: $color-text-sub;
-      &:hover {
-        color: $color-text-main;
-      }
-      &.btn-group__btn--link {
-        color: $color-primary;
-      }
-    }
   }
 }
 </style>

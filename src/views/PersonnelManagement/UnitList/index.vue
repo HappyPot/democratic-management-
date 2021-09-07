@@ -74,7 +74,6 @@
           <div class="dc_text">选择文件</div>
           <el-upload class="upload-demo"
                      action="https://jsonplaceholder.typicode.com/posts/"
-                    
                      multiple
                      :limit="3">
             <el-button type="primary"
@@ -177,7 +176,6 @@ export default {
   data() {
     return {
       searchValue: '', //搜索条件
-      value1: true,
       restaurants: [],
       state1: '',
       tableData: [
@@ -228,6 +226,9 @@ export default {
       sortValue: '', //排序
       isDisableUnit: false //单位是否禁用
     }
+  },
+  mounted() {
+    this.restaurants = this.loadAll()
   },
   methods: {
     // 批量导入
