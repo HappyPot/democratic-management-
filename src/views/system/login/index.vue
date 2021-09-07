@@ -1,125 +1,54 @@
 <template>
   <div class="page-login">
-    <div class="page-login--layer page-login--layer-area">
-      <ul class="circles">
-        <li v-for="n in 10"
-            :key="n"></li>
-      </ul>
-    </div>
-    <div class="page-login--layer page-login--layer-time"
-         flex="main:center cross:center">
-      {{time}}
-    </div>
-    <div class="page-login--layer">
-      <div class="page-login--content"
-           flex="dir:top main:justify cross:stretch box:justify">
-        <div class="page-login--content-header">
-          <p class="page-login--content-header-motto">
-            时间是一切财富中最宝贵的财富
-          </p>
-        </div>
-        <div class="page-login--content-main"
-             flex="dir:top main:center cross:center">
-          <!-- logo -->
-          <img class="page-login--logo"
-               src="./image/logo@2x.png">
-          <!-- form -->
-          <div class="page-login--form">
-            <el-card shadow="never">
-              <el-form ref="loginForm"
-                       label-position="top"
-                       :rules="rules"
-                       :model="formLogin"
-                       size="default">
-                <el-form-item prop="username">
-                  <el-input type="text"
-                            v-model="formLogin.username"
-                            placeholder="用户名">
-                    <i slot="prepend"
-                       class="fa fa-user-circle-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                  <el-input type="password"
-                            v-model="formLogin.password"
-                            placeholder="密码">
-                    <i slot="prepend"
-                       class="fa fa-keyboard-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="code">
-                  <el-input type="text"
-                            v-model="formLogin.code"
-                            placeholder="验证码">
-                    <template slot="append">
-                      <img class="login-code"
-                           src="./image/login-code.png">
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-button size="default"
-                           @click="submit"
-                           type="primary"
-                           class="button-login">
-                  登录
-                </el-button>
-              </el-form>
-            </el-card>
-            <p class="page-login--options"
-               flex="main:justify cross:center">
-              <span>
-                <d2-icon name="question-circle" /> 忘记密码</span>
-              <span>注册用户</span>
-            </p>
-            <!-- quick login -->
-            <el-button class="page-login--quick"
-                       size="default"
-                       type="info"
-                       @click="dialogVisible = true">
-              快速选择用户（测试功能）
-            </el-button>
+    <div class="login_content">
+      <div class="login_center">
+        <div class="login_left">
+          <div class="ll_top">
+            <img src="./image/icon.png"
+                 alt="">
+            问卷调查民主测评系统
+          </div>
+          <div class="login_left_bg">
+            <img src="./image/sbg.png"
+                 alt="">
           </div>
         </div>
-        <div class="page-login--content-footer">
-          <p class="page-login--content-footer-locales">
-            <a v-for="language in $languages"
-               :key="language.value"
-               @click="onChangeLocale(language.value)">
-              {{ language.label }}
-            </a>
-          </p>
-          <p class="page-login--content-footer-copyright">
-            Copyright
-            <d2-icon name="copyright" />
-            2018 D2 Projects 开源组织出品
-            <a href="https://github.com/FairyEver">
-              @FairyEver
-            </a>
-          </p>
-          <p class="page-login--content-footer-options">
-            <a href="#">帮助</a>
-            <a href="#">隐私</a>
-            <a href="#">条款</a>
-          </p>
+        <div class="login_right">
+          <div class="login_title">
+            民主测评系统
+            <span class="line"></span>
+          </div>
+          <div class="login_item">
+            <el-select v-model="usinessEntity"
+                       class="login_item"
+                       placeholder="选中业务主体">
+              <el-option v-for="item in usinessEntityOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="login_item">
+            <el-input v-model="account"
+                      placeholder="请输入内容"></el-input>
+          </div>
+          <div class="login_item">
+            <el-input v-model="account"
+                      show-password
+                      placeholder="请输入登录密码"></el-input>
+          </div>
+          <div class="login_btn_box">
+            <el-button type="primary"
+                       class="login_btn"
+                       @click="submit">登录</el-button>
+          </div>
+          <div class="login_tips">
+            首次登录或者忘记密码，请扫码登录
+          </div>
         </div>
       </div>
     </div>
-    <el-dialog title="快速选择用户"
-               :visible.sync="dialogVisible"
-               width="400px">
-      <el-row :gutter="10"
-              style="margin: -20px 0px -10px 0px;">
-        <el-col v-for="(user, index) in users"
-                :key="index"
-                :span="8">
-          <div class="page-login--quick-user"
-               @click="handleUserBtnClick(user)">
-            <d2-icon name="user-circle-o" />
-            <span>{{user.name}}</span>
-          </div>
-        </el-col>
-      </el-row>
-    </el-dialog>
   </div>
 </template>
 
@@ -131,6 +60,9 @@ export default {
   mixins: [localeMixin],
   data() {
     return {
+      account: '', //账号
+      usinessEntity: '', //业务主体
+      usinessEntityOptions: [], //业务主体列表
       timeInterval: null,
       time: dayjs().format('HH:mm:ss'),
       // 快速选择用户
@@ -211,23 +143,23 @@ export default {
      */
     // 提交登录信息
     submit() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          // 登录
-          // 注意 这里的演示没有传验证码
-          // 具体需要传递的数据请自行修改代码
-          this.login({
-            username: this.formLogin.username,
-            password: this.formLogin.password
-          }).then(() => {
-            // 重定向对象不存在则返回顶层路径
-            this.$router.replace(this.$route.query.redirect || '/')
-          })
-        } else {
-          // 登录表单校验失败
-          this.$message.error('表单校验失败，请检查')
-        }
+      this.login({
+        username: this.formLogin.username,
+        password: this.formLogin.password
+      }).then(() => {
+        // 重定向对象不存在则返回顶层路径
+        this.$router.replace(this.$route.query.redirect || '/')
       })
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+      //     // 登录
+      //     // 注意 这里的演示没有传验证码
+      //     // 具体需要传递的数据请自行修改代码
+      //   } else {
+      //     // 登录表单校验失败
+      //     this.$message.error('表单校验失败，请检查')
+      //   }
+      // })
     }
   }
 }
@@ -476,6 +408,104 @@ export default {
         animation-delay: 0s;
         animation-duration: 11s;
       }
+    }
+  }
+}
+.login_content {
+  background: url('./image/bg.png') no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.login_center {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1166px;
+  height: 681px;
+  .login_left,
+  .login_right {
+    width: 583px;
+    height: 681px;
+    box-sizing: border-box;
+    border-radius: 0px 10px 10px 0px;
+  }
+  .login_left {
+    border-radius: 10px 0px 0px 10px;
+    background: linear-gradient(-46deg, #0253fa, #0064fb, #4c64fe);
+    padding-top: 81px;
+    padding-left: 49px;
+    .ll_top {
+      display: flex;
+      align-items: center;
+      font-size: 29px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      line-height: 41px;
+      color: #ffffff;
+      img {
+        width: 49px;
+        height: 49px;
+        margin-right: 9px;
+      }
+    }
+    .login_left_bg {
+      margin-top: 28px;
+      img {
+        width: 440px;
+        height: 374px;
+      }
+    }
+  }
+  .login_right {
+    border-radius: 0px 10px 10px 0px;
+    background: #fff;
+    padding-top: 88px;
+    padding-left: 97px;
+    padding-right: 97px;
+    .login_title {
+      font-size: 29px;
+      font-family: PingFang SC;
+      font-weight: bold;
+      line-height: 41px;
+      color: #000b13;
+      position: relative;
+      text-align: center;
+      margin-bottom: 78px;
+      .line {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #d0eaff;
+        height: 3px;
+        width: 149px;
+      }
+    }
+    .login_item {
+      width: 389px;
+      height: 49px;
+      margin-bottom: 7px;
+    }
+    .login_btn {
+      width: 389px;
+      height: 49px;
+    }
+    .login_btn_box {
+      margin-top: 47px;
+    }
+    .login_tips {
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      line-height: 21px;
+      color: #018bf8;
+      text-align: center;
+      margin-top: 77px;
     }
   }
 }

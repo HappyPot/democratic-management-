@@ -102,6 +102,7 @@ opacity: 1;">联系我们</div>
               </div>
             </div>
           </transition>
+          <div class="copyright">@西安凡数创新信息技术有限公司 版权所有 | 陕ICP879990号</div>
         </div>
       </div>
     </div>
@@ -192,4 +193,15 @@ export default {
 <style lang="scss">
 // 注册主题
 @import '~@/assets/style/theme/register.scss';
+.copyright {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-family: PingFang SC;
+  font-weight: 400;
+  line-height: 17px;
+  color: #9aa0a8;
+}
 </style>

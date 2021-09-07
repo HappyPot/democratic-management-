@@ -60,6 +60,9 @@
     </div>
     <!-- 民主测评操作流程 -->
     <div class="process">
+      <div class="process_title">
+        民主测评操作流程
+      </div>
       <div class="process_1">
         <div class="p_item">
           <img src="./image/p_1.png"
@@ -67,7 +70,8 @@
           基础阶段
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item">
@@ -76,7 +80,8 @@
           基础信息
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item">
@@ -86,7 +91,8 @@
         </div>
       </div>
       <div class="p_arrow_down">
-        <img src="./image/down.png"
+        <img class="sp_down"
+             src="./image/down.png"
              alt="">
       </div>
       <div class="process_2">
@@ -96,7 +102,8 @@
           评测阶段
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item p_item_2">
@@ -105,7 +112,8 @@
           新建测评
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item p_item_2">
@@ -114,7 +122,8 @@
           启动测评
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item p_item_2">
@@ -124,7 +133,8 @@
         </div>
       </div>
       <div class="p_arrow_down">
-        <img src="./image/down.png"
+        <img class="sp_down"
+             src="./image/down.png"
              alt="">
       </div>
       <div class="process_3">
@@ -134,7 +144,8 @@
           反馈阶段
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item p_item_3">
@@ -143,7 +154,8 @@
           强行结束
         </div>
         <div class="p_item p_arrow">
-          <img src="./image/arrow.png"
+          <img class="sp_img"
+               src="./image/arrow.png"
                alt="">
         </div>
         <div class="p_item p_item_3">
@@ -281,18 +293,21 @@ export default {
     }
   }
   .data_text {
+    width: 100%;
     margin-top: 24px;
     font-size: 16px;
     font-family: PingFang SC;
     font-weight: 400;
     line-height: 21px;
     color: #9aa7bc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     span {
       font-size: 38px;
       font-weight: 400;
       line-height: 46px;
       color: #b976f2;
-      margin-left: 56px;
     }
   }
 }
@@ -301,6 +316,7 @@ export default {
   box-sizing: border-box;
   background: #fff;
   margin-top: 23px;
+  height: 482px;
   .process_1,
   .process_2,
   .process_3 {
@@ -335,11 +351,31 @@ export default {
     background: #fff;
   }
   .p_arrow_down {
-    margin-left: 42px;
+    margin-top: 11px;
+    margin-bottom: 11px;
+    width: 163px;
+    height: 54px;
     img {
       display: block;
       height: 68px;
     }
+  }
+  .sp_img {
+    width: 47px !important;
+    height: 14px !important;
+  }
+  .sp_down {
+    width: 14px !important;
+    height: 47px !important;
+    margin: 0 auto;
+  }
+  .process_title {
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: bold;
+    line-height: 21px;
+    color: #1e263d;
+    margin-bottom: 70px;
   }
 }
 </style>
