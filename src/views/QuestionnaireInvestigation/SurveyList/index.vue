@@ -32,8 +32,7 @@
       <el-table ref="multipleTable"
                 :data="tableData"
                 tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
+                style="width: 100%">
         <el-table-column type="selection"
                          width="55">
         </el-table-column>
@@ -87,7 +86,8 @@
             <el-link type="primary"
                      style="margin-right:12px">编辑</el-link>
             <el-link type="primary"
-                     style="margin-right:12px">统计</el-link>
+                     style="margin-right:12px"
+                     @click="showStatistics">统计</el-link>
             <el-link type="primary"
                      style="margin-right:12px">配置</el-link>
             <el-link type="primary"
@@ -102,22 +102,27 @@
     <el-dialog title="统计结果"
                center
                class="dialogSelf"
-               :visible.sync="dialogReview"
-               width="700px">
-      <Review></Review>
+               :visible.sync="dialogStatistics"
+               width="972px">
+      <Statistics></Statistics>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogReview = false">取 消</el-button>
+        <el-button @click="dialogStatistics = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogReview = false">确 定</el-button>
+                   @click="dialogStatistics = false">确 定</el-button>
       </span>
     </el-dialog>
   </d2-container>
 </template>
 <script>
+import Statistics from './components/statistics'
 export default {
+  components: {
+    Statistics
+  },
   data() {
     return {
+      dialogStatistics: true, //统计弹框展示
       searchValue: '',
       restaurants: [],
       tableData: [
@@ -135,6 +140,10 @@ export default {
     this.restaurants = this.loadAll()
   },
   methods: {
+    // 打开统计弹框
+    showStatistics() {
+      this.dialogStatistics = true
+    },
     // 联想补全
     querySearch(queryString, cb) {
       var restaurants = this.restaurants
