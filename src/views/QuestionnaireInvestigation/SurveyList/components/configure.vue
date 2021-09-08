@@ -18,7 +18,8 @@
         <div class="draggable">
           <draggable v-model="draggableArr"
                      :scroll="true"
-                     group="componentsGroup"
+                     :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+                     draggable=".draggable_item"
                      animation="300">
             <transition-group>
               <div class="draggable_item"
@@ -85,13 +86,34 @@ export default {
           id: 3,
           type: 'CheckboxCom',
           des: '多选',
-          url: require('../image/checkbox.png')
+          url: require('../image/checkbox.png'),
+          config: {
+            value: [2],
+            title: '', //标题简称
+            valueArr: [
+              {
+                id: 1,
+                label: '默认',
+                value: 1
+              },
+              {
+                id: 2,
+                label: '默认2',
+                value: 2
+              }
+            ]
+          }
         },
         {
           id: 4,
-          type: 'singleTextCom',
+          type: 'SingleText',
           des: '单行文本',
-          url: require('../image/linetext.png')
+          value: '默认单行文本',
+          url: require('../image/linetext.png'),
+          config: {
+            value: '默认提示文字',
+            title: '' //标题简称
+          }
         },
         {
           id: 5,
@@ -140,6 +162,7 @@ export default {
     width: 564px;
     border-right: 1px dashed #dfe1e8;
     min-height: 500px;
+    padding-right: 24px;
   }
   .frombuild_right {
     width: 372px;

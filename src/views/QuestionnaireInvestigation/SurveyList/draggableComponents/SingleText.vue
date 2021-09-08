@@ -5,16 +5,12 @@
       <div class="setting_btn"><img src="../image/settingCom.png"
              @click="settingCom"></div>
     </div>
-    <div class="com_content">
+    <div class="TextCom_content">
       <div class="config_title">{{comInfo.des}}</div>
       <div>
-        <el-radio-group v-model="comInfo.config.value">
-          <div class="compo">
-            <el-radio v-for="(item) in comInfo.config.valueArr"
-                      :key="item.id"
-                      :label="item.value">{{item.label}}</el-radio>
-          </div>
-        </el-radio-group>
+        <el-input class="inputcom"
+                  size="medium"
+                  v-model="comInfo.value"></el-input>
       </div>
     </div>
     <el-dialog title="选项配置"
@@ -41,28 +37,14 @@
                     v-model="comInfo.config.title">
           </el-input>
         </div>
-        <div class="config_item"
-             v-for="(item,index) in comInfo.config.valueArr"
-             :key="item.id">
+        <div class="config_item">
           <div class="config_title">
-            选项{{item.id}}
+            提示内容
           </div>
           <el-input class="inputcom"
                     size="medium"
-                    v-model="item.label">
+                    v-model="comInfo.config.value">
           </el-input>
-          <div class="del_icon"
-               @click="delItem(index)">
-            <i class="el-icon-delete"
-               style="color:red"></i>
-          </div>
-        </div>
-        <div class="config_item">
-          <el-button type="primary"
-                     class="inputcom"
-                     icon="el-icon-plus"
-                     plain
-                     @click="addConfigItem">添加选项</el-button>
         </div>
       </div>
       <span slot="footer"
@@ -73,43 +55,31 @@
       </span>
     </el-dialog>
   </div>
+
 </template>
 <script>
 export default {
-  name: 'RadioCom',
+  name: 'SingleText',
   props: {
     info: {
       type: Object,
       default: () => {
         value: '默认值'
-        des: ''
+        dec: ''
       }
     }
   },
   data() {
     return {
-      dialogConfigure: false,
-      comInfo: null
+      comInfo: null,
+      dialogConfigure: false
     }
   },
   created() {
     this.comInfo = this.$deepClone(this.info)
   },
-  mounted() {},
   methods: {
-    // 添加选项
-    addConfigItem() {
-      let arr = this.comInfo.config.valueArr
-      arr.push({
-        id: arr.length + 1,
-        label: `默认${arr.length + 1}`,
-        value: arr.length + 1
-      })
-    },
-    // 删除选项
-    delItem(index) {
-      this.comInfo.config.valueArr.splice(index, 1)
-    },
+    // 设置文本
     settingCom() {
       this.dialogConfigure = true
     }

@@ -117,7 +117,7 @@
                center
                class="dialogSelf"
                :visible.sync="dialogConfigure"
-               width="972px">
+               width="1000px">
       <Configure></Configure>
       <span slot="footer"
             class="dialog-footer">

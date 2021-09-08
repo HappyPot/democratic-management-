@@ -8,13 +8,13 @@
     <div class="com_content">
       <div class="config_title">{{comInfo.des}}</div>
       <div>
-        <el-radio-group v-model="comInfo.config.value">
+        <el-checkbox-group v-model="comInfo.config.value">
           <div class="compo">
-            <el-radio v-for="(item) in comInfo.config.valueArr"
-                      :key="item.id"
-                      :label="item.value">{{item.label}}</el-radio>
+            <el-checkbox v-for="(item) in comInfo.config.valueArr"
+                         :key="item.id"
+                         :label="item.value">{{item.label}}</el-checkbox>
           </div>
-        </el-radio-group>
+        </el-checkbox-group>
       </div>
     </div>
     <el-dialog title="选项配置"
@@ -76,7 +76,7 @@
 </template>
 <script>
 export default {
-  name: 'RadioCom',
+  name: 'CheckboxCom',
   props: {
     info: {
       type: Object,
@@ -95,7 +95,6 @@ export default {
   created() {
     this.comInfo = this.$deepClone(this.info)
   },
-  mounted() {},
   methods: {
     // 添加选项
     addConfigItem() {
