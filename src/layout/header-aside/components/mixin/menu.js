@@ -7,6 +7,10 @@ export default {
         this.$message.warning('临时菜单')
       } else if (/^https:\/\/|http:\/\//.test(index)) {
         util.open(index)
+      }else if(index == 99999){
+        this.$router.push({
+          path: '/index'
+        })
       } else {
         this.$router.push({
           path: index

@@ -11,23 +11,27 @@ export default {
     return <div class="d2-layout-header-aside-menu-side">
       <d2-scrollbar>
         <el-menu
-        style="padding-left:35px"
           collapse={ this.asideCollapse }
           collapseTransition={ this.asideTransition }
           uniqueOpened={ true }
           defaultActive={ this.$route.fullPath }
           ref="menu"
           onSelect={ this.handleMenuSelect }>
+          <el-menu-item index="99999">
+            <i class="el-icon-menu"></i>
+            <span slot="title">首页</span>
+          </el-menu-item>
           { this.aside.map(menu => createMenu.call(this, h, menu)) }
+
         </el-menu>
-        {
+        {/* {
           this.aside.length === 0 && !this.asideCollapse
             ? <div class="d2-layout-header-aside-menu-empty" flex="dir:top main:center cross:center" style="background: #fff;">
               <d2-icon name="inbox"/>
               <span>没有侧栏菜单</span>
             </div>
             : null
-        }
+        } */}
       </d2-scrollbar>
     </div>
   },

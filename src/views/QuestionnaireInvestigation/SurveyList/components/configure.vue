@@ -5,6 +5,7 @@
         <draggable class="drawing-board"
                    :list="drawingList"
                    :animation="340"
+                   :scroll="true"
                    group="componentsGroup">
           <component v-for="item in drawingList"
                      :key="item.id"
@@ -117,9 +118,14 @@ export default {
         },
         {
           id: 5,
-          type: 'MultilineTextCom',
+          type: 'MultilineText',
           des: '多行文本',
-          url: require('../image/multiline.png')
+          value: '默认单行文本',
+          url: require('../image/multiline.png'),
+          config: {
+            value: '默认提示文字',
+            title: '' //标题简称
+          }
         }
       ],
       drawingList: [],
@@ -156,7 +162,7 @@ export default {
 .frombuild {
   display: flex;
   align-items: center;
-  padding: 0 32px;
+  padding-right: 20px;
   box-sizing: border-box;
   .frombuild_left {
     width: 564px;
@@ -181,11 +187,12 @@ export default {
       line-height: 24px;
       color: #f25151;
       margin-top: 8px;
+      margin-bottom: 20px;
     }
   }
 }
 .draggable_item {
-  width: 384px;
+  width: 348px;
   height: 56px;
   background: #f4f5f8;
   display: flex;
@@ -207,7 +214,8 @@ export default {
   }
 }
 .drawing-board {
-  min-height: 500px;
+  height: 500px;
+  overflow: auto;
   // background: red;
 }
 </style>

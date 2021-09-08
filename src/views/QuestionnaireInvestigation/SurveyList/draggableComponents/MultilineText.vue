@@ -9,6 +9,8 @@
       <div class="config_title">{{comInfo.des}}</div>
       <div>
         <el-input class="inputcom"
+                  style="width: 500px;"
+                  type="textarea"
                   size="medium"
                   v-model="comInfo.value"></el-input>
       </div>
@@ -42,6 +44,7 @@
             提示内容
           </div>
           <el-input class="inputcom"
+                    type="textarea"
                     size="medium"
                     v-model="comInfo.value">
           </el-input>
@@ -59,7 +62,7 @@
 </template>
 <script>
 export default {
-  name: 'SingleText',
+  name: 'MultilineText',
   props: {
     info: {
       type: Object,

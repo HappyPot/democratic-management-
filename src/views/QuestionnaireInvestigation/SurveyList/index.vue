@@ -126,20 +126,55 @@
                    @click="dialogConfigure = false">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 新增和编辑 -->
+    <el-dialog :title="addEditType"
+               center
+               class="dialogSelf"
+               :visible.sync="dialogEdit"
+               width="1000px">
+      <AddAndEdit></AddAndEdit>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="dialogEdit = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="dialogEdit = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 明细查询 -->
+    <el-dialog title="事项配置"
+               center
+               class="dialogSelf"
+               :visible.sync="dialogDetail"
+               width="1000px">
+      <DetailQuery></DetailQuery>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="dialogDetail = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="dialogDetail = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </d2-container>
 </template>
 <script>
 import Statistics from './components/statistics'
 import Configure from './components/configure'
+import AddAndEdit from './components/addAndEdit'
+import DetailQuery from './components/detailQuery'
 export default {
   components: {
     Statistics,
-    Configure
+    Configure,
+    AddAndEdit,
+    DetailQuery
   },
   data() {
     return {
+      addEditType: '新增', //新增或者编辑
+      dialogEdit: false, //新增和编辑
       dialogStatistics: false, //统计弹框展示
-      dialogConfigure: true, //事项配置
+      dialogConfigure: false, //事项配置
+      dialogDetail: true, //明细弹框
       searchValue: '',
       restaurants: [],
       tableData: [

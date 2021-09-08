@@ -14,6 +14,9 @@ import { frameInRoutes } from '@/router/routes'
 import draggableComponents from "@/views/QuestionnaireInvestigation/SurveyList/draggableComponents/index.js";
 Vue.use(draggableComponents)
 import { deepClone } from "./untils";
+// import wl from "wl-vue-select";
+// import "wl-vue-select/lib/wl-vue-select.css";
+// Vue.use(wl);
 Vue.prototype.$deepClone = deepClone
 // 核心插件
 Vue.use(d2Admin)

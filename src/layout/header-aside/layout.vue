@@ -23,7 +23,7 @@
           <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all.png`"> -->
           <img style="width:16px;height:16px;margin-right:5px"
                src="../../assets/image/logo.png">
-          <span>民主评测管理</span>
+          <span class="logo_title">民主评测管理</span>
         </router-link>
         <!-- <div class="toggle-aside-btn"
              @click="handleToggleAside"
@@ -36,11 +36,11 @@
              flex-box="0">
           <div style="font-size: 14px;
           margin-right:40px
-font-family: PingFang SC;
-font-weight: 400;
-line-height: 20px;
-color: #1A264B;
-opacity: 1;">联系我们</div>
+          font-family: PingFang SC;
+          font-weight: 400;
+          line-height: 20px;
+          color: #1A264B;
+          opacity: 1;">联系我们</div>
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
           <!-- <d2-header-search @click="handleSearchClick" />
           <d2-header-log />
@@ -60,6 +60,7 @@ opacity: 1;">联系我们</div>
         <div flex-box="0"
              ref="aside"
              :class="{'d2-theme-container-aside': true, 'd2-theme-container-transition': asideTransition}"
+             id="my_menu"
              :style="{
             width: asideCollapse ? asideWidthCollapse : asideWidth,
             opacity: this.searchActive ? 0.5 : 1
@@ -203,5 +204,53 @@ export default {
   font-weight: 400;
   line-height: 17px;
   color: #9aa0a8;
+}
+.logo_title {
+  font-size: 16px;
+  font-family: PingFang SC;
+  font-weight: bold;
+  line-height: 22px;
+  color: #1a264b;
+}
+.theme-d2 .d2-theme-container .d2-theme-container-aside .el-menu .el-menu-item {
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-d2
+  .d2-theme-container
+  .d2-theme-container-aside
+  .el-menu
+  .el-menu-item.is-active {
+  background: #1497fe;
+  color: #fff;
+}
+.theme-d2
+  .d2-theme-container
+  .d2-theme-container-aside
+  .el-menu
+  .el-menu-item.is-active
+  i {
+  color: #fff;
+}
+.theme-d2 .d2-theme-container .d2-theme-container-aside .el-scrollbar__wrap {
+  margin-right: 0 !important;
+}
+.theme-d2
+  .d2-theme-container
+  .d2-theme-container-aside
+  .el-menu
+  .el-menu-item:hover {
+  color: #1a264b !important;
+  background: #e7f4ff;
+}
+.theme-d2
+  .d2-theme-container
+  .d2-theme-container-aside
+  .el-menu
+  .el-menu-item:hover
+  i {
+  color: #1a264b !important;
 }
 </style>
