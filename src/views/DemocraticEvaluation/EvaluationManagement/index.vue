@@ -159,7 +159,9 @@ export default {
   },
   methods: {
     // 新增
-    addNew() {},
+    addNew() {
+      this.dialogReview = true
+    },
     // 删除
     delItem() {},
     loadAll() {

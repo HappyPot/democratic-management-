@@ -112,17 +112,34 @@
                    @click="dialogStatistics = false">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 配置 -->
+    <el-dialog title="事项配置"
+               center
+               class="dialogSelf"
+               :visible.sync="dialogConfigure"
+               width="972px">
+      <Configure></Configure>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="dialogConfigure = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="dialogConfigure = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </d2-container>
 </template>
 <script>
 import Statistics from './components/statistics'
+import Configure from './components/configure'
 export default {
   components: {
-    Statistics
+    Statistics,
+    Configure
   },
   data() {
     return {
-      dialogStatistics: true, //统计弹框展示
+      dialogStatistics: false, //统计弹框展示
+      dialogConfigure: true, //事项配置
       searchValue: '',
       restaurants: [],
       tableData: [
@@ -140,6 +157,8 @@ export default {
     this.restaurants = this.loadAll()
   },
   methods: {
+    addNew() {},
+    delItem() {},
     // 打开统计弹框
     showStatistics() {
       this.dialogStatistics = true
