@@ -2,3 +2,25 @@
   display: inline-block;
   margin-right: 50px;
 }
+.redTip{
+  color: #F25151;
+  margin-right: 6px;
+}
+.dc_text{
+  display: flex;
+  align-items: center;
+}
+.dc_item{
+  position: relative;
+}
+.errorTip{
+  position: absolute;
+  bottom: -16px;
+  left: 2px;
+  font-size: 10px;
+  font-family: PingFang SC;
+  font-weight: 400;
+  line-height: 14px;
+  color: #F25151;
+  display: none;
+}

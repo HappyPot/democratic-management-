@@ -59,7 +59,8 @@
                          show-overflow-tooltip>
           <template>
             <el-link type="primary"
-                     style="margin-right:12px">编辑</el-link>
+                     style="margin-right:12px"
+                     @click="showEdit">编辑</el-link>
             <el-link type="danger">删除</el-link>
           </template>
         </el-table-column>
@@ -105,34 +106,32 @@
                width="40%">
       <div class="addNew">
         <div class="dc_item">
-          <div class="dc_text">职务编号</div>
-          <el-select v-model="jobNo"
-                     class="dc_select"
-                     size="medium"
-                     placeholder="请选择职务编号">
-            <el-option v-for="item in jobNoOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select>
+          <div class="dc_text"><i class="redTip">*</i>职务编号</div>
+          <el-input v-model="from.jobNo"
+                    class="dc_select"
+                    size="medium"
+                    placeholder="请输入职务编号"></el-input>
+          <span class="errorTip"
+                data-name="jobNo"> <i class="el-icon-circle-close"></i> 请输入职务编号，在提交</span>
         </div>
         <div class="dc_item">
-          <div class="dc_text">职务名称</div>
-          <el-input v-model="jobName"
+          <div class="dc_text"><i class="redTip">*</i>职务名称</div>
+          <el-input v-model="from.jobName"
                     class="dc_select"
                     size="medium"
                     placeholder="请输入职务名称"></el-input>
+          <span class="errorTip"
+                data-name="jobName"> <i class="el-icon-circle-close"></i> 请输入职务名称，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
-          <el-input v-model="sortValue"
+          <el-input v-model="from.sortValue"
                     size="medium"
                     class="dc_select"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
-          <el-radio-group v-model="isDisableJob">
+          <el-radio-group v-model="from.isDisableJob">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -142,7 +141,12 @@
             class="dialog-footer">
         <el-button type="primary"
                    size="medium"
-                   @click="dialogAdd = false">确 定</el-button>
+                   v-show="typeDialog == '新增'"
+                   @click="addNewData">确 定</el-button>
+        <el-button type="primary"
+                   size="medium"
+                   v-show="typeDialog == '编辑'"
+                   @click="editData">更 新</el-button>
         <el-button size="medium"
                    @click="dialogAdd = false">取 消</el-button>
       </span>
@@ -162,6 +166,7 @@ export default {
   },
   data() {
     return {
+      typeDialog: '新增', //弹框的类型
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
@@ -205,11 +210,13 @@ export default {
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
-      jobNo: '', //职务编号
       jobNoOptions: [], //职务编号
-      jobName: '', //职务名称
-      sortValue: '', //排序
-      isDisableJob: false //职务是否禁用
+      from: {
+        jobNo: '', //职务编号
+        jobName: '', //职务名称
+        sortValue: '', //排序
+        isDisableJob: false //职务是否禁用
+      }
     }
   },
   mounted() {
@@ -220,9 +227,37 @@ export default {
     batchImport() {
       this.dialogImport = true
     },
-    // 新增
+    // 展示新增弹框
     addNew() {
+      this.resetErrorTip()
       this.dialogAdd = true
+      this.typeDialog = '新增'
+    },
+    // 新增数据
+    addNewData() {
+      // 新增数据接口
+      // 表单校验
+      this.fromValidate(this.from)
+      if (this.accessSubmit) {
+        alert('提交成功')
+      } else {
+        alert('提交失败')
+      }
+    },
+    // 展示编辑弹框
+    showEdit() {
+      this.resetErrorTip()
+      this.typeDialog = '编辑'
+      this.dialogAdd = true
+    },
+    editData() {
+      this.fromValidate(this.from)
+      // 更新接口
+      if (this.accessSubmit) {
+        alert('更新成功')
+      } else {
+        alert('更新失败')
+      }
     },
     // 删除
     delItem() {},

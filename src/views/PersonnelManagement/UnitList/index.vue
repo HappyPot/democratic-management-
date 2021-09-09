@@ -59,7 +59,8 @@
                          show-overflow-tooltip>
           <template>
             <el-link type="primary"
-                     style="margin-right:12px">编辑</el-link>
+                     style="margin-right:12px"
+                     @click="showEdit">编辑</el-link>
             <el-link type="danger">删除</el-link>
           </template>
         </el-table-column>
@@ -99,14 +100,23 @@
       </span>
     </el-dialog>
     <!--新增 -->
-    <el-dialog title="新增单位"
+    <el-dialog :title="typeDialog"
                center
                :visible.sync="dialogAdd"
                width="40%">
       <div class="addNew">
         <div class="dc_item">
-          <div class="dc_text">上级单位</div>
-          <el-select v-model="superiorUnit"
+          <div class="dc_text"> 上级单位</div>
+          <wlTreeSelect leaf
+                        width="500"
+                        placeholder="请选择上级单位"
+                        style="margin-right:10px"
+                        checkbox
+                        :data="superiorUnitOptions"
+                        @change="getSuperiorUnit"
+                        v-model="from.superiorUnit">
+          </wlTreeSelect>
+          <!-- <el-select v-model="superiorUnit"
                      class="dc_select"
                      size="medium"
                      placeholder="请选择上级单位">
@@ -115,11 +125,23 @@
                        :label="item.label"
                        :value="item.value">
             </el-option>
-          </el-select>
+          </el-select> -->
         </div>
+
         <div class="dc_item">
-          <div class="dc_text">单位编号</div>
-          <el-select v-model="unitNo"
+          <div class="dc_text"><i class="redTip">*</i>单位编号</div>
+          <wlTreeSelect leaf
+                        width="500"
+                        placeholder="请选择单位编号"
+                        style="margin-right:10px"
+                        checkbox
+                        :data="unitNoOptions"
+                        @change="getUnitNo"
+                        v-model="from.unitNo">
+          </wlTreeSelect>
+          <span class="errorTip"
+                data-name="unitNo"> <i class="el-icon-circle-close"></i> 请选择单位编号，在提交</span>
+          <!-- <el-select v-model="unitNo"
                      class="dc_select"
                      size="medium"
                      placeholder="请选择单位编号">
@@ -128,24 +150,26 @@
                        :label="item.label"
                        :value="item.value">
             </el-option>
-          </el-select>
+          </el-select> -->
         </div>
         <div class="dc_item">
-          <div class="dc_text">单位名称</div>
-          <el-input v-model="unitName"
+          <div class="dc_text"><i class="redTip">*</i>单位名称</div>
+          <el-input v-model="from.unitName"
                     class="dc_select"
                     size="medium"
                     placeholder="请输入单位名称"></el-input>
+          <span class="errorTip"
+                data-name="unitName"> <i class="el-icon-circle-close"></i> 请选择单位名称，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
-          <el-input v-model="sortValue"
+          <el-input v-model="from.sortValue"
                     size="medium"
                     class="dc_select"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
-          <el-radio-group v-model="isDisableUnit">
+          <el-radio-group v-model="from.isDisableUnit">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -155,7 +179,12 @@
             class="dialog-footer">
         <el-button type="primary"
                    size="medium"
-                   @click="dialogAdd = false">确 定</el-button>
+                   v-show="typeDialog == '新增'"
+                   @click="addNewData">确 定</el-button>
+        <el-button type="primary"
+                   size="medium"
+                   v-show="typeDialog == '编辑'"
+                   @click="editData">更 新</el-button>
         <el-button size="medium"
                    @click="dialogAdd = false">取 消</el-button>
       </span>
@@ -167,6 +196,7 @@
 import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
+import { validateTelephone } from '@/untils/validate'
 export default {
   components: {
     D2Badge,
@@ -175,6 +205,8 @@ export default {
   },
   data() {
     return {
+      evaluation: '', //测评对象值
+      evaluationOptions: [],
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
@@ -218,26 +250,104 @@ export default {
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
-      superiorUnit: '', //上级单位
-      superiorUnitOptions: [], //上级单位数组
-      unitNo: '', //单位编号
-      unitNoOptions: [], //单位编号
-      unitName: '', //单位名称
-      sortValue: '', //排序
-      isDisableUnit: false //单位是否禁用
+      typeDialog: '新增', //弹框的类型
+
+      superiorUnitOptions: [
+        {
+          id: 'love',
+          name: '所有和你走过的风光',
+          children: [
+            {
+              id: 1,
+              name: '海边',
+              children: [
+                {
+                  id: 5,
+                  name: '蓬莱'
+                }
+              ]
+            }
+          ]
+        }
+      ], //上级单位数组
+
+      unitNoOptions: [
+        {
+          id: 'love',
+          name: '所有和你走过的风光',
+          children: [
+            {
+              id: 1,
+              name: '海边',
+              children: [
+                {
+                  id: 5,
+                  name: '蓬莱'
+                }
+              ]
+            }
+          ]
+        }
+      ], //单位编号
+      from: {
+        unitNo: '', //单位编号
+        unitName: '', //单位名称
+        sortValue: '', //排序
+        superiorUnit: '', //上级单位
+        isDisableUnit: false //单位是否禁用
+      }
     }
   },
   mounted() {
     this.restaurants = this.loadAll()
   },
   methods: {
+    // 获取上级单位值
+    getSuperiorUnit(val) {
+      console.log('获取上级单位值', val)
+    },
+    // 获取单位编号
+    getUnitNo(val) {
+      console.log('获取单位编号', val)
+    },
+    hindleChanged(val) {
+      console.log(val, 2)
+    },
+    // 展示编辑弹框
+    showEdit() {
+      this.resetErrorTip()
+      this.typeDialog = '编辑'
+      this.dialogAdd = true
+    },
+    editData() {
+      this.fromValidate(this.from)
+      // 更新接口
+      if (this.accessSubmit) {
+        alert('更新成功')
+      } else {
+        alert('更新失败')
+      }
+    },
     // 批量导入
     batchImport() {
       this.dialogImport = true
     },
-    // 新增
+    // 展示新增弹框
     addNew() {
+      this.resetErrorTip()
       this.dialogAdd = true
+      this.typeDialog = '新增'
+    },
+    // 新增数据
+    addNewData() {
+      // 新增数据接口
+      // 表单校验
+      this.fromValidate(this.from)
+      if (this.accessSubmit) {
+        alert('提交成功')
+      } else {
+        alert('提交失败')
+      }
     },
     // 删除
     delItem() {},
@@ -398,6 +508,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../common/index.scss';
 .unit_list_search {
   width: 100%;
   display: flex;
@@ -448,9 +559,9 @@ export default {
   .dc_text {
     margin-bottom: 8px;
   }
-  .dc_select {
-    width: 500px;
-  }
+}
+.dc_select {
+  width: 500px;
 }
 .page {
   .logo {

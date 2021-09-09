@@ -11,12 +11,39 @@ import store from '@/store/index'
 import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
-import draggableComponents from "@/views/QuestionnaireInvestigation/SurveyList/draggableComponents/index.js";
+import draggableComponents from "@/views/Sharing/draggableComponents/index.js";
+
+import '@/views/common/index.scss'
+import MixinValidate from '@/views/mixin/validate.js';
+Vue.mixin(MixinValidate);
+// import VueI18n from 'vue-i18n';
+// import VeeValidate from 'vee-validate';
+// import zh_CN from 'vee-validate/dist/locale/zh_CN'
+
+// //启用Vue国际化插件
+// Vue.use(VueI18n)
+
+// //配置VeeValidate
+// const i18n1 = new VueI18n({
+//     locale: 'zh_CN',
+// })
+
+// Vue.use(VeeValidate, {
+//     i18n1,
+//     i18nRootKey: 'validation',
+//     dictionary: {
+//         zh_CN
+//     }
+// });
+
+
 Vue.use(draggableComponents)
+
+import wlTreeSelect from './components/wl-tree-select/index'
+Vue.use(wlTreeSelect)
+
+
 import { deepClone } from "./untils";
-// import wl from "wl-vue-select";
-// import "wl-vue-select/lib/wl-vue-select.css";
-// Vue.use(wl);
 Vue.prototype.$deepClone = deepClone
 // 核心插件
 Vue.use(d2Admin)

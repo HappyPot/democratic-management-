@@ -95,7 +95,7 @@
 import { DataType /* , flattenDeep */ } from 'wl-core'
 
 export default {
-  name: 'WlTreeSelect',
+  name: 'wl-tree-select',
   data() {
     return {
       selecteds: [], // 选中数据

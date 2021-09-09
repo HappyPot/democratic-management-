@@ -66,23 +66,35 @@
             <!-- {{tableData[scope.$index].status?'未开始':"开始"}} -->
           </template>
         </el-table-column>
+        <el-table-column prop="status"
+                         label="是否启用"
+                         show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-switch v-model="tableData[scope.$index].status">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
           <template>
             <el-link type="primary"
-                     style="margin-right:12px">编辑</el-link>
+                     style="margin-right:12px"
+                     @click="showEdit">编辑</el-link>
             <el-link type="primary"
-                     style="margin-right:12px">统计</el-link>
+                     style="margin-right:12px"
+                     @click="showStatistical">统计</el-link>
             <el-link type="primary"
-                     style="margin-right:12px">配置</el-link>
+                     style="margin-right:12px"
+                     @click="showConfig">配置</el-link>
             <el-link type="primary"
-                     style="margin-right:12px">底稿</el-link>
+                     style="margin-right:12px"
+                     @click="showPapers">底稿</el-link>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <!-- 新增 -->
-    <el-dialog title="评议添加"
+    <!-- 新增与编辑-->
+    <el-dialog :title="typeTitle"
                center
                class="dialogSelf"
                :visible.sync="dialogReview"
@@ -90,65 +102,70 @@
       <Review></Review>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogReview = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogReview = false">确 定</el-button>
+                   v-show="typeTitle == '评议添加'"
+                   @click="addNewDate">确 定</el-button>
+        <el-button type="primary"
+                   v-show="typeTitle == '评议编辑'"
+                   @click="editData">更 新</el-button>
+        <el-button @click="dialogReview = false">取 消</el-button>
+
+      </span>
+    </el-dialog>
+    <!-- 统计 -->
+    <el-dialog title="统计结果"
+               center
+               class="dialogSelf"
+               :visible.sync="dialogStatistics"
+               width="972px">
+      <Statistics></Statistics>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="dialogStatistics = false">确 定</el-button>
+        <el-button @click="dialogStatistics = false">取 消</el-button>
+      </span>
+    </el-dialog>
+    <!-- 配置 -->
+    <el-dialog title="事项配置"
+               center
+               class="dialogSelf"
+               :visible.sync="dialogConfigure"
+               width="1000px">
+      <Configure></Configure>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="dialogConfigure = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="dialogConfigure = false">确 定</el-button>
       </span>
     </el-dialog>
   </d2-container>
 </template>
 <script>
 import Review from './components/review'
+import Statistics from '@/views/Sharing/components/statistics'
+import Configure from '@/views/Sharing/components/configure'
 export default {
   components: {
-    Review
+    Review,
+    Configure,
+    Statistics
   },
   data() {
     return {
-      dialogReview: false,
+      typeTitle: '评议添加', //评议添加,评议编辑
+      dialogReview: false, //控制新增和编辑
+      dialogStatistics: false, //控制统计框
+      dialogConfigure: false, //控制配置框
+      dialogPapers: false, //控制低稿框
       searchValue: '', //搜索值
       restaurants: [],
       tableData: [
         {
           id: 1,
           date: '2021-10-01至2021-10-31',
-          status: 1,
-          name: '01师'
-        },
-        {
-          id: 2,
-          date: '2021-10-01至2021-10-31',
-          status: 2,
-          name: '01师'
-        },
-        {
-          id: 4,
-          date: '2021-10-01至2021-10-31',
-          status: 3,
-          name: '01师'
-        },
-        {
-          id: 5,
-          date: '2021-10-01至2021-10-31',
-          status: 2,
-          name: '01师'
-        },
-        {
-          id: 6,
-          date: '2021-10-01至2021-10-31',
-          status: 3,
-          name: '01师'
-        },
-        {
-          id: 7,
-          date: '2021-10-01至2021-10-31',
-          status: 2,
-          name: '01师'
-        },
-        {
-          id: 8,
-          date: '2021-10-01至2021-10-31',
-          status: 1,
+          status: true,
           name: '01师'
         }
       ]
@@ -158,9 +175,32 @@ export default {
     this.restaurants = this.loadAll()
   },
   methods: {
-    // 新增
+    // 展示编辑框
+    showEdit() {
+      this.dialogReview = true
+      this.typeTitle = '评议编辑'
+    },
+    // 更新
+    editData() {},
+    // 展示统计框
+    showStatistical() {
+      this.dialogStatistics = true
+    },
+    // 展示配置框
+    showConfig() {
+      this.dialogConfigure = true
+    },
+    // 展示底稿框
+    showPapers() {},
+    handleSelectionChange() {},
+    // 展示新增框
     addNew() {
       this.dialogReview = true
+      this.typeTitle = '评议添加'
+    },
+    // 新增
+    addNewDate() {
+      console.log('新增')
     },
     // 删除
     delItem() {},

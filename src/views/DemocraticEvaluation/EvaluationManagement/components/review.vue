@@ -241,8 +241,15 @@
 <script>
 export default {
   name: 'Review',
+  poprs: {
+    typeTitle: {
+      require: true,
+      default: '评议添加'
+    }
+  },
   data() {
     return {
+      textarea: '',
       activeName: 'first',
       peopleOptions: [], //参评人员列表
       review: {
@@ -305,6 +312,8 @@ export default {
 .review {
   width: 624px;
   padding: 0 12px;
+  height: 697px;
+  overflow: auto;
 }
 .bt_title {
   font-size: 14px;

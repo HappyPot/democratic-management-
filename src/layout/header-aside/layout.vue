@@ -34,13 +34,16 @@
         <!-- 顶栏右侧 -->
         <div class="d2-header-right"
              flex-box="0">
-          <div style="font-size: 14px;
-          margin-right:40px
-          font-family: PingFang SC;
-          font-weight: 400;
-          line-height: 20px;
-          color: #1A264B;
-          opacity: 1;">联系我们</div>
+          <div class="contactUs">
+            <img src="../../assets/image/contactUs.png"
+                 alt="">
+            联系我们</div>
+          <div class="userInfo">
+            <img src="../../assets/image/userinfo.jpeg"
+                 alt="">
+            <span>赵微微</span>
+            <i class="el-icon-arrow-down"></i>
+          </div>
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
           <!-- <d2-header-search @click="handleSearchClick" />
           <d2-header-log />
@@ -253,4 +256,41 @@ export default {
   i {
   color: #1a264b !important;
 }
+.contactUs {
+  font-size: 14px;
+  margin-right: 32px;
+  font-family: PingFang SC;
+  font-weight: 400;
+  line-height: 20px;
+  color: #1a264b;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+  }
+}
+.userInfo {
+  font-size: 14px;
+  margin-right: 40px;
+  font-family: PingFang SC;
+  font-weight: 400;
+  line-height: 20px;
+  color: #1a264b;
+  display: flex;
+  align-items: center;
+  img {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #f4f5f8;
+    border-radius: 20px;
+    margin-right: 8px;
+  }
+  span {
+    margin-right: 8px;
+  }
+}
+// @@@
 </style>

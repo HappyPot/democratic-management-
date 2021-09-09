@@ -157,8 +157,8 @@
   </d2-container>
 </template>
 <script>
-import Statistics from './components/statistics'
-import Configure from './components/configure'
+import Statistics from '@/views/Sharing/components/statistics'
+import Configure from '@/views/Sharing/components/configure'
 import AddAndEdit from './components/addAndEdit'
 import DetailQuery from './components/detailQuery'
 export default {

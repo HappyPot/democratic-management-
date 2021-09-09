@@ -22,7 +22,6 @@ export default {
             <span slot="title">首页</span>
           </el-menu-item>
           { this.aside.map(menu => createMenu.call(this, h, menu)) }
-
         </el-menu>
         {/* {
           this.aside.length === 0 && !this.asideCollapse

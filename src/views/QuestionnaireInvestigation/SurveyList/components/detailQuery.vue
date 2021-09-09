@@ -410,12 +410,12 @@
   </div>
 </template>
 <script>
-import wlTreeSelect from '../../../../components/wl-tree-select/index'
+// import wlTreeSelect from '../../../../components/wl-tree-select/index'
 export default {
   name: 'DetailQuery',
-  components: {
-    wlTreeSelect
-  },
+  // components: {
+  //   wlTreeSelect
+  // },
   data() {
     return {
       defaultProps: {
