@@ -40,7 +40,7 @@
                 row-key="id"
                 default-expand-all
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-                @selection-change="handleSelectionChange">
+                @select="handleSelectionChange">
         <el-table-column type="selection"
                          width="55">
         </el-table-column>
@@ -220,43 +220,27 @@ export default {
           id: 1,
           status: true,
           name: '01师',
+          isChecked: false,
           children: [
             {
               id: 11,
               status: true,
-              name: '0333师'
+              name: '0333师',
+              isChecked: false
+            },
+            {
+              id: 12,
+              status: true,
+              name: '0333师',
+              isChecked: false
             }
           ]
         },
         {
           id: 2,
           status: true,
-          name: '01师'
-        },
-        {
-          id: 4,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 5,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 6,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 7,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 8,
-          status: true,
-          name: '01师'
+          name: '01师',
+          isChecked: false
         }
       ],
       multipleSelection: [],
@@ -276,6 +260,10 @@ export default {
                 {
                   id: 5,
                   name: '蓬莱'
+                },
+                {
+                  id: 6,
+                  name: '蓬莱11'
                 }
               ]
             }
@@ -380,8 +368,26 @@ export default {
         this.$refs.multipleTable.clearSelection()
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+    handleSelectionChange(selection, row) {
+      if (row.children) {
+        //只对有子节点的行响应
+        if (!row.isChecked) {
+          //由行数据中的元素isChecked判断当前是否被选中
+          row.children.map(item => {
+            //遍历所有子节点
+            this.$refs.multipleTable.toggleRowSelection(item, true) //切换该子节
+            item.isChecked = true
+          })
+          row.isChecked = true //当前行isChecked标志元素切换为false
+        } else {
+          row.children.map(item => {
+            this.$refs.multipleTable.toggleRowSelection(item, false)
+            item.isChecked = false
+          })
+          row.isChecked = false
+        }
+      }
+      console.log(row)
     },
     loadAll() {
       return [

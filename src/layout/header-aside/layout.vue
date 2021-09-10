@@ -42,7 +42,14 @@
             <img src="../../assets/image/userinfo.jpeg"
                  alt="">
             <span>赵微微</span>
-            <i class="el-icon-arrow-down"></i>
+            <i class="el-icon-arrow-down"
+               @click="extend"></i>
+            <div :class="showActive?'extend_menu active_extend':'extend_menu'">
+              <span class="triangle-up"></span>
+              <div class="extend_item"
+                   style="margin-bottom:20px">修改密码</div>
+              <div class="extend_item">退出登录</div>
+            </div>
           </div>
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
           <!-- <d2-header-search @click="handleSearchClick" />
@@ -145,6 +152,7 @@ export default {
   },
   data() {
     return {
+      showActive: false, //控制头像处的菜单展示
       // [侧边栏宽度] 正常状态
       asideWidth: '200px',
       // [侧边栏宽度] 折叠状态
@@ -183,6 +191,10 @@ export default {
     }
   },
   methods: {
+    // 展开
+    extend() {
+      this.showActive = !this.showActive
+    },
     ...mapActions('d2admin/menu', ['asideCollapseToggle']),
     /**
      * 接收点击切换侧边栏的按钮
@@ -281,6 +293,7 @@ export default {
   color: #1a264b;
   display: flex;
   align-items: center;
+  position: relative;
   img {
     width: 30px;
     height: 30px;
@@ -291,6 +304,43 @@ export default {
   span {
     margin-right: 8px;
   }
+  .extend_menu {
+    position: absolute;
+    top: 31px;
+    left: 5px;
+    z-index: 9999;
+    width: 120px;
+    height: 110px;
+    background: #ffffff;
+    border: 1px solid #eaecef;
+    box-shadow: 0px 3px 6px rgba(122, 130, 155, 0.1);
+    opacity: 0;
+    padding: 24px 20px;
+    box-sizing: border-box;
+    .triangle-up {
+      position: absolute;
+      top: -10px;
+      right: 11px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid #fff;
+    }
+    .extend_item {
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      line-height: 20px;
+      color: #000b13;
+      cursor: pointer;
+    }
+  }
+}
+.active_extend {
+  opacity: 1 !important;
+  top: 38px !important;
+  left: 5px !important;
 }
 // @@@
 </style>

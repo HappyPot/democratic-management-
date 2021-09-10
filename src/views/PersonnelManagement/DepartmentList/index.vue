@@ -51,7 +51,7 @@
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].status">
+            <el-switch v-model="scope.row.status">
             </el-switch>
           </template>
         </el-table-column>
