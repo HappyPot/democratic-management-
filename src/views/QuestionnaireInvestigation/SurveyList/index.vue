@@ -84,14 +84,17 @@
                          show-overflow-tooltip>
           <template>
             <el-link type="primary"
-                     style="margin-right:12px">编辑</el-link>
+                     style="margin-right:12px"
+                     @click="showEdit">编辑</el-link>
             <el-link type="primary"
                      style="margin-right:12px"
-                     @click="showStatistics">统计</el-link>
+                     @click="showStatistical">统计</el-link>
             <el-link type="primary"
-                     style="margin-right:12px">配置</el-link>
+                     style="margin-right:12px"
+                     @click="showConfig">配置</el-link>
             <el-link type="primary"
-                     style="margin-right:12px">底稿</el-link>
+                     style="margin-right:12px"
+                     @click="showPapers">底稿</el-link>
             <el-link type="danger"
                      style="margin-right:12px">删除</el-link>
           </template>
@@ -107,9 +110,9 @@
       <Statistics></Statistics>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogStatistics = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogStatistics = false">确 定</el-button>
+                   @click="statisticalData">确 定</el-button>
+        <el-button @click="dialogStatistics = false">取 消</el-button>
       </span>
     </el-dialog>
     <!-- 配置 -->
@@ -121,23 +124,23 @@
       <Configure></Configure>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogConfigure = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogConfigure = false">确 定</el-button>
+                   @click="configData">确 定</el-button>
+        <el-button @click="dialogConfigure = false">取 消</el-button>
       </span>
     </el-dialog>
     <!-- 新增和编辑 -->
-    <el-dialog :title="addEditType"
+    <el-dialog :title="typeTitle"
                center
                class="dialogSelf"
                :visible.sync="dialogEdit"
-               width="1000px">
-      <AddAndEdit></AddAndEdit>
+               width="700px">
+      <AddAndEdit ref="addAndEdit"></AddAndEdit>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogEdit = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogEdit = false">确 定</el-button>
+                   @click="addNewDate">确 定</el-button>
+        <el-button @click="dialogEdit = false">取 消</el-button>
       </span>
     </el-dialog>
     <!-- 明细查询 -->
@@ -149,9 +152,9 @@
       <DetailQuery></DetailQuery>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogDetail = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogDetail = false">确 定</el-button>
+                   @click="showDetail">确 定</el-button>
+        <el-button @click="dialogDetail = false">取 消</el-button>
       </span>
     </el-dialog>
   </d2-container>
@@ -170,11 +173,11 @@ export default {
   },
   data() {
     return {
-      addEditType: '新增', //新增或者编辑
+      typeTitle: '新增', //新增或者编辑
       dialogEdit: false, //新增和编辑
       dialogStatistics: false, //统计弹框展示
       dialogConfigure: false, //事项配置
-      dialogDetail: true, //明细弹框
+      dialogDetail: false, //明细弹框
       searchValue: '',
       restaurants: [],
       tableData: [
@@ -192,12 +195,46 @@ export default {
     this.restaurants = this.loadAll()
   },
   methods: {
-    addNew() {},
+    // 展示明细
+    showDetail() {
+      this.dialogDetail = true
+    },
+    // 展示新增框
+    addNew() {
+      this.dialogEdit = true
+      this.typeTitle = '新增'
+    },
+    // 新增
+    addNewDate() {
+      let flag = this.$refs['addAndEdit'].checkFrom()
+      alert(flag)
+      console.log('新增')
+    },
     delItem() {},
+    // 展示编辑框
+    showEdit() {
+      this.dialogEdit = true
+      this.typeTitle = '编辑'
+    },
+    // 更新
+    editData() {
+      let flag = this.$refs['addAndEdit'].checkFrom()
+      alert(flag)
+    },
     // 打开统计弹框
-    showStatistics() {
+    showStatistical() {
       this.dialogStatistics = true
     },
+    // 统计数据提交
+    statisticalData() {},
+    // 展示配置框
+    showConfig() {
+      this.dialogConfigure = true
+    },
+    // 配置框数据提交
+    configData() {},
+    // 展示底稿框
+    showPapers() {},
     // 联想补全
     querySearch(queryString, cb) {
       var restaurants = this.restaurants

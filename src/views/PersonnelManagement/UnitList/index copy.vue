@@ -7,7 +7,7 @@
                            size="medium"
                            v-model="searchValue"
                            :fetch-suggestions="querySearch"
-                           placeholder="职务名称或者职务编码"
+                           placeholder="单位名称或者单位编码"
                            prefix-icon="el-icon-search"
                            :trigger-on-focus="false"
                            @select="handleSelect"></el-autocomplete>
@@ -45,7 +45,7 @@
                          label="序号">
         </el-table-column>
         <el-table-column prop="name"
-                         label="职务名称">
+                         label="单位名称">
         </el-table-column>
         <el-table-column prop="status"
                          label="状态"
@@ -61,8 +61,7 @@
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showEdit">编辑</el-link>
-            <el-link type="danger"
-                     @click="delItem">删除</el-link>
+            <el-link type="danger">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -101,28 +100,66 @@
       </span>
     </el-dialog>
     <!--新增 -->
-    <el-dialog title="新增职务"
+    <el-dialog :title="typeDialog"
                center
                :visible.sync="dialogAdd"
                width="40%">
       <div class="addNew">
         <div class="dc_item">
-          <div class="dc_text"><i class="redTip">*</i>职务编号</div>
-          <el-input v-model="from.jobNo"
-                    class="dc_select"
-                    size="medium"
-                    placeholder="请输入职务编号"></el-input>
+          <div class="dc_text"> 上级单位</div>
+          <wlTreeSelect leaf
+                        width="500"
+                        placeholder="请选择上级单位"
+                        style="margin-right:10px"
+                        checkbox
+                        :data="superiorUnitOptions"
+                        @change="getSuperiorUnit"
+                        v-model="from.superiorUnit">
+          </wlTreeSelect>
+          <!-- <el-select v-model="superiorUnit"
+                     class="dc_select"
+                     size="medium"
+                     placeholder="请选择上级单位">
+            <el-option v-for="item in superiorUnitOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select> -->
+        </div>
+
+        <div class="dc_item">
+          <div class="dc_text"><i class="redTip">*</i>单位编号</div>
+          <wlTreeSelect leaf
+                        width="500"
+                        placeholder="请选择单位编号"
+                        style="margin-right:10px"
+                        checkbox
+                        :data="unitNoOptions"
+                        @change="getUnitNo"
+                        v-model="from.unitNo">
+          </wlTreeSelect>
           <span class="errorTip"
-                data-name="jobNo"> <i class="el-icon-circle-close"></i> 请输入职务编号，在提交</span>
+                data-name="unitNo"> <i class="el-icon-circle-close"></i> 请选择单位编号，在提交</span>
+          <!-- <el-select v-model="unitNo"
+                     class="dc_select"
+                     size="medium"
+                     placeholder="请选择单位编号">
+            <el-option v-for="item in unitNoOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select> -->
         </div>
         <div class="dc_item">
-          <div class="dc_text"><i class="redTip">*</i>职务名称</div>
-          <el-input v-model="from.jobName"
+          <div class="dc_text"><i class="redTip">*</i>单位名称</div>
+          <el-input v-model="from.unitName"
                     class="dc_select"
                     size="medium"
-                    placeholder="请输入职务名称"></el-input>
+                    placeholder="请输入单位名称"></el-input>
           <span class="errorTip"
-                data-name="jobName"> <i class="el-icon-circle-close"></i> 请输入职务名称，在提交</span>
+                data-name="unitName"> <i class="el-icon-circle-close"></i> 请选择单位名称，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
@@ -132,7 +169,7 @@
         </div>
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
-          <el-radio-group v-model="from.isDisableJob">
+          <el-radio-group v-model="from.isDisableUnit">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -159,6 +196,8 @@
 import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
+import { validateTelephone } from '@/untils/validate'
+
 export default {
   components: {
     D2Badge,
@@ -167,7 +206,8 @@ export default {
   },
   data() {
     return {
-      typeDialog: '新增', //弹框的类型
+      evaluation: '', //测评对象值
+      evaluationOptions: [],
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
@@ -175,48 +215,87 @@ export default {
         {
           id: 1,
           status: true,
-          name: '董事长'
+          name: '01师'
         },
         {
           id: 2,
           status: true,
-          name: '董事长'
+          name: '01师'
         },
         {
           id: 4,
           status: true,
-          name: '董事长'
+          name: '01师'
         },
         {
           id: 5,
           status: true,
-          name: '董事长'
+          name: '01师'
         },
         {
           id: 6,
           status: true,
-          name: '董事长'
+          name: '01师'
         },
         {
           id: 7,
           status: true,
-          name: '董事长'
+          name: '01师'
         },
         {
           id: 8,
           status: true,
-          name: '董事长'
+          name: '01师'
         }
       ],
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
-      jobNoOptions: [], //职务编号
+      typeDialog: '新增', //弹框的类型
+
+      superiorUnitOptions: [
+        {
+          id: 'love',
+          name: '所有和你走过的风光',
+          children: [
+            {
+              id: 1,
+              name: '海边',
+              children: [
+                {
+                  id: 5,
+                  name: '蓬莱'
+                }
+              ]
+            }
+          ]
+        }
+      ], //上级单位数组
+
+      unitNoOptions: [
+        {
+          id: 'love',
+          name: '所有和你走过的风光',
+          children: [
+            {
+              id: 1,
+              name: '海边',
+              children: [
+                {
+                  id: 5,
+                  name: '蓬莱'
+                }
+              ]
+            }
+          ]
+        }
+      ], //单位编号
       from: {
-        jobNo: '', //职务编号
-        jobName: '', //职务名称
+        unitNo: '', //单位编号
+        unitName: '', //单位名称
         sortValue: '', //排序
-        isDisableJob: false //职务是否禁用
+        superiorUnit: '', //上级单位
+        isDisableUnit: false //单位是否禁用
       }
     }
   },
@@ -224,6 +303,32 @@ export default {
     this.restaurants = this.loadAll()
   },
   methods: {
+    // 获取上级单位值
+    getSuperiorUnit(val) {
+      console.log('获取上级单位值', val)
+    },
+    // 获取单位编号
+    getUnitNo(val) {
+      console.log('获取单位编号', val)
+    },
+    hindleChanged(val) {
+      console.log(val, 2)
+    },
+    // 展示编辑弹框
+    showEdit() {
+      this.resetErrorTip()
+      this.typeDialog = '编辑'
+      this.dialogAdd = true
+    },
+    editData() {
+      this.fromValidate(this.from)
+      // 更新接口
+      if (this.accessSubmit) {
+        alert('更新成功')
+      } else {
+        alert('更新失败')
+      }
+    },
     // 批量导入
     batchImport() {
       this.dialogImport = true
@@ -245,31 +350,8 @@ export default {
         alert('提交失败')
       }
     },
-    // 展示编辑弹框
-    showEdit() {
-      this.resetErrorTip()
-      this.typeDialog = '编辑'
-      this.dialogAdd = true
-    },
-    editData() {
-      this.fromValidate(this.from)
-      // 更新接口
-      if (this.accessSubmit) {
-        alert('更新成功')
-      } else {
-        alert('更新失败')
-      }
-    },
     // 删除
-    delItem() {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        alert('删除接口')
-      })
-    },
+    delItem() {},
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -427,6 +509,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../common/index.scss';
 .unit_list_search {
   width: 100%;
   display: flex;
@@ -477,9 +560,9 @@ export default {
   .dc_text {
     margin-bottom: 8px;
   }
-  .dc_select {
-    width: 500px;
-  }
+}
+.dc_select {
+  width: 500px;
 }
 .page {
   .logo {

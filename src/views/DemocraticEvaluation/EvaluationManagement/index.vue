@@ -99,7 +99,7 @@
                class="dialogSelf"
                :visible.sync="dialogReview"
                width="700px">
-      <Review></Review>
+      <Review ref="review"></Review>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
@@ -122,7 +122,7 @@
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
-                   @click="dialogStatistics = false">确 定</el-button>
+                   @click="statisticalData">确 定</el-button>
         <el-button @click="dialogStatistics = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -135,9 +135,9 @@
       <Configure></Configure>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="dialogConfigure = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogConfigure = false">确 定</el-button>
+                   @click="configData">确 定</el-button>
+        <el-button @click="dialogConfigure = false">取 消</el-button>
       </span>
     </el-dialog>
   </d2-container>
@@ -181,15 +181,26 @@ export default {
       this.typeTitle = '评议编辑'
     },
     // 更新
-    editData() {},
+    editData() {
+      let flag = this.$refs['review'].checkFrom()
+      if (flag) {
+        // 只有校验成功才能提交
+      }
+      console.log('flag', flag)
+      console.log('更新')
+    },
     // 展示统计框
     showStatistical() {
       this.dialogStatistics = true
     },
+    // 统计数据提交
+    statisticalData() {},
     // 展示配置框
     showConfig() {
       this.dialogConfigure = true
     },
+    // 配置框数据提交
+    configData() {},
     // 展示底稿框
     showPapers() {},
     handleSelectionChange() {},
@@ -200,6 +211,12 @@ export default {
     },
     // 新增
     addNewDate() {
+      // 调用组件中的表单校验方法
+      let flag = this.$refs['review'].checkFrom()
+      if (flag) {
+        // 只有校验成功才能提交
+      }
+      console.log('flag', flag)
       console.log('新增')
     },
     // 删除

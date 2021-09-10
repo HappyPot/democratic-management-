@@ -19,22 +19,24 @@
             <span class="line"></span>
           </div>
           <div class="login_item">
-            <el-select v-model="usinessEntity"
+            <span class="errorTip"> <i class="el-icon-circle-close"></i> {{errorText}}</span>
+            <el-select v-model="formLogin.usinessEntity"
                        class="login_item"
                        placeholder="选中业务主体">
               <el-option v-for="item in usinessEntityOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+                         :key="item.id"
+                         :label="item.subject_name"
+                         :value="item.id">
               </el-option>
             </el-select>
           </div>
           <div class="login_item">
-            <el-input v-model="account"
-                      placeholder="请输入内容"></el-input>
+            <el-input v-model="formLogin.username"
+                      placeholder="请输入登录账号"></el-input>
+
           </div>
           <div class="login_item">
-            <el-input v-model="account"
+            <el-input v-model="formLogin.password"
                       show-password
                       placeholder="请输入登录密码"></el-input>
           </div>
@@ -53,113 +55,64 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
-import localeMixin from '@/locales/mixin.js'
+import { GET_SUBJECT_LIST, LOGIN } from '../../../api/login.js'
 export default {
-  mixins: [localeMixin],
   data() {
     return {
+      errorText: '', //错误提示语
       account: '', //账号
       usinessEntity: '', //业务主体
       usinessEntityOptions: [], //业务主体列表
-      timeInterval: null,
-      time: dayjs().format('HH:mm:ss'),
-      // 快速选择用户
-      dialogVisible: false,
-      users: [
-        {
-          name: 'Admin',
-          username: 'admin',
-          password: 'admin'
-        },
-        {
-          name: 'Editor',
-          username: 'editor',
-          password: 'editor'
-        },
-        {
-          name: 'User1',
-          username: 'user1',
-          password: 'user1'
-        }
-      ],
       // 表单
       formLogin: {
-        username: 'admin',
-        password: 'admin',
-        code: 'v9am'
-      },
-      // 表单校验
-      rules: {
-        username: [
-          {
-            required: true,
-            message: '请输入用户名',
-            trigger: 'blur'
-          }
-        ],
-        password: [
-          {
-            required: true,
-            message: '请输入密码',
-            trigger: 'blur'
-          }
-        ],
-        code: [
-          {
-            required: true,
-            message: '请输入验证码',
-            trigger: 'blur'
-          }
-        ]
+        usinessEntity: '', //业务主体
+        username: '',
+        password: '',
+        url: 'http://app.ceping.nuofeida.net' //登录后跳转地
       }
     }
   },
   mounted() {
-    this.timeInterval = setInterval(() => {
-      this.refreshTime()
-    }, 1000)
-  },
-  beforeDestroy() {
-    clearInterval(this.timeInterval)
+    this.getSubjectList()
   },
   methods: {
-    ...mapActions('d2admin/account', ['login']),
-    refreshTime() {
-      this.time = dayjs().format('HH:mm:ss')
-    },
-    /**
-     * @description 接收选择一个用户快速登录的事件
-     * @param {Object} user 用户信息
-     */
-    handleUserBtnClick(user) {
-      this.formLogin.username = user.username
-      this.formLogin.password = user.password
-      this.submit()
+    // 获取主体
+    getSubjectList() {
+      GET_SUBJECT_LIST().then(res => {
+        if (res.status == 0) {
+          this.usinessEntityOptions = res.data
+        }
+      })
     },
     /**
      * @description 提交表单
      */
     // 提交登录信息
     submit() {
-      this.login({
-        username: this.formLogin.username,
-        password: this.formLogin.password
-      }).then(() => {
-        // 重定向对象不存在则返回顶层路径
-        this.$router.replace(this.$route.query.redirect || '/')
+      let errorText = {
+        usinessEntity: '请选择业务主体',
+        username: '请输入登录账号',
+        password: '请输入登录密码'
+      }
+      document.getElementsByClassName('errorTip')[0].style.display = 'none'
+      for (let key in this.formLogin) {
+        if (!this.formLogin[key]) {
+          this.errorText = errorText[key]
+          document.getElementsByClassName('errorTip')[0].style.display = 'block'
+          document.getElementsByClassName('errorTip')[0].style.bottom = '56px'
+          return
+        }
+      }
+      let obj = {
+        account: this.formLogin.username,
+        pwd: this.formLogin.password,
+        url: this.formLogin.url,
+        subject_id: this.formLogin.usinessEntity
+      }
+      LOGIN(obj).then(res => {
+        console.log(res)
+        alert('登录成功')
       })
-      // this.$refs.loginForm.validate(valid => {
-      //   if (valid) {
-      //     // 登录
-      //     // 注意 这里的演示没有传验证码
-      //     // 具体需要传递的数据请自行修改代码
-      //   } else {
-      //     // 登录表单校验失败
-      //     this.$message.error('表单校验失败，请检查')
-      //   }
-      // })
     }
   }
 }
@@ -490,6 +443,7 @@ export default {
       width: 389px;
       height: 49px;
       margin-bottom: 7px;
+      position: relative;
     }
     .login_btn {
       width: 389px;

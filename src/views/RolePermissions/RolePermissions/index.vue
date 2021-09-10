@@ -63,15 +63,17 @@
                          show-overflow-tooltip>
           <template>
             <el-link type="primary"
-                     style="margin-right:12px">编辑</el-link>
+                     style="margin-right:12px"
+                     @click="showEdit">编辑</el-link>
             <el-link type="danger"
-                     style="margin-right:12px">删除</el-link>
+                     style="margin-right:12px"
+                     @click="delItem">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <!-- 统计 -->
-    <el-dialog title="添加账号"
+    <el-dialog :title="typeTitle"
                center
                class="dialogSelf"
                :visible.sync="dialogAccount"
@@ -131,6 +133,7 @@
 export default {
   data() {
     return {
+      typeTitle: '添加账号', //评议添加,评议编辑
       status: false, //账号状态
       sortValue: '', //序号
       unitNo: '', //单位
@@ -155,9 +158,24 @@ export default {
     this.restaurants = this.loadAll()
   },
   methods: {
+    delItem() {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        alert('删除接口')
+      })
+    },
+    // 展示编辑框
+    showEdit() {
+      this.dialogAccount = true
+      this.typeTitle = '编辑账号'
+    },
     // 新增
     addNew() {
       this.dialogAccount = true
+      this.typeTitle = '添加账号'
     },
     // 联想补全
     querySearch(queryString, cb) {

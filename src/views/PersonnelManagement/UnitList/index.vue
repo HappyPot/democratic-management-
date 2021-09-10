@@ -37,6 +37,9 @@
                 :data="tableData"
                 tooltip-effect="dark"
                 style="width: 100%"
+                row-key="id"
+                default-expand-all
+                :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection"
                          width="55">
@@ -51,7 +54,7 @@
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].status">
+            <el-switch v-model="scope.row.status">
             </el-switch>
           </template>
         </el-table-column>
@@ -61,7 +64,8 @@
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showEdit">编辑</el-link>
-            <el-link type="danger">删除</el-link>
+            <el-link type="danger"
+                     @click="delItem">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -197,6 +201,7 @@ import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
 import { validateTelephone } from '@/untils/validate'
+
 export default {
   components: {
     D2Badge,
@@ -214,7 +219,14 @@ export default {
         {
           id: 1,
           status: true,
-          name: '01师'
+          name: '01师',
+          children: [
+            {
+              id: 11,
+              status: true,
+              name: '0333师'
+            }
+          ]
         },
         {
           id: 2,
@@ -350,7 +362,15 @@ export default {
       }
     },
     // 删除
-    delItem() {},
+    delItem() {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        alert('删除接口')
+      })
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -536,7 +556,7 @@ export default {
 
 .unit_content {
   padding-top: 20px;
-  padding-left: 24px;
+  // padding-left: 24px;
   padding-right: 24px;
 }
 .unit_content ::v-deep .el-table th,

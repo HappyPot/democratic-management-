@@ -12,7 +12,7 @@ import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
 import draggableComponents from "@/views/Sharing/draggableComponents/index.js";
-
+import './assets/icon/iconfont.css';
 import '@/views/common/index.scss'
 import MixinValidate from '@/views/mixin/validate.js';
 Vue.mixin(MixinValidate);

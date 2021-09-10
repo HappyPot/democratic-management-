@@ -75,12 +75,27 @@ keys(pages).forEach(name => {
   })
 })
 
+console.log('aaaaaaaaaa',process.env.VUE_APP_API)
 module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
   lintOnSave: false,//修改后lintOnSave: false
+
   devServer: {
+    host: '0.0.0.0',
+    proxy: {
+      [process.env.VUE_APP_API]: {
+        target: `https://php.ceping.nuofeida.net`, // 86
+        secure: false,
+        changeOrigin: true,
+        logLevel:'debug',
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_API]: process.env.VUE_APP_API
+        }
+      },
+    },
     publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
-    disableHostCheck: process.env.NODE_ENV === 'development',
+    disableHostCheck: false,
+    // disableHostCheck: process.env.NODE_ENV === 'development',
     overlay:{
       warnings:true,
       errors:true
@@ -217,7 +232,8 @@ module.exports = {
     config
       // The development environment sourcemap does not contain column information
       .when(process.env.NODE_ENV === 'development',
-        config => config.devtool('cheap-source-map')
+        config => config.devtool('source-map')//显示源码
+        // config => config.devtool('cheap-source-map')
       )
       // Add file name
       .when(

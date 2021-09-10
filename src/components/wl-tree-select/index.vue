@@ -403,7 +403,7 @@ export default {
   .selected-box {
     display: flex;
     border: 1px solid #dcdfe6;
-    padding: 0 5px 0 8px;
+    padding: 0 5px 0 13px;
     width: 100%;
     min-height: 36px;
     line-height: 32px;
@@ -416,9 +416,10 @@ export default {
     }
 
     > .tag-box {
-      display: inline-block;
+      display: flex;
       width: calc(100% - 20px);
       text-align: left;
+      align-items: center;
     }
 
     > .icon-box {
@@ -498,6 +499,7 @@ export default {
 .wl-placeholder-box {
   color: #c0c4cc;
   margin: 0;
+  font-size: 15px;
 }
 
 // 过度效果

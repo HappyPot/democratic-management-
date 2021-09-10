@@ -61,7 +61,8 @@
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showEdit">编辑</el-link>
-            <el-link type="danger">删除</el-link>
+            <el-link type="danger"
+                     @click="delItem">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -260,7 +261,15 @@ export default {
       }
     },
     // 删除
-    delItem() {},
+    delItem() {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        alert('删除接口')
+      })
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -445,7 +454,6 @@ export default {
 
 .unit_content {
   padding-top: 20px;
-  padding-left: 24px;
   padding-right: 24px;
 }
 .unit_content ::v-deep .el-table th,

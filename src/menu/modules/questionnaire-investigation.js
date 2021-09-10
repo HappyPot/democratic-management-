@@ -3,6 +3,6 @@ export default {
   title: '问卷调查',
   // icon: 'plug',
   children: [
-    { path: '/questionnaireinvestigation/surveylist', title: '调查列表', icon: 'home' },
+    { path: '/questionnaireinvestigation/surveylist', title: '调查列表', icon: 'renyuanbaobiaotongji' },
   ]
 }

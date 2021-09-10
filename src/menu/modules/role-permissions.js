@@ -3,6 +3,6 @@ export default {
   title: '角色权限',
   // icon: 'plug',
   children: [
-    { path: '/rolepermissions/index', title: '角色权限', icon: 'home' },
+    { path: '/rolepermissions/index', title: '角色权限', icon: 'gongnengquanxian' },
   ]
 }

@@ -13,6 +13,8 @@
             <div class="bt_input">
               <el-input size="medium"
                         v-model="review.title"></el-input>
+              <span class="errorTip"
+                    data-name="title"> <i class="el-icon-circle-close"></i> 请输入评议标题，在提交</span>
             </div>
           </div>
           <div class="baseInfo_item">
@@ -25,6 +27,8 @@
                               type="date"
                               placeholder="选择日期">
               </el-date-picker>
+              <span class="errorTip"
+                    data-name="date"> <i class="el-icon-circle-close"></i> 请选择评议时间，在提交</span>
             </div>
           </div>
           <div class="baseInfo_item">
@@ -36,6 +40,8 @@
                         type="textarea"
                         :rows="2"
                         v-model="review.mark"></el-input>
+              <span class="errorTip"
+                    data-name="mark"> <i class="el-icon-circle-close"></i> 请输入评议说明，在提交</span>
             </div>
           </div>
           <div class="baseInfo_item">
@@ -58,6 +64,8 @@
                         type="textarea"
                         :rows="2"
                         v-model="review.accessIp"></el-input>
+              <span class="errorTip"
+                    data-name="accessIp"> <i class="el-icon-circle-close"></i> 请输入允许IP段，在提交</span>
             </div>
           </div>
           <div class="baseInfo_item">
@@ -76,7 +84,7 @@
               参评人员
             </div>
             <div class="bt_input">
-              <el-select v-model="people"
+              <el-select v-model="review.people"
                          style="width:500px"
                          size="medium"
                          placeholder="请选择参评人员">
@@ -86,6 +94,8 @@
                            :value="item.value">
                 </el-option>
               </el-select>
+              <span class="errorTip"
+                    data-name="people"> <i class="el-icon-circle-close"></i> 请选择参评人员，在提交</span>
             </div>
           </div>
           <div class="baseInfo_group">
@@ -126,12 +136,19 @@
       </el-tab-pane>
       <el-tab-pane label="首页说明"
                    name="second">
-        <el-input type="textarea"
-                  style="width:500px;height:616px"
-                  :rows="28"
-                  placeholder="请输入内容"
-                  v-model="textarea">
-        </el-input>
+        <div style="position:relative;margin-bottom: 20px;">
+          <div>
+            <el-input type="textarea"
+                      style="width:500px;"
+                      :rows="28"
+                      placeholder="请输入首页说明"
+                      v-model="review.textarea">
+            </el-input>
+          </div>
+          <span class="errorTip"
+                data-name="textarea"> <i class="el-icon-circle-close"></i> 请输入首页说明，在提交</span>
+        </div>
+
       </el-tab-pane>
       <el-tab-pane label="参评人员"
                    name="third">
@@ -212,19 +229,19 @@
                v-for="(item,index) in appraisalSubject"
                :key="index">
             <div class="bt_title">
-              评议主体1
+              评议主体{{index+1}}
             </div>
             <div class="bt_input">
               <el-input size="medium"
                         v-model="appraisalSubject[index]"></el-input>
+              <span class="errorTip errorsubject"
+                    data-name="appraisalSubject"> <i class="el-icon-circle-close"></i> 请输入评议主体{{index+1}}，在提交</span>
               <div class="del_btn"
                    @click="delSubject">
                 <i class="el-icon-delete"
                    style="color:red"></i>
               </div>
-
             </div>
-
           </div>
           <div>
             <el-button type="primary"
@@ -249,7 +266,6 @@ export default {
   },
   data() {
     return {
-      textarea: '',
       activeName: 'first',
       peopleOptions: [], //参评人员列表
       review: {
@@ -261,7 +277,8 @@ export default {
         type: '', //评议类型
         isWaiver: 1, //是否允许弃权
         status: '', //评议状态
-        people: '' //参评人员
+        people: '', //参评人员
+        textarea: '' //首页说明
       },
       unitOptions: [], //单位列表
       unit: '', //单位
@@ -295,6 +312,19 @@ export default {
     }
   },
   methods: {
+    // 表单校验
+    checkFrom() {
+      this.fromValidate(this.review)
+      // 校验评议主体
+      let arr = Array.from(document.getElementsByClassName('errorsubject'))
+      for (let index = 0; index < this.appraisalSubject.length; index++) {
+        const element = this.appraisalSubject[index]
+        if (!this.appraisalSubject[index]) {
+          arr[index].style.display = 'block'
+        }
+      }
+      return this.accessSubmit
+    },
     handleClick() {},
     // 添加主题
     addSubject() {

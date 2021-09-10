@@ -18,7 +18,7 @@ export default {
           ref="menu"
           onSelect={ this.handleMenuSelect }>
           <el-menu-item index="99999">
-            <i class="el-icon-menu"></i>
+            <i class="iconfont icon-gongzuotai"></i>
             <span slot="title">首页</span>
           </el-menu-item>
           { this.aside.map(menu => createMenu.call(this, h, menu)) }
