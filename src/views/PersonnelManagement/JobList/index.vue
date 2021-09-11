@@ -44,14 +44,16 @@
         <el-table-column prop="id"
                          label="序号">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="duty_name"
                          label="职务名称">
         </el-table-column>
-        <el-table-column prop="status"
+        <el-table-column prop="is_enable"
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].status">
+            <el-switch :active-value="1"
+                       :inactive-value="0"
+                       v-model="tableData[scope.$index].is_enable">
             </el-switch>
           </template>
         </el-table-column>
@@ -66,6 +68,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination_my">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :total="total"
+                       :page.sync="queryParams.pageNum"
+                       :limit.sync="queryParams.pageSize"
+                       @pagination="getDutyList"
+                       :page-sizes="[1, 200, 300, 400]"
+                       :page-size="1"
+                       layout="total, prev, pager, next, sizes,jumper">
+        </el-pagination>
+      </div>
     </div>
     <el-dialog title="批量导入"
                center
@@ -133,8 +147,8 @@
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
           <el-radio-group v-model="from.isDisableJob">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -159,6 +173,9 @@
 import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
+import { GET_DUTY_LIST, SAVE_DUTY } from '@/api/personnelmanagement.js'
+import { mapState } from 'vuex'
+
 export default {
   components: {
     D2Badge,
@@ -171,43 +188,7 @@ export default {
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
-      tableData: [
-        {
-          id: 1,
-          status: true,
-          name: '董事长'
-        },
-        {
-          id: 2,
-          status: true,
-          name: '董事长'
-        },
-        {
-          id: 4,
-          status: true,
-          name: '董事长'
-        },
-        {
-          id: 5,
-          status: true,
-          name: '董事长'
-        },
-        {
-          id: 6,
-          status: true,
-          name: '董事长'
-        },
-        {
-          id: 7,
-          status: true,
-          name: '董事长'
-        },
-        {
-          id: 8,
-          status: true,
-          name: '董事长'
-        }
-      ],
+      tableData: [],
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
@@ -216,14 +197,43 @@ export default {
         jobNo: '', //职务编号
         jobName: '', //职务名称
         sortValue: '', //排序
-        isDisableJob: false //职务是否禁用
-      }
+        isDisableJob: 1 //职务是否禁用
+      },
+      //分页参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 1
+      },
+      total: 2
     }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId'])
   },
   mounted() {
     this.restaurants = this.loadAll()
+    this.getDutyList()
   },
   methods: {
+    // 设置每页条数
+    handleSizeChange(val) {
+      this.queryParams.pageSize = val
+      console.log(`每页 ${val} 条`)
+    },
+    // 触发分页
+    handleCurrentChange(val) {
+      this.queryParams.pageNum = val
+      this.getDutyList()
+    },
+    // 获取职务列表
+    getDutyList() {
+      GET_DUTY_LIST(this.queryParams).then(res => {
+        if (res.status === 0) {
+          console.log('获取职务列表', res.data.data)
+          this.tableData = res.data.data
+        }
+      })
+    },
     // 批量导入
     batchImport() {
       this.dialogImport = true
@@ -240,7 +250,20 @@ export default {
       // 表单校验
       this.fromValidate(this.from)
       if (this.accessSubmit) {
-        alert('提交成功')
+        let obj = {
+          subject_id: this.subjectId,
+          duty_name: this.from.jobName,
+          duty_code: this.from.jobNo,
+          is_enable: this.from.isDisableJob,
+          sort: this.from.sortValue
+        }
+        console.log('职务提交', obj)
+        return
+        SAVE_DUTY(obj).then(res => {
+          if (res.status === 0) {
+            this.msgSuccess('保存成功')
+          }
+        })
       } else {
         alert('提交失败')
       }
@@ -456,6 +479,12 @@ export default {
   padding-top: 20px;
   // padding-left: 24px;
   padding-right: 24px;
+  position: relative;
+  .pagination_my {
+    position: absolute;
+    right: 0;
+    bottom: -44px;
+  }
 }
 .unit_content ::v-deep .el-table th,
 .el-table tr {

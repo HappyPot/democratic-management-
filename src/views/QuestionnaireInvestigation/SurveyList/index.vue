@@ -39,33 +39,45 @@
         <el-table-column prop="id"
                          label="序号">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="title"
                          label="问卷标题">
         </el-table-column>
-        <el-table-column prop="date"
-                         label="问卷形式">
+        <el-table-column prop="form_type"
+                         label="问卷形式"
+                         width="100">
+          <template slot-scope="scope">
+            {{scope.row.form_type ==1?'定向测评':"公开测评"}}
+          </template>
         </el-table-column>
-        <el-table-column prop="date"
-                         label="调查形式">
+        <el-table-column prop="type"
+                         label="调查形式"
+                         width="100">
+          <template slot-scope="scope">
+            {{scope.row.type ==1?'测评':"问卷"}}
+          </template>
         </el-table-column>
-        <el-table-column prop="date"
-                         label="调查时间">
+        <el-table-column prop="start_time"
+                         label="调查时间"
+                         width="300">
+          <template slot-scope="scope">
+            {{scope.row.start_time}}至{{scope.row.end_time}}
+          </template>
         </el-table-column>
-        <el-table-column prop="status"
+        <el-table-column prop="status_name"
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <div v-if="tableData[scope.$index].status == 1"
+            <div v-if="scope.row.status_name == '未开始'"
                  class="status_tiem">
               <i class="status noStart"></i>
               未开始
             </div>
-            <div v-else-if="tableData[scope.$index].status == 2"
+            <div v-else-if="scope.row.status_name == '进行中'"
                  class="status_tiem">
               <i class="status start"></i>
               进行中
             </div>
-            <div v-else-if="tableData[scope.$index].status == 3"
+            <div v-else-if="scope.row.status_name == '已结束'"
                  class="status_tiem">
               <i class="status over"></i>
               已结束
@@ -82,13 +94,13 @@
         </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showEdit">编辑</el-link>
             <el-link type="primary"
                      style="margin-right:12px"
-                     @click="showStatistical">统计</el-link>
+                     @click="showStatistical(scope.row,scope.$index)">统计</el-link>
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showConfig">配置</el-link>
@@ -111,7 +123,7 @@
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
-                   @click="statisticalData">确 定</el-button>
+                   @click="dialogStatistics = false">确 定</el-button>
         <el-button @click="dialogStatistics = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -164,6 +176,13 @@ import Statistics from '@/views/Sharing/components/statistics'
 import Configure from '@/views/Sharing/components/configure'
 import AddAndEdit from './components/addAndEdit'
 import DetailQuery from './components/detailQuery'
+
+import {
+  GET_QUESTION_LIST,
+  GET_COUNT_QUESTION
+} from '@/api/questionnaireInvestigation.js'
+import { mapState } from 'vuex'
+
 export default {
   components: {
     Statistics,
@@ -180,21 +199,25 @@ export default {
       dialogDetail: false, //明细弹框
       searchValue: '',
       restaurants: [],
-      tableData: [
-        {
-          id: 1,
-          date: '2021-10-01至2021-10-31',
-          status: 1,
-          name: '01师',
-          isEnable: false
-        }
-      ]
+      tableData: []
     }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId'])
   },
   mounted() {
     this.restaurants = this.loadAll()
+    this.getQuestionList()
   },
   methods: {
+    // 获取测评列表
+    getQuestionList() {
+      GET_QUESTION_LIST().then(res => {
+        if (res.status === 0) {
+          this.tableData = res.data.data
+        }
+      })
+    },
     // 展示明细
     showDetail() {
       this.dialogDetail = true
@@ -222,11 +245,22 @@ export default {
       alert(flag)
     },
     // 打开统计弹框
-    showStatistical() {
+    showStatistical(row, index) {
       this.dialogStatistics = true
+      let obj = {
+        page_size: 10,
+        question_id: row.id
+      }
+      console.log('统计查询参数', obj)
+      GET_COUNT_QUESTION(obj).then(res => {
+        if (res.status === 0) {
+        }
+      })
     },
-    // 统计数据提交
-    statisticalData() {},
+    // 获取统计信息
+    statisticalData() {
+      GET_COUNT_QUESTION().then(res => {})
+    },
     // 展示配置框
     showConfig() {
       this.dialogConfigure = true

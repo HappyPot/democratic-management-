@@ -47,14 +47,16 @@
         <el-table-column prop="id"
                          label="序号">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="unit_name"
                          label="单位名称">
         </el-table-column>
-        <el-table-column prop="status"
+        <el-table-column prop="is_enable"
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.status">
+            <el-switch v-model="scope.row.is_enable"
+                       :active-value="1"
+                       :inactive-value="0">
             </el-switch>
           </template>
         </el-table-column>
@@ -120,41 +122,16 @@
                         @change="getSuperiorUnit"
                         v-model="from.superiorUnit">
           </wlTreeSelect>
-          <!-- <el-select v-model="superiorUnit"
-                     class="dc_select"
-                     size="medium"
-                     placeholder="请选择上级单位">
-            <el-option v-for="item in superiorUnitOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select> -->
         </div>
 
         <div class="dc_item">
           <div class="dc_text"><i class="redTip">*</i>单位编号</div>
-          <wlTreeSelect leaf
-                        width="500"
-                        placeholder="请选择单位编号"
-                        style="margin-right:10px"
-                        checkbox
-                        :data="unitNoOptions"
-                        @change="getUnitNo"
-                        v-model="from.unitNo">
-          </wlTreeSelect>
+          <el-input v-model="from.unitNo"
+                    class="dc_select"
+                    size="medium"
+                    placeholder="请输入单位编号"></el-input>
           <span class="errorTip"
-                data-name="unitNo"> <i class="el-icon-circle-close"></i> 请选择单位编号，在提交</span>
-          <!-- <el-select v-model="unitNo"
-                     class="dc_select"
-                     size="medium"
-                     placeholder="请选择单位编号">
-            <el-option v-for="item in unitNoOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select> -->
+                data-name="unitNo"> <i class="el-icon-circle-close"></i> 请输入单位编号，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text"><i class="redTip">*</i>单位名称</div>
@@ -174,8 +151,8 @@
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
           <el-radio-group v-model="from.isDisableUnit">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -201,7 +178,8 @@ import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
 import { validateTelephone } from '@/untils/validate'
-
+import { GET_UNITTREE_LIST, SAVE_UNIT } from '@/api/personnelmanagement.js'
+import { mapState } from 'vuex'
 export default {
   components: {
     D2Badge,
@@ -215,96 +193,42 @@ export default {
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
-      tableData: [
-        {
-          id: 1,
-          status: true,
-          name: '01师',
-          isChecked: false,
-          children: [
-            {
-              id: 11,
-              status: true,
-              name: '0333师',
-              isChecked: false
-            },
-            {
-              id: 12,
-              status: true,
-              name: '0333师',
-              isChecked: false
-            }
-          ]
-        },
-        {
-          id: 2,
-          status: true,
-          name: '01师',
-          isChecked: false
-        }
-      ],
+      tableData: [],
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
       typeDialog: '新增', //弹框的类型
-
-      superiorUnitOptions: [
-        {
-          id: 'love',
-          name: '所有和你走过的风光',
-          children: [
-            {
-              id: 1,
-              name: '海边',
-              children: [
-                {
-                  id: 5,
-                  name: '蓬莱'
-                },
-                {
-                  id: 6,
-                  name: '蓬莱11'
-                }
-              ]
-            }
-          ]
-        }
-      ], //上级单位数组
-
-      unitNoOptions: [
-        {
-          id: 'love',
-          name: '所有和你走过的风光',
-          children: [
-            {
-              id: 1,
-              name: '海边',
-              children: [
-                {
-                  id: 5,
-                  name: '蓬莱'
-                }
-              ]
-            }
-          ]
-        }
-      ], //单位编号
+      superiorUnitOptions: [], //上级单位数组
+      unitNoOptions: [], //单位编号
       from: {
         unitNo: '', //单位编号
         unitName: '', //单位名称
         sortValue: '', //排序
         superiorUnit: '', //上级单位
-        isDisableUnit: false //单位是否禁用
+        isDisableUnit: 1 //单位是否禁用
       }
     }
   },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId'])
+  },
   mounted() {
     this.restaurants = this.loadAll()
+    this.getUnitLIst()
   },
   methods: {
+    // //获取单位列表
+    getUnitLIst() {
+      GET_UNITTREE_LIST().then(res => {
+        if (res.status === 0) {
+          this.tableData = res.data
+          this.superiorUnitOptions = res.data
+        }
+      })
+    },
     // 获取上级单位值
     getSuperiorUnit(val) {
-      console.log('获取上级单位值', val)
+      console.log('获取上级单位值', this.from.superiorUnit)
     },
     // 获取单位编号
     getUnitNo(val) {
@@ -344,9 +268,23 @@ export default {
       // 表单校验
       this.fromValidate(this.from)
       if (this.accessSubmit) {
-        alert('提交成功')
-      } else {
-        alert('提交失败')
+        let obj = {
+          subject_id: this.subjectId,
+          unit_name: this.from.unitName,
+          unit_code: this.from.unitNo,
+          sort: this.from.sortValue,
+          is_enable: this.from.isDisableUnit,
+          parent_id: this.from.superiorUnit.parent_id
+        }
+        console.log('SAVE_UNIT', obj)
+        return
+        SAVE_UNIT(obj).then(res => {
+          if (res.status === 0) {
+            this.dialogAdd = false
+            this.typeDialog = '新增'
+            this.msgSuccess('保存成功')
+          }
+        })
       }
     },
     // 删除

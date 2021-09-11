@@ -48,6 +48,27 @@ Vue.prototype.$deepClone = deepClone
 // 核心插件
 Vue.use(d2Admin)
 
+Vue.prototype.msgSuccess = function (msg) {
+  this.$message({
+    showClose: true,
+    message: msg,
+    type: "success"
+  });
+}
+
+Vue.prototype.msgError = function (msg) {
+  this.$message({
+    showClose: true,
+    message: msg,
+    type: "error"
+  });
+}
+
+Vue.prototype.msgInfo = function (msg) {
+  this.$message.info(msg);
+}
+
+
 new Vue({
   router,
   store,

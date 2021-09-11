@@ -169,22 +169,26 @@
 </template>
 
 <script>
+import { GET_UNITTREE_LIST, SAVE_UNIT } from '@/api/personnelmanagement.js'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {}
   },
   mounted() {
-    // var docEl = document.getElementById('page_home')
-    // var recalc = function() {
-    //   var width = docEl.clientWidth
-    //   // 乘以100，px : rem = 100 : 1
-    //   docEl.style.fontSize = 100 * (width / 1400) + 'px'
-    // }
-    // recalc()
-    // if (!doc.addEventListener) return
-    // win.addEventListener(resizeEvt, recalc, false)
+    this.getUnitLIst()
   },
-  methods: {}
+  methods: {
+    //获取单位列表
+    getUnitLIst() {
+      GET_UNITTREE_LIST().then(res => {
+        if (res.status === 0) {
+          // 存储主体信息
+          this.$store.dispatch('evaluation/base/saveUnitList', res.data)
+        }
+      })
+    }
+  }
 }
 </script>
 

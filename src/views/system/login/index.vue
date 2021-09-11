@@ -56,6 +56,8 @@
 
 <script>
 import { GET_SUBJECT_LIST, LOGIN } from '../../../api/login.js'
+import { mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -68,14 +70,16 @@ export default {
         usinessEntity: '', //业务主体
         username: '',
         password: '',
-        url: 'http://app.ceping.nuofeida.net' //登录后跳转地
+        url: 'https://www.baidu.com' //登录后跳转地
       }
     }
   },
+
   mounted() {
     this.getSubjectList()
   },
   methods: {
+    ...mapActions('d2admin/account', ['login']),
     // 获取主体
     getSubjectList() {
       GET_SUBJECT_LIST().then(res => {
@@ -89,6 +93,14 @@ export default {
      */
     // 提交登录信息
     submit() {
+      // this.login({
+      //   username: this.formLogin.username,
+      //   password: this.formLogin.password
+      // }).then(() => {
+      //   // 重定向对象不存在则返回顶层路径
+      //   this.$router.replace(this.$route.query.redirect || '/')
+      // })
+      // return
       let errorText = {
         usinessEntity: '请选择业务主体',
         username: '请输入登录账号',
@@ -111,6 +123,11 @@ export default {
       }
       LOGIN(obj).then(res => {
         console.log(res)
+        // 存储主体信息
+        this.$store.dispatch(
+          'evaluation/base/saveSubjectId',
+          this.formLogin.usinessEntity
+        )
         alert('登录成功')
       })
     }

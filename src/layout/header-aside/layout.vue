@@ -48,7 +48,8 @@
               <span class="triangle-up"></span>
               <div class="extend_item"
                    style="margin-bottom:20px">修改密码</div>
-              <div class="extend_item">退出登录</div>
+              <div class="extend_item"
+                   @click="logout">退出登录</div>
             </div>
           </div>
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
@@ -134,6 +135,7 @@ import d2HeaderLog from './components/header-log'
 import d2HeaderColor from './components/header-color'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import mixinSearch from './mixins/search'
+import { LOGOUT } from '@/api/login'
 export default {
   name: 'd2-layout-header-aside',
   mixins: [mixinSearch],
@@ -191,6 +193,10 @@ export default {
     }
   },
   methods: {
+    // 退出登录
+    logout() {
+      LOGOUT().then(res => {})
+    },
     // 展开
     extend() {
       this.showActive = !this.showActive

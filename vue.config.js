@@ -75,11 +75,9 @@ keys(pages).forEach(name => {
   })
 })
 
-console.log('aaaaaaaaaa',process.env.VUE_APP_API)
 module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
   lintOnSave: false,//修改后lintOnSave: false
-
   devServer: {
     host: '0.0.0.0',
     proxy: {

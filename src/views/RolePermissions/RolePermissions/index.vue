@@ -81,65 +81,73 @@
       <div class="addNew">
         <div class="dc_item">
           <div class="dc_text">登录账号</div>
-          <el-input v-model="loginAccount"
+          <el-input v-model="from.loginAccount"
                     class="dc_select"
                     size="medium"
                     placeholder="请输入登录账号"></el-input>
+          <span class="errorTip"
+                data-name="loginAccount"> <i class="el-icon-circle-close"></i> 请输入登录账号，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text">初始密码</div>
-          <el-input v-model="initialPassword"
+          <el-input v-model="from.initialPassword"
                     class="dc_select"
                     size="medium"
                     placeholder="请输入初始密码"></el-input>
+          <span class="errorTip"
+                data-name="initialPassword"> <i class="el-icon-circle-close"></i> 请输入初始密码，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text">选择单位</div>
-          <el-select v-model="unitNo"
-                     class="dc_select"
-                     size="medium"
-                     placeholder="请选择单位">
-            <el-option v-for="item in unitNoOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select>
+          <wlTreeSelect leaf
+                        width="500"
+                        placeholder="请选择上级单位"
+                        style="margin-right:10px"
+                        checkbox
+                        :data="unitList"
+                        v-model="from.unitNo">
+          </wlTreeSelect>
+          <span class="errorTip"
+                data-name="unitNo"> <i class="el-icon-circle-close"></i> 请选择单位，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text">排序</div>
-          <el-input v-model="sortValue"
+          <el-input v-model="from.sortValue"
                     size="medium"
                     class="dc_select"></el-input>
         </div>
         <div class="dc_item">
           <div class="dc_text">账号状态</div>
-          <el-radio-group v-model="status">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
+          <el-radio-group v-model="from.status">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
       </div>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
-                   @click="dialogAccount = false">确 定</el-button>
+                   size="medium"
+                   v-show="typeTitle == '添加账号'"
+                   @click="addNewData">确 定</el-button>
+        <el-button type="primary"
+                   size="medium"
+                   v-show="typeTitle == '编辑账号'"
+                   @click="editData">更 新</el-button>
         <el-button @click="dialogAccount = false">取 消</el-button>
       </span>
     </el-dialog>
   </d2-container>
 </template>
 <script>
+import { GET_ADMINUSER_LIST, SAVE_ADMINUSER } from '@/api/rolepermissions.js'
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
       typeTitle: '添加账号', //评议添加,评议编辑
-      status: false, //账号状态
-      sortValue: '', //序号
-      unitNo: '', //单位
       unitNoOptions: [], //单位list
-      loginAccount: '', //登录账号
-      initialPassword: '', //初始密码
       dialogAccount: false,
       searchValue: '',
       restaurants: [],
@@ -151,13 +159,24 @@ export default {
           name: '01师',
           isEnable: false
         }
-      ]
+      ],
+      from: {
+        loginAccount: '',
+        initialPassword: '',
+        unitNo: '',
+        sortValue: 1,
+        status: 1
+      }
     }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId', 'unitList'])
   },
   mounted() {
     this.restaurants = this.loadAll()
   },
   methods: {
+    handleSelectionChange() {},
     delItem() {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -172,10 +191,43 @@ export default {
       this.dialogAccount = true
       this.typeTitle = '编辑账号'
     },
+    editData() {
+      this.fromValidate(this.from)
+      // 更新接口
+      if (this.accessSubmit) {
+        alert('更新成功')
+      } else {
+        alert('更新失败')
+      }
+    },
     // 新增
     addNew() {
       this.dialogAccount = true
       this.typeTitle = '添加账号'
+    },
+    // 新增数据
+    addNewData() {
+      this.fromValidate(this.from)
+      if (this.accessSubmit) {
+        let obj = {
+          account: this.from.loginAccount,
+          pwd: this.from.initialPassword,
+          unit_id: this.from.unitNo[0].unit_code,
+          subject_id: this.subjectId,
+          sort: this.from.sortValue,
+          is_enable: this.from.status
+        }
+        console.log('角色新增', obj)
+        return
+        SAVE_ADMINUSER(obj).then(res => {
+          if (res.status === 0) {
+            this.msgSuccess('新增成功')
+          }
+        })
+        alert('新增成功')
+      } else {
+        alert('新增失败')
+      }
     },
     // 联想补全
     querySearch(queryString, cb) {

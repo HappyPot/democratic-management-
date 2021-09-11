@@ -78,23 +78,23 @@
         <el-table-column type="selection"
                          width="55">
         </el-table-column>
-        <el-table-column prop="id"
+        <el-table-column prop="code"
                          label="人员编码">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="unit_name"
                          label="单位名称">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="department_name"
                          label="部门名称">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="duty_name"
                          label="职务名称">
         </el-table-column>
-        <el-table-column prop="status"
+        <el-table-column prop="is_enable"
                          label="是否启用"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.status">
+            <el-switch v-model="scope.row.is_enable">
             </el-switch>
           </template>
         </el-table-column>
@@ -109,6 +109,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination_my">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :total="total"
+                       :page.sync="queryParams.pageNum"
+                       :limit.sync="queryParams.pageSize"
+                       @pagination="getUserList"
+                       :page-sizes="[1, 200, 300, 400]"
+                       :page-size="1"
+                       layout="total, prev, pager, next, sizes,jumper">
+        </el-pagination>
+      </div>
     </div>
     <el-dialog title="批量导入"
                center
@@ -240,7 +252,8 @@ import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
 import { validateTelephone } from '@/untils/validate'
-
+import { GET_USER_LIST, SAVE_USER } from '@/api/personnelmanagement.js'
+import { mapState } from 'vuex'
 export default {
   components: {
     D2Badge,
@@ -261,50 +274,7 @@ export default {
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
-      tableData: [
-        {
-          id: 1,
-          status: true,
-          name: '01师',
-          children: [
-            {
-              id: 11,
-              status: true,
-              name: '0333师'
-            }
-          ]
-        },
-        {
-          id: 2,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 4,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 5,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 6,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 7,
-          status: true,
-          name: '01师'
-        },
-        {
-          id: 8,
-          status: true,
-          name: '01师'
-        }
-      ],
+      tableData: [],
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
@@ -353,13 +323,41 @@ export default {
         number: '', //编号
         password: '', //密码
         isDisableUnit: false //单位是否禁用
-      }
+      },
+      //分页参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 1
+      },
+      total: 2
     }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId'])
   },
   mounted() {
     this.restaurants = this.loadAll()
   },
   methods: {
+    // 设置每页条数
+    handleSizeChange(val) {
+      this.queryParams.pageSize = val
+      console.log(`每页 ${val} 条`)
+    },
+    // 触发分页
+    handleCurrentChange(val) {
+      this.queryParams.pageNum = val
+      this.getUserList()
+    },
+    // 获取员工列表
+    getUserList() {
+      alert('查询了')
+      GET_USER_LIST().then(res => {
+        if (res.status === 0) {
+          this.tableData = res.data.data
+        }
+      })
+    },
     // 获取上级单位值
     getSuperiorUnit(val) {
       console.log('获取上级单位值', val)
@@ -604,6 +602,12 @@ export default {
   padding-top: 20px;
   // padding-left: 24px;
   padding-right: 24px;
+  position: relative;
+  .pagination_my {
+    position: absolute;
+    right: 0;
+    bottom: -44px;
+  }
 }
 .unit_content ::v-deep .el-table th,
 .el-table tr {

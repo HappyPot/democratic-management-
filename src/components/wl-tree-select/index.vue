@@ -220,7 +220,6 @@ export default {
      * @param {object} any 选中节点数据
      */
     handleCheckChange(val, { checkedNodes }) {
-      debugger
       // 判断是选中还是取消选中
       // const isAdd = checkedNodes.some((i) => i[this.nodeKey] == val[this.nodeKey]);
       // 判断是否有子节点
@@ -353,7 +352,7 @@ export default {
     },
     selfProps() {
       return {
-        label: 'name',
+        label: 'unit_name',
         children: 'children',
         disabled: data => {
           return data.disabled

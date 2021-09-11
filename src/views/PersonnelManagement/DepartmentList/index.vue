@@ -44,14 +44,14 @@
         <el-table-column prop="id"
                          label="序号">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="department_name"
                          label="部门名称">
         </el-table-column>
-        <el-table-column prop="status"
+        <el-table-column prop="is_enable"
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.status">
+            <el-switch v-model="scope.row.is_enable">
             </el-switch>
           </template>
         </el-table-column>
@@ -66,6 +66,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination_my">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :total="total"
+                       :page.sync="queryParams.pageNum"
+                       :limit.sync="queryParams.pageSize"
+                       @pagination="getDepartmentList"
+                       :page-sizes="[100, 200, 300, 400]"
+                       :page-size="100"
+                       layout="total, prev, pager, next, sizes,jumper">
+        </el-pagination>
+      </div>
     </div>
     <el-dialog title="批量导入"
                center
@@ -108,12 +120,12 @@
       <div class="addNew">
         <div class="dc_item">
           <div class="dc_text"><i class="redTip">*</i>部门编号</div>
-          <el-input v-model="from.departmentListNo"
+          <el-input v-model="from.departmentNo"
                     class="dc_select"
                     size="medium"
                     placeholder="请输入部门编号"></el-input>
           <span class="errorTip"
-                data-name="departmentListNo"> <i class="el-icon-circle-close"></i> 请输入部门编号，在提交</span>
+                data-name="departmentNo"> <i class="el-icon-circle-close"></i> 请输入部门编号，在提交</span>
         </div>
         <div class="dc_item">
           <div class="dc_text"><i class="redTip">*</i>部门名称</div>
@@ -133,8 +145,8 @@
         <div class="dc_item">
           <div class="dc_text">是否禁用</div>
           <el-radio-group v-model="from.isDisableDepartment">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -159,6 +171,11 @@
 import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
+import {
+  GET_DEPARTMENT_LIST,
+  SAVE_DEPARTMENT
+} from '@/api/personnelmanagement.js'
+import { mapState } from 'vuex'
 export default {
   components: {
     D2Badge,
@@ -171,59 +188,52 @@ export default {
       searchValue: '', //搜索条件
       restaurants: [],
       state1: '',
-      tableData: [
-        {
-          id: 1,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 2,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 4,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 5,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 6,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 7,
-          status: true,
-          name: '02项目'
-        },
-        {
-          id: 8,
-          status: true,
-          name: '02项目'
-        }
-      ],
+      tableData: [],
       multipleSelection: [],
       dialogImport: false,
       dialogAdd: false,
       departmentListNoOptions: [], //部门编号
       from: {
-        departmentListNo: '', //部门编号
+        departmentNo: '', //部门编号
         departmentName: '', //部门名称
         sortValue: '', //排序
-        isDisableDepartment: false //部门是否禁用
-      }
+        isDisableDepartment: 1 //部门是否禁用
+      },
+      //分页参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 1
+      },
+      total: 2
     }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId'])
   },
   mounted() {
     this.restaurants = this.loadAll()
+    this.getDepartmentList()
   },
   methods: {
+    // 设置每页条数
+    handleSizeChange(val) {
+      this.queryParams.pageSize = val
+      console.log(`每页 ${val} 条`)
+    },
+    // 触发分页
+    handleCurrentChange(val) {
+      this.queryParams.pageNum = val
+      this.getDepartmentList()
+    },
+    // 获取部门列表
+    getDepartmentList() {
+      alert('查询了')
+      GET_DEPARTMENT_LIST().then(res => {
+        if (res.status === 0) {
+          this.tableData = res.data.data
+        }
+      })
+    },
     // 批量导入
     batchImport() {
       this.dialogImport = true
@@ -240,6 +250,20 @@ export default {
       // 表单校验
       this.fromValidate(this.from)
       if (this.accessSubmit) {
+        let obj = {
+          subject_id: this.subjectId,
+          department_name: this.from.departmentName,
+          department_code: this.from.departmentNo,
+          is_enable: this.from.isDisableDepartment,
+          sort: this.from.sortValue
+        }
+        console.log('保存部门', obj)
+        return
+        SAVE_DEPARTMENT().then(res => {
+          if (res.status === 0) {
+            this.msgSuccess('保存成功')
+          }
+        })
         alert('提交成功')
       } else {
         alert('提交失败')
@@ -455,6 +479,12 @@ export default {
 .unit_content {
   padding-top: 20px;
   padding-right: 24px;
+  position: relative;
+  .pagination_my {
+    position: absolute;
+    right: 0;
+    bottom: -44px;
+  }
 }
 .unit_content ::v-deep .el-table th,
 .el-table tr {
