@@ -67,10 +67,10 @@ export default {
       usinessEntityOptions: [], //业务主体列表
       // 表单
       formLogin: {
-        usinessEntity: '', //业务主体
-        username: '',
-        password: '',
-        url: 'https://www.baidu.com' //登录后跳转地
+        usinessEntity: 1, //业务主体
+        username: 'liuxi',
+        password: 'admin123',
+        url: 'https://php.ceping.nuofeida.net' //登录后跳转地
       }
     }
   },
@@ -121,15 +121,25 @@ export default {
         url: this.formLogin.url,
         subject_id: this.formLogin.usinessEntity
       }
-      LOGIN(obj).then(res => {
-        console.log(res)
-        // 存储主体信息
-        this.$store.dispatch(
-          'evaluation/base/saveSubjectId',
-          this.formLogin.usinessEntity
+      LOGIN(obj)
+        .then(
+          res => {},
+          err => {
+            this.$router.push({
+              path: '/index'
+            })
+          }
         )
-        alert('登录成功')
-      })
+        .catch(err => {
+          // console.log('dd阿萨达收到d', err.msg)
+          // if (err.msg == undefined) {
+          //   debugger
+          //   this.$store.dispatch(
+          //     'evaluation/base/saveSubjectId',
+          //     this.formLogin.usinessEntity
+          //   )
+          // }
+        })
     }
   }
 }

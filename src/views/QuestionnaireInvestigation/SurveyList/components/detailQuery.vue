@@ -62,8 +62,7 @@
       </div>
     </div>
     <el-tabs v-model="activeName"
-             type="card"
-             @tab-click="handleClick">
+             type="card">
       <el-tab-pane label="测评明细"
                    name="first">
         <div class="baseInfo">
@@ -135,24 +134,27 @@
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
-            <el-table :data="tableData"
+            <el-table :data="tableDataEvaluation"
                       style="width: 100%">
-              <el-table-column prop="date"
+              <el-table-column prop="title"
                                label="测评对象">
               </el-table-column>
-              <el-table-column prop="date"
+              <el-table-column prop="sum"
                                label="总数">
               </el-table-column>
-              <el-table-column prop="date"
-                               label="满意">
-                <el-table-column prop="date"
-                                 label="票">
+              <el-table-column v-for="(item,index) in testmap"
+                               :key="index"
+                               :label="item.label">
+                <el-table-column :prop="k.prop"
+                                 v-for="(k,i) in item.props"
+                                 :key="i+1"
+                                 :label="k.label">
                 </el-table-column>
-                <el-table-column prop="date"
+                <!-- <el-table-column prop="date"
                                  label="率">
-                </el-table-column>
+                </el-table-column> -->
               </el-table-column>
-              <el-table-column prop="date"
+              <!-- <el-table-column prop="date"
                                label="比较满意">
                 <el-table-column prop="date"
                                  label="票">
@@ -178,7 +180,7 @@
                 <el-table-column prop="date"
                                  label="率">
                 </el-table-column>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column prop="date"
                                label="弃权">
               </el-table-column>
@@ -411,6 +413,12 @@
 </template>
 <script>
 // import wlTreeSelect from '../../../../components/wl-tree-select/index'
+
+import {
+  GET_QUESTION_OBJECT_DETAIL,
+  GET_QUESTION_UNIT_DETAIL
+} from '@/api/questionnaireInvestigation.js'
+
 export default {
   name: 'DetailQuery',
   // components: {
@@ -474,12 +482,14 @@ export default {
       tableDataEvaluation: [
         //测评对象
         {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          title: '2016-05-03',
+          sum: '1000',
+          p1: '1',
+          l1: '2',
+          p2: '3',
+          l2: '4',
+          p3: '5',
+          l3: '6'
         }
       ],
       tableData: [
@@ -495,6 +505,47 @@ export default {
           date: '2021-',
           status: 2,
           name: '01师'
+        }
+      ],
+      testmap: [
+        {
+          label: '满意',
+          props: [
+            {
+              label: '票',
+              prop: 'p1'
+            },
+            {
+              label: '率',
+              prop: 'l1'
+            }
+          ]
+        },
+        {
+          label: '比较满意',
+          props: [
+            {
+              label: '票',
+              prop: 'p2'
+            },
+            {
+              label: '率',
+              prop: 'l2'
+            }
+          ]
+        },
+        {
+          label: '一般',
+          props: [
+            {
+              label: '票',
+              prop: 'p3'
+            },
+            {
+              label: '率',
+              prop: 'l3'
+            }
+          ]
         }
       ],
       // evaluationOptions: [
@@ -530,7 +581,71 @@ export default {
       selected: [] // 树下拉框选中数据
     }
   },
+  mounted() {
+    this.getQuestionObjectDetail()
+  },
   methods: {
+    // 获取对象汇总
+    getQuestionObjectDetail() {
+      GET_QUESTION_OBJECT_DETAIL().then(res => {
+        if (res.status === 0) {
+          console.log('对象汇总', res.data)
+          // this.tableDataEvaluation = res.data
+          let obj = {
+            title: '2016-05-03',
+            sum: '1000'
+          }
+          for (let index = 0; index < res.data.length; index++) {
+            const element = res.data[index]
+            let obj = {
+              title: element.title,
+              sum: element.sum
+            }
+            for (let i = 0; i < element.value.length; i++) {
+              var item = element.value[i]
+              let testmap = {
+                label: item.question_name,
+                props: [
+                  {
+                    label: '票',
+                    prop: 'p' + item.question_id
+                  },
+                  {
+                    label: '率',
+                    prop: 'l' + item.question_id
+                  }
+                ]
+              }
+            }
+          }
+        }
+      })
+    },
+    // 获取单位汇总
+    getQuestionUnitDetail() {
+      GET_QUESTION_UNIT_DETAIL().then(res => {
+        if (res.status === 0) {
+          console.log('单位汇总', res.data)
+        }
+      })
+    },
+    // 部门汇总
+    getQuestionDepartmentDetail() {
+      GET_QUESTION_DEPARTMENT_DETAIL().then(res => {
+        if (res.status === 0) {
+          console.log('部门汇总', res.data)
+        }
+      })
+    },
+
+    // 人员汇总
+    getQuestionDutyDetail() {
+      GET_QUESTION_DUTY_DETAIL().then(res => {
+        if (res.status === 0) {
+          console.log('人员汇总', res.data)
+        }
+      })
+    },
     handleSelectionChange(val) {},
     // 打开筛选款
     showScreen() {

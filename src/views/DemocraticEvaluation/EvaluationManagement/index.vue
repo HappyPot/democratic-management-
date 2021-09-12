@@ -38,27 +38,31 @@
         <el-table-column prop="id"
                          label="序号">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="title"
                          label="标题名称">
         </el-table-column>
-        <el-table-column prop="date"
-                         label="测评时间">
+        <el-table-column prop="start_time"
+                         label="测评时间"
+                         width="300">
+          <template slot-scope="scope">
+            {{scope.row.start_time}}至{{scope.row.end_time}}
+          </template>
         </el-table-column>
         <el-table-column prop="status"
                          label="状态"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <div v-if="tableData[scope.$index].status == 1"
+            <div v-if="scope.row.status_name == '未开始'"
                  class="status_tiem">
               <i class="status noStart"></i>
               未开始
             </div>
-            <div v-else-if="tableData[scope.$index].status == 2"
+            <div v-else-if="scope.row.status_name == '进行中'"
                  class="status_tiem">
               <i class="status start"></i>
               进行中
             </div>
-            <div v-else-if="tableData[scope.$index].status == 3"
+            <div v-else-if="scope.row.status_name == '已结束'"
                  class="status_tiem">
               <i class="status over"></i>
               已结束
@@ -66,23 +70,23 @@
             <!-- {{tableData[scope.$index].status?'未开始':"开始"}} -->
           </template>
         </el-table-column>
-        <el-table-column prop="status"
+        <el-table-column prop="isEnable"
                          label="是否启用"
                          show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].status">
+            <el-switch v-model="tableData[scope.$index].isEnable">
             </el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showEdit">编辑</el-link>
             <el-link type="primary"
                      style="margin-right:12px"
-                     @click="showStatistical">统计</el-link>
+                     @click="showStatistical(scope.row,scope.$index)">统计</el-link>
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showConfig">配置</el-link>
@@ -146,6 +150,11 @@
 import Review from './components/review'
 import Statistics from '@/views/Sharing/components/statistics'
 import Configure from '@/views/Sharing/components/configure'
+import {
+  GET_QUESTION_LIST,
+  GET_COUNT_QUESTION
+} from '@/api/questionnaireInvestigation.js'
+import { mapState } from 'vuex'
 export default {
   components: {
     Review,
@@ -171,10 +180,22 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId'])
+  },
   mounted() {
     this.restaurants = this.loadAll()
+    this.getQuestionList()
   },
   methods: {
+    // 获取测评列表
+    getQuestionList() {
+      GET_QUESTION_LIST().then(res => {
+        if (res.status === 0) {
+          this.tableData = res.data.data
+        }
+      })
+    },
     // 展示编辑框
     showEdit() {
       this.dialogReview = true
@@ -190,8 +211,18 @@ export default {
       console.log('更新')
     },
     // 展示统计框
-    showStatistical() {
+    showStatistical(row, index) {
       this.dialogStatistics = true
+      let obj = {
+        page_size: 10,
+        question_id: row.id
+      }
+      console.log('统计查询参数', obj)
+      GET_COUNT_QUESTION(obj).then(res => {
+        if (res.status === 0) {
+          console.log('统计返回值', res.data)
+        }
+      })
     },
     // 统计数据提交
     statisticalData() {},

@@ -226,3 +226,378 @@ mock
 			method: 'get',
 		})
 	}
+
+	/**
+  * @description 测评对象汇总
+  */
+ export function GET_QUESTION_OBJECT_DETAIL(query) {
+
+	// 模拟数据
+	mock
+	.onAny('/admin/question/getQuestionObjectDetail?question_issue_id=4&question_id=1')
+	.reply(config => tools.responseSuccess({
+		"status": 0,
+		"msg": "OK",
+		"data": [
+			{
+				"id": 1,
+				"question_id": 1,
+				"title": "纪检委机关",
+				"sort": 1,
+				"sum": 3,
+				"value": [
+					{
+						"num": 2,
+						"value": "1",
+						"question_top_id": '满意',
+						"ratio": "66.67"
+					},
+					{
+						"num": 1,
+						"value": "3",
+						"question_top_id": '比较满意',
+						"ratio": "33.33"
+					}
+				]
+			},
+			{
+				"id": 2,
+				"question_id": 1,
+				"title": "办公厅",
+				"sort": 1,
+				"sum": 2,
+				"value": [
+					{
+						"num": 1,
+						"value": "1",
+						"question_top_id": 2,
+						"ratio": "50.00"
+					},
+					{
+						"num": 1,
+						"value": "4",
+						"question_top_id": 2,
+						"ratio": "50.00"
+					}
+				]
+			},
+			{
+				"id": 3,
+				"question_id": 1,
+				"title": "保密委员办公室（保密局）",
+				"sort": 1,
+				"sum": 0,
+				"value": []
+			},
+			{
+				"id": 4,
+				"question_id": 4,
+				"title": "测评主题1",
+				"sort": 1,
+				"sum": 0,
+				"value": []
+			},
+			{
+				"id": 5,
+				"question_id": 4,
+				"title": "测评主题2",
+				"sort": 2,
+				"sum": 0,
+				"value": []
+			},
+			{
+				"id": 12,
+				"question_id": 10,
+				"title": "测评主题1",
+				"sort": 1,
+				"sum": 0,
+				"value": []
+			},
+			{
+				"id": 13,
+				"question_id": 10,
+				"title": "测评主题2",
+				"sort": 2,
+				"sum": 0,
+				"value": []
+			}
+		]
+	}))
+		return requestForMock({
+			url: '/admin/question/getQuestionObjectDetail?question_issue_id=4&question_id=1',
+			method: 'get',
+		})
+	}
+
+	/**
+  * @description 单位汇总
+  */
+ export function GET_QUESTION_UNIT_DETAIL(query) {
+
+	// 模拟数据
+	mock
+	.onAny('/admin/question/getQuestionUnitDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1')
+	.reply(config => tools.responseSuccess({
+		"status": 0,
+		"msg": "OK",
+		"data": [
+			{
+				"id": 1,
+				"unit_name": "西安凡数",
+				"unit_code": "100",
+				"parent_id": "0",
+				"subject_id": 1,
+				"sort": null,
+				"is_enable": 1,
+				"created_at": null,
+				"updated_at": null,
+				"sum": 3,
+				"value": [
+					{
+						"num": 2,
+						"value": "1",
+						"unit_id": 1,
+						"ratio": "66.67"
+					},
+					{
+						"num": 1,
+						"value": "3",
+						"unit_id": 1,
+						"ratio": "33.33"
+					}
+				]
+			},
+			{
+				"id": 2,
+				"unit_name": "凡数分公司",
+				"unit_code": "100100",
+				"parent_id": "100",
+				"subject_id": 1,
+				"sort": null,
+				"is_enable": 1,
+				"created_at": null,
+				"updated_at": null,
+				"sum": 2,
+				"value": [
+					{
+						"num": 1,
+						"value": "4",
+						"unit_id": 2,
+						"ratio": "50.00"
+					},
+					{
+						"num": 1,
+						"value": "1",
+						"unit_id": 2,
+						"ratio": "50.00"
+					}
+				]
+			},
+			{
+				"id": 3,
+				"unit_name": "凡数分公司的子公司",
+				"unit_code": "10010001",
+				"parent_id": "100100",
+				"subject_id": 1,
+				"sort": null,
+				"is_enable": 1,
+				"created_at": "2021-08-28T10:15:24.000000Z",
+				"updated_at": "2021-08-28T10:15:24.000000Z",
+				"sum": 0,
+				"value": []
+			},
+			{
+				"id": 5,
+				"unit_name": "单位名称",
+				"unit_code": "单位编码",
+				"parent_id": null,
+				"subject_id": 1,
+				"sort": 1,
+				"is_enable": 1,
+				"created_at": "2021-09-07T08:46:49.000000Z",
+				"updated_at": "2021-09-07T08:46:49.000000Z",
+				"sum": 0,
+				"value": []
+			},
+			{
+				"id": 6,
+				"unit_name": "单位名称1",
+				"unit_code": "1001",
+				"parent_id": "1",
+				"subject_id": 1,
+				"sort": 1,
+				"is_enable": 1,
+				"created_at": "2021-09-07T08:49:06.000000Z",
+				"updated_at": "2021-09-07T08:49:06.000000Z",
+				"sum": 0,
+				"value": []
+			}
+		]
+	}))
+		return requestForMock({
+			url: '/admin/question/getQuestionUnitDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1',
+			method: 'get',
+			params:query
+		})
+	}
+
+
+		/**
+  * @description 部门汇总
+  */
+ export function GET_QUESTION_DEPARTMENT_DETAIL(query) {
+
+	// 模拟数据
+	mock
+	.onAny('/admin/question/getQuestionDepartmentDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1')
+	.reply(config => tools.responseSuccess({
+		"status": 0,
+		"msg": "OK",
+		"data": [
+			{
+				"id": 1,
+				"department_name": "技术部",
+				"department_code": "1",
+				"subject_id": 1,
+				"sort": 1,
+				"is_enable": 1,
+				"created_at": null,
+				"updated_at": null,
+				"sum": 3,
+				"value": [
+					{
+						"num": 2,
+						"value": "1",
+						"department_id": 1,
+						"ratio": "66.67"
+					},
+					{
+						"num": 1,
+						"value": "3",
+						"department_id": 1,
+						"ratio": "33.33"
+					}
+				]
+			},
+			{
+				"id": 2,
+				"department_name": "财务部",
+				"department_code": "1",
+				"subject_id": 1,
+				"sort": 1,
+				"is_enable": null,
+				"created_at": null,
+				"updated_at": null,
+				"sum": 2,
+				"value": [
+					{
+						"num": 1,
+						"value": "4",
+						"department_id": 2,
+						"ratio": "50.00"
+					},
+					{
+						"num": 1,
+						"value": "1",
+						"department_id": 2,
+						"ratio": "50.00"
+					}
+				]
+			},
+			{
+				"id": 3,
+				"department_name": "销售部",
+				"department_code": "200",
+				"subject_id": 1,
+				"sort": 1,
+				"is_enable": 1,
+				"created_at": "2021-09-07T09:04:10.000000Z",
+				"updated_at": "2021-09-07T09:04:10.000000Z",
+				"sum": 0,
+				"value": []
+			}
+		]
+	}))
+		return requestForMock({
+			url: '/admin/question/getQuestionDepartmentDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1',
+			method: 'get',
+			params:query
+		})
+	}
+
+			/**
+  * @description 人员类别汇总
+  */
+ export function GET_QUESTION_DUTY_DETAIL(query) {
+
+	// 模拟数据
+	mock
+	.onAny('/admin/question/getQuestionDutyDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1')
+	.reply(config => tools.responseSuccess({
+		"status": 0,
+		"msg": "OK",
+		"data": [
+			{
+				"id": 1,
+				"duty_name": "师领导班子成员",
+				"duty_code": "10010002",
+				"subject_id": 1,
+				"sort": null,
+				"is_enable": null,
+				"sum": 3,
+				"value": [
+					{
+						"num": 2,
+						"value": "1",
+						"duty_id": 1,
+						"ratio": "66.67"
+					},
+					{
+						"num": 1,
+						"value": "3",
+						"duty_id": 1,
+						"ratio": "33.33"
+					}
+				]
+			},
+			{
+				"id": 2,
+				"duty_name": "团场领导班子成员",
+				"duty_code": "10010003",
+				"subject_id": 1,
+				"sort": null,
+				"is_enable": null,
+				"sum": 2,
+				"value": [
+					{
+						"num": 1,
+						"value": "4",
+						"duty_id": 2,
+						"ratio": "50.00"
+					},
+					{
+						"num": 1,
+						"value": "1",
+						"duty_id": 2,
+						"ratio": "50.00"
+					}
+				]
+			},
+			{
+				"id": 3,
+				"duty_name": "学生干部",
+				"duty_code": "200",
+				"subject_id": 1,
+				"sort": 1,
+				"is_enable": 1,
+				"sum": 0,
+				"value": []
+			}
+		]
+	}))
+		return requestForMock({
+			url: '/admin/question/getQuestionDutyDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1',
+			method: 'get',
+			params:query
+		})
+	}

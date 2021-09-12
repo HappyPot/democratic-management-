@@ -47,10 +47,10 @@ service.interceptors.response.use(res => {
         // })
       })
     } else if (code !== 0) {
-      Notification.error({
-        title: res.data.msg
-      })
-      return Promise.reject('error')
+      // Notification.error({
+      //   title: res.data.msg
+      // })
+      return Promise.reject(res.data)
     } else {
       return res.data
     }
@@ -61,7 +61,7 @@ service.interceptors.response.use(res => {
       type: 'error',
       duration: 5 * 1000
     })
-    return Promise.reject(error)
+    return Promise.reject('错误',res.data)
   }
 )
 

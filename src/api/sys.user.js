@@ -4,9 +4,9 @@ import { service, serviceForMock, request, requestForMock, mock } from '@/api/_s
 import * as tools from '@/api/_tools.js'
 
 const users = [
-  { username: 'admin', password: 'admin', uuid: 'admin-uuid', name: 'Admin' },
-  { username: 'editor', password: 'editor', uuid: 'editor-uuid', name: 'Editor' },
-  { username: 'user1', password: 'user1', uuid: 'user1-uuid', name: 'User1' }
+  { username: 'liuxi', password: 'admin123', uuid: 'admin-uuid', name: 'Admin' },
+  // { username: 'editor', password: 'editor', uuid: 'editor-uuid', name: 'Editor' },
+  // { username: 'user1', password: 'user1', uuid: 'user1-uuid', name: 'User1' }
 ]
 
 /**

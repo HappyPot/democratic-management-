@@ -85,7 +85,7 @@
             <!-- {{tableData[scope.$index].status?'未开始':"开始"}} -->
           </template>
         </el-table-column>
-        <el-table-column prop="date"
+        <el-table-column prop="isEnable"
                          label="是否启用">
           <template slot-scope="scope">
             <el-switch v-model="tableData[scope.$index].isEnable">
@@ -196,7 +196,7 @@ export default {
       dialogEdit: false, //新增和编辑
       dialogStatistics: false, //统计弹框展示
       dialogConfigure: false, //事项配置
-      dialogDetail: false, //明细弹框
+      dialogDetail: true, //明细弹框
       searchValue: '',
       restaurants: [],
       tableData: []
