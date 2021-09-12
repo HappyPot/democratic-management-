@@ -36,7 +36,7 @@ Vue.mixin(MixinValidate);
 //     }
 // });
 
-
+Vue.config.devtools = true
 Vue.use(draggableComponents)
 
 import wlTreeSelect from './components/wl-tree-select/index'

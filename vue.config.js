@@ -115,7 +115,9 @@ module.exports = {
   },
   pages,
   configureWebpack: config => {
-    const configNew = {}
+    const configNew = {
+      devtool:'souce-map'
+    }
     if (process.env.NODE_ENV === 'production') {
       configNew.externals = externals
       configNew.plugins = [

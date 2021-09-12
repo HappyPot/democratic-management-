@@ -93,14 +93,14 @@ export default {
      */
     // 提交登录信息
     submit() {
-      // this.login({
-      //   username: this.formLogin.username,
-      //   password: this.formLogin.password
-      // }).then(() => {
-      //   // 重定向对象不存在则返回顶层路径
-      //   this.$router.replace(this.$route.query.redirect || '/')
-      // })
-      // return
+      this.login({
+        username: this.formLogin.username,
+        password: this.formLogin.password
+      }).then(() => {
+        // 重定向对象不存在则返回顶层路径
+        this.$router.replace(this.$route.query.redirect || '/')
+      })
+      return
       let errorText = {
         usinessEntity: '请选择业务主体',
         username: '请输入登录账号',
