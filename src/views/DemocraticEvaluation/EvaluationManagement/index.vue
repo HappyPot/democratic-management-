@@ -2,396 +2,408 @@
   <d2-container class="page">
     <div class="em_search">
       <div class="em_input">
-        <el-autocomplete class="inline-input"
-                         size="medium"
-                         v-model="searchValue"
-                         :fetch-suggestions="querySearch"
-                         placeholder="搜索关键词"
-                         prefix-icon="el-icon-search"
-                         :trigger-on-focus="false"
-                         @select="handleSelect"></el-autocomplete>
+        <el-autocomplete
+          class="inline-input"
+          size="medium"
+          v-model="searchValue"
+          :fetch-suggestions="querySearch"
+          placeholder="搜索关键词"
+          prefix-icon="el-icon-search"
+          :trigger-on-focus="false"
+          @select="handleSelect"
+        ></el-autocomplete>
       </div>
       <div class="em_input_right">
         <div class="em_input">
-          <el-button type="primary"
-                     size="medium"
-                     @click="addNew">新增</el-button>
+          <el-button type="primary" size="medium" @click="addNew"
+            >新增</el-button
+          >
         </div>
         <div class="em_input">
-          <el-button type="danger"
-                     size="medium"
-                     plain
-                     @click="delItem">删除</el-button>
+          <el-button type="danger" size="medium" plain @click="delItem"
+            >删除</el-button
+          >
         </div>
       </div>
     </div>
     <!-- 表格 -->
     <div class="em_content">
-      <el-table ref="multipleTable"
-                :data="tableData"
-                tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-        <el-table-column type="selection"
-                         width="55">
-        </el-table-column>
-        <el-table-column prop="id"
-                         label="序号">
-        </el-table-column>
-        <el-table-column prop="title"
-                         label="标题名称">
-        </el-table-column>
-        <el-table-column prop="start_time"
-                         label="测评时间"
-                         width="300">
+      <el-table
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column prop="id" label="序号"> </el-table-column>
+        <el-table-column prop="title" label="标题名称"> </el-table-column>
+        <el-table-column prop="start_time" label="测评时间" width="300">
           <template slot-scope="scope">
-            {{scope.row.start_time}}至{{scope.row.end_time}}
+            {{ scope.row.start_time }}至{{ scope.row.end_time }}
           </template>
         </el-table-column>
-        <el-table-column prop="status"
-                         label="状态"
-                         show-overflow-tooltip>
+        <el-table-column prop="status" label="状态" show-overflow-tooltip>
           <template slot-scope="scope">
-            <div v-if="scope.row.status_name == '未开始'"
-                 class="status_tiem">
+            <div v-if="scope.row.status_name == '未开始'" class="status_tiem">
               <i class="status noStart"></i>
               未开始
             </div>
-            <div v-else-if="scope.row.status_name == '进行中'"
-                 class="status_tiem">
+            <div
+              v-else-if="scope.row.status_name == '进行中'"
+              class="status_tiem"
+            >
               <i class="status start"></i>
               进行中
             </div>
-            <div v-else-if="scope.row.status_name == '已结束'"
-                 class="status_tiem">
+            <div
+              v-else-if="scope.row.status_name == '已结束'"
+              class="status_tiem"
+            >
               <i class="status over"></i>
               已结束
             </div>
             <!-- {{tableData[scope.$index].status?'未开始':"开始"}} -->
           </template>
         </el-table-column>
-        <el-table-column prop="isEnable"
-                         label="是否启用"
-                         show-overflow-tooltip>
+        <el-table-column prop="isEnable" label="是否启用" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].isEnable">
-            </el-switch>
+            <el-switch v-model="tableData[scope.$index].isEnable"> </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作"
-                         show-overflow-tooltip>
+        <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-link type="primary"
-                     style="margin-right:12px"
-                     @click="showEdit">编辑</el-link>
-            <el-link type="primary"
-                     style="margin-right:12px"
-                     @click="showStatistical(scope.row,scope.$index)">统计</el-link>
-            <el-link type="primary"
-                     style="margin-right:12px"
-                     @click="showConfig">配置</el-link>
-            <el-link type="primary"
-                     style="margin-right:12px"
-                     @click="showPapers">底稿</el-link>
+            <el-link type="primary" style="margin-right: 12px" @click="showEdit"
+              >编辑</el-link
+            >
+            <el-link
+              type="primary"
+              style="margin-right: 12px"
+              @click="showStatistical(scope.row, scope.$index)"
+              >统计</el-link
+            >
+            <el-link
+              type="primary"
+              style="margin-right: 12px"
+              @click="showConfig"
+              >配置</el-link
+            >
+            <el-link
+              type="primary"
+              style="margin-right: 12px"
+              @click="showPapers"
+              >底稿</el-link
+            >
           </template>
         </el-table-column>
       </el-table>
     </div>
     <!-- 新增与编辑-->
-    <el-dialog :title="typeTitle"
-               center
-               class="dialogSelf"
-               :visible.sync="dialogReview"
-               width="700px">
+    <el-dialog
+      :title="typeTitle"
+      center
+      top="4vh"
+      class="dialogSelf"
+      :visible.sync="dialogReview"
+      width="700px"
+    >
       <Review ref="review"></Review>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   v-show="typeTitle == '评议添加'"
-                   @click="addNewDate">确 定</el-button>
-        <el-button type="primary"
-                   v-show="typeTitle == '评议编辑'"
-                   @click="editData">更 新</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          v-show="typeTitle == '评议添加'"
+          @click="addNewDate"
+          >确 定</el-button
+        >
+        <el-button
+          type="primary"
+          v-show="typeTitle == '评议编辑'"
+          @click="editData"
+          >更 新</el-button
+        >
         <el-button @click="dialogReview = false">取 消</el-button>
-
       </span>
     </el-dialog>
     <!-- 统计 -->
-    <el-dialog title="统计结果"
-               center
-               class="dialogSelf"
-               :visible.sync="dialogStatistics"
-               width="972px">
+    <el-dialog
+      title="统计结果"
+      center
+      top="7vh"
+      class="dialogSelf"
+      :visible.sync="dialogStatistics"
+      width="972px"
+    >
       <Statistics></Statistics>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   @click="statisticalData">确 定</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="statisticalData">确 定</el-button>
         <el-button @click="dialogStatistics = false">取 消</el-button>
       </span>
     </el-dialog>
     <!-- 配置 -->
-    <el-dialog title="事项配置"
-               center
-               class="dialogSelf"
-               :visible.sync="dialogConfigure"
-               width="1000px">
+    <el-dialog
+      title="事项配置"
+      center
+      top="7vh"
+      class="dialogSelf"
+      :visible.sync="dialogConfigure"
+      width="1000px"
+    >
       <Configure @getComponentParam="getComponentParam"></Configure>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button type="primary"
-                   @click="configData">确 定</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="configData">确 定</el-button>
         <el-button @click="dialogConfigure = false">取 消</el-button>
       </span>
     </el-dialog>
   </d2-container>
 </template>
 <script>
-import Review from './components/review'
-import Statistics from '@/views/Sharing/components/statistics'
-import Configure from '@/views/Sharing/components/configure'
+import Review from "./components/review";
+import Statistics from "@/views/Sharing/components/statistics";
+import Configure from "@/views/Sharing/components/configure";
 import {
   GET_QUESTION_LIST,
   GET_COUNT_QUESTION,
-} from '@/api/questionnaireInvestigation.js'
-import { mapState } from 'vuex'
+} from "@/api/questionnaireInvestigation.js";
+import { mapState } from "vuex";
 export default {
   components: {
     Review,
     Configure,
-    Statistics
+    Statistics,
   },
   data() {
     return {
-      typeTitle: '评议添加', //评议添加,评议编辑
+      typeTitle: "评议添加", //评议添加,评议编辑
       dialogReview: false, //控制新增和编辑
       dialogStatistics: false, //控制统计框
       dialogConfigure: false, //控制配置框
       dialogPapers: false, //控制低稿框
-      searchValue: '', //搜索值
+      searchValue: "", //搜索值
       restaurants: [],
       tableData: [
         {
           id: 1,
-          date: '2021-10-01至2021-10-31',
+          date: "2021-10-01至2021-10-31",
           status: true,
-          name: '01师'
-        }
-      ]
-    }
+          name: "01师",
+        },
+      ],
+    };
   },
   computed: {
-    ...mapState('evaluation/base', ['subjectId'])
+    ...mapState("evaluation/base", ["subjectId"]),
   },
   mounted() {
-    this.restaurants = this.loadAll()
-    this.getQuestionList()
+    this.restaurants = this.loadAll();
+    this.getQuestionList();
   },
   methods: {
     getComponentParam(val) {
-      console.log('组价中传输来的数据', val)
+      console.log("组价中传输来的数据", val);
     },
     // 获取测评列表
     getQuestionList() {
-      GET_QUESTION_LIST().then(res => {
+      GET_QUESTION_LIST().then((res) => {
         if (res.status === 0) {
-          this.tableData = res.data.data
+          this.tableData = res.data.data;
         }
-      })
+      });
     },
     // 展示编辑框
     showEdit() {
-      this.dialogReview = true
-      this.typeTitle = '评议编辑'
+      this.dialogReview = true;
+      this.typeTitle = "评议编辑";
     },
     // 更新
     editData() {
-      let flag = this.$refs['review'].checkFrom()
+      let flag = this.$refs["review"].checkFrom();
       if (flag) {
         // 只有校验成功才能提交
+        console.log("评级编辑参数", this.$refs["review"].review);
       }
-      console.log('flag', flag)
-      console.log('更新')
+      console.log("flag", flag);
+      console.log("更新");
     },
     // 展示统计框
     showStatistical(row, index) {
-      this.dialogStatistics = true
+      this.dialogStatistics = true;
       let obj = {
         page_size: 10,
-        question_id: row.id
-      }
-      console.log('统计查询参数', obj)
-      GET_COUNT_QUESTION(obj).then(res => {
+        question_id: row.id,
+      };
+      console.log("统计查询参数", obj);
+      GET_COUNT_QUESTION(obj).then((res) => {
         if (res.status === 0) {
-          console.log('统计返回值', res.data)
+          console.log("统计返回值", res.data);
         }
-      })
+      });
     },
     // 统计数据提交
     statisticalData() {},
     // 展示配置框
     showConfig() {
-      this.dialogConfigure = true
+      this.dialogConfigure = true;
     },
     // 配置框数据提交 保存测评
     configData() {
-      let obj = {}
-      SAVE_QUESTION_CONFIG(obj).then(res => {})
+      let obj = {};
+      SAVE_QUESTION_CONFIG(obj).then((res) => {});
     },
     // 展示底稿框
     showPapers() {},
     handleSelectionChange() {},
     // 展示新增框
     addNew() {
-      this.dialogReview = true
-      this.typeTitle = '评议添加'
+      this.dialogReview = true;
+      this.typeTitle = "评议添加";
     },
     // 新增
     addNewDate() {
       // 调用组件中的表单校验方法
-      let flag = this.$refs['review'].checkFrom()
+      let flag = this.$refs["review"].checkFrom();
       if (flag) {
+        console.log("评级编辑参数", this.$refs["review"].review);
         // 只有校验成功才能提交
       }
-      console.log('flag', flag)
-      console.log('新增')
+      console.log("flag", flag);
+      console.log("新增");
     },
     // 删除
     delItem() {},
     loadAll() {
       return [
-        { value: '三全鲜食（北新泾店）', address: '长宁区新渔路144号' },
+        { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
         {
-          value: 'Hot honey 首尔炸鸡（仙霞路）',
-          address: '上海市长宁区淞虹路661号'
+          value: "Hot honey 首尔炸鸡（仙霞路）",
+          address: "上海市长宁区淞虹路661号",
         },
         {
-          value: '新旺角茶餐厅',
-          address: '上海市普陀区真北路988号创邑金沙谷6号楼113'
+          value: "新旺角茶餐厅",
+          address: "上海市普陀区真北路988号创邑金沙谷6号楼113",
         },
-        { value: '泷千家(天山西路店)', address: '天山西路438号' },
+        { value: "泷千家(天山西路店)", address: "天山西路438号" },
         {
-          value: '胖仙女纸杯蛋糕（上海凌空店）',
-          address: '上海市长宁区金钟路968号1幢18号楼一层商铺18-101'
+          value: "胖仙女纸杯蛋糕（上海凌空店）",
+          address: "上海市长宁区金钟路968号1幢18号楼一层商铺18-101",
         },
-        { value: '贡茶', address: '上海市长宁区金钟路633号' },
+        { value: "贡茶", address: "上海市长宁区金钟路633号" },
         {
-          value: '豪大大香鸡排超级奶爸',
-          address: '上海市嘉定区曹安公路曹安路1685号'
-        },
-        {
-          value: '茶芝兰（奶茶，手抓饼）',
-          address: '上海市普陀区同普路1435号'
-        },
-        { value: '十二泷町', address: '上海市北翟路1444弄81号B幢-107' },
-        { value: '星移浓缩咖啡', address: '上海市嘉定区新郁路817号' },
-        { value: '阿姨奶茶/豪大大', address: '嘉定区曹安路1611号' },
-        { value: '新麦甜四季甜品炸鸡', address: '嘉定区曹安公路2383弄55号' },
-        {
-          value: 'Monica摩托主题咖啡店',
-          address: '嘉定区江桥镇曹安公路2409号1F，2383弄62号1F'
+          value: "豪大大香鸡排超级奶爸",
+          address: "上海市嘉定区曹安公路曹安路1685号",
         },
         {
-          value: '浮生若茶（凌空soho店）',
-          address: '上海长宁区金钟路968号9号楼地下一层'
+          value: "茶芝兰（奶茶，手抓饼）",
+          address: "上海市普陀区同普路1435号",
         },
-        { value: 'NONO JUICE  鲜榨果汁', address: '上海市长宁区天山西路119号' },
-        { value: 'CoCo都可(北新泾店）', address: '上海市长宁区仙霞西路' },
+        { value: "十二泷町", address: "上海市北翟路1444弄81号B幢-107" },
+        { value: "星移浓缩咖啡", address: "上海市嘉定区新郁路817号" },
+        { value: "阿姨奶茶/豪大大", address: "嘉定区曹安路1611号" },
+        { value: "新麦甜四季甜品炸鸡", address: "嘉定区曹安公路2383弄55号" },
         {
-          value: '快乐柠檬（神州智慧店）',
-          address: '上海市长宁区天山西路567号1层R117号店铺'
-        },
-        {
-          value: 'Merci Paul cafe',
-          address: '上海市普陀区光复西路丹巴路28弄6号楼819'
+          value: "Monica摩托主题咖啡店",
+          address: "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F",
         },
         {
-          value: '猫山王（西郊百联店）',
-          address: '上海市长宁区仙霞西路88号第一层G05-F01-1-306'
+          value: "浮生若茶（凌空soho店）",
+          address: "上海长宁区金钟路968号9号楼地下一层",
         },
-        { value: '枪会山', address: '上海市普陀区棕榈路' },
-        { value: '纵食', address: '元丰天山花园(东门) 双流路267号' },
-        { value: '钱记', address: '上海市长宁区天山西路' },
-        { value: '壹杯加', address: '上海市长宁区通协路' },
+        { value: "NONO JUICE  鲜榨果汁", address: "上海市长宁区天山西路119号" },
+        { value: "CoCo都可(北新泾店）", address: "上海市长宁区仙霞西路" },
         {
-          value: '唦哇嘀咖',
-          address: '上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元'
+          value: "快乐柠檬（神州智慧店）",
+          address: "上海市长宁区天山西路567号1层R117号店铺",
         },
-        { value: '爱茜茜里(西郊百联)', address: '长宁区仙霞西路88号1305室' },
         {
-          value: '爱茜茜里(近铁广场)',
+          value: "Merci Paul cafe",
+          address: "上海市普陀区光复西路丹巴路28弄6号楼819",
+        },
+        {
+          value: "猫山王（西郊百联店）",
+          address: "上海市长宁区仙霞西路88号第一层G05-F01-1-306",
+        },
+        { value: "枪会山", address: "上海市普陀区棕榈路" },
+        { value: "纵食", address: "元丰天山花园(东门) 双流路267号" },
+        { value: "钱记", address: "上海市长宁区天山西路" },
+        { value: "壹杯加", address: "上海市长宁区通协路" },
+        {
+          value: "唦哇嘀咖",
+          address: "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元",
+        },
+        { value: "爱茜茜里(西郊百联)", address: "长宁区仙霞西路88号1305室" },
+        {
+          value: "爱茜茜里(近铁广场)",
           address:
-            '上海市普陀区真北路818号近铁城市广场北区地下二楼N-B2-O2-C商铺'
+            "上海市普陀区真北路818号近铁城市广场北区地下二楼N-B2-O2-C商铺",
         },
         {
-          value: '鲜果榨汁（金沙江路和美广店）',
-          address: '普陀区金沙江路2239号金沙和美广场B1-10-6'
+          value: "鲜果榨汁（金沙江路和美广店）",
+          address: "普陀区金沙江路2239号金沙和美广场B1-10-6",
         },
         {
-          value: '开心丽果（缤谷店）',
-          address: '上海市长宁区威宁路天山路341号'
+          value: "开心丽果（缤谷店）",
+          address: "上海市长宁区威宁路天山路341号",
         },
-        { value: '超级鸡车（丰庄路店）', address: '上海市嘉定区丰庄路240号' },
-        { value: '妙生活果园（北新泾店）', address: '长宁区新渔路144号' },
-        { value: '香宜度麻辣香锅', address: '长宁区淞虹路148号' },
+        { value: "超级鸡车（丰庄路店）", address: "上海市嘉定区丰庄路240号" },
+        { value: "妙生活果园（北新泾店）", address: "长宁区新渔路144号" },
+        { value: "香宜度麻辣香锅", address: "长宁区淞虹路148号" },
         {
-          value: '凡仔汉堡（老真北路店）',
-          address: '上海市普陀区老真北路160号'
+          value: "凡仔汉堡（老真北路店）",
+          address: "上海市普陀区老真北路160号",
         },
-        { value: '港式小铺', address: '上海市长宁区金钟路968号15楼15-105室' },
-        { value: '蜀香源麻辣香锅（剑河路店）', address: '剑河路443-1' },
-        { value: '北京饺子馆', address: '长宁区北新泾街道天山西路490-1号' },
+        { value: "港式小铺", address: "上海市长宁区金钟路968号15楼15-105室" },
+        { value: "蜀香源麻辣香锅（剑河路店）", address: "剑河路443-1" },
+        { value: "北京饺子馆", address: "长宁区北新泾街道天山西路490-1号" },
         {
-          value: '饭典*新简餐（凌空SOHO店）',
-          address: '上海市长宁区金钟路968号9号楼地下一层9-83室'
-        },
-        {
-          value: '焦耳·川式快餐（金钟路店）',
-          address: '上海市金钟路633号地下一层甲部'
-        },
-        { value: '动力鸡车', address: '长宁区仙霞西路299弄3号101B' },
-        { value: '浏阳蒸菜', address: '天山西路430号' },
-        { value: '四海游龙（天山西路店）', address: '上海市长宁区天山西路' },
-        {
-          value: '樱花食堂（凌空店）',
-          address: '上海市长宁区金钟路968号15楼15-105室'
-        },
-        { value: '壹分米客家传统调制米粉(天山店)', address: '天山西路428号' },
-        {
-          value: '福荣祥烧腊（平溪路店）',
-          address: '上海市长宁区协和路福泉路255弄57-73号'
+          value: "饭典*新简餐（凌空SOHO店）",
+          address: "上海市长宁区金钟路968号9号楼地下一层9-83室",
         },
         {
-          value: '速记黄焖鸡米饭',
-          address: '上海市长宁区北新泾街道金钟路180号1层01号摊位'
+          value: "焦耳·川式快餐（金钟路店）",
+          address: "上海市金钟路633号地下一层甲部",
         },
-        { value: '红辣椒麻辣烫', address: '上海市长宁区天山西路492号' },
+        { value: "动力鸡车", address: "长宁区仙霞西路299弄3号101B" },
+        { value: "浏阳蒸菜", address: "天山西路430号" },
+        { value: "四海游龙（天山西路店）", address: "上海市长宁区天山西路" },
         {
-          value: '(小杨生煎)西郊百联餐厅',
-          address: '长宁区仙霞西路88号百联2楼'
+          value: "樱花食堂（凌空店）",
+          address: "上海市长宁区金钟路968号15楼15-105室",
         },
-        { value: '阳阳麻辣烫', address: '天山西路389号' },
+        { value: "壹分米客家传统调制米粉(天山店)", address: "天山西路428号" },
         {
-          value: '南拳妈妈龙虾盖浇饭',
-          address: '普陀区金沙江路1699号鑫乐惠美食广场A13'
-        }
-      ]
+          value: "福荣祥烧腊（平溪路店）",
+          address: "上海市长宁区协和路福泉路255弄57-73号",
+        },
+        {
+          value: "速记黄焖鸡米饭",
+          address: "上海市长宁区北新泾街道金钟路180号1层01号摊位",
+        },
+        { value: "红辣椒麻辣烫", address: "上海市长宁区天山西路492号" },
+        {
+          value: "(小杨生煎)西郊百联餐厅",
+          address: "长宁区仙霞西路88号百联2楼",
+        },
+        { value: "阳阳麻辣烫", address: "天山西路389号" },
+        {
+          value: "南拳妈妈龙虾盖浇饭",
+          address: "普陀区金沙江路1699号鑫乐惠美食广场A13",
+        },
+      ];
     },
     // 联想补全
     querySearch(queryString, cb) {
-      var restaurants = this.restaurants
+      var restaurants = this.restaurants;
       var results = queryString
         ? restaurants.filter(this.createFilter(queryString))
-        : restaurants
+        : restaurants;
       // 调用 callback 返回建议列表的数据
-      cb(results)
+      cb(results);
     },
     // 补全后选择
     handleSelect(item) {
-      console.log(item)
-    }
-  }
-}
+      console.log(item);
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .em_search {

@@ -4,13 +4,11 @@
       <div class="login_center">
         <div class="login_left">
           <div class="ll_top">
-            <img src="./image/icon.png"
-                 alt="">
+            <img src="./image/icon.png" alt="" />
             问卷调查民主测评系统
           </div>
           <div class="login_left_bg">
-            <img src="./image/sbg.png"
-                 alt="">
+            <img src="./image/sbg.png" alt="" />
           </div>
         </div>
         <div class="login_right">
@@ -19,35 +17,42 @@
             <span class="line"></span>
           </div>
           <div class="login_item">
-            <span class="errorTip"> <i class="el-icon-circle-close"></i> {{errorText}}</span>
-            <el-select v-model="formLogin.usinessEntity"
-                       class="login_item"
-                       placeholder="选中业务主体">
-              <el-option v-for="item in usinessEntityOptions"
-                         :key="item.id"
-                         :label="item.subject_name"
-                         :value="item.id">
+            <span class="errorTip">
+              <i class="el-icon-circle-close"></i> {{ errorText }}</span
+            >
+            <el-select
+              v-model="formLogin.usinessEntity"
+              class="login_item"
+              placeholder="选中业务主体"
+            >
+              <el-option
+                v-for="item in usinessEntityOptions"
+                :key="item.id"
+                :label="item.subject_name"
+                :value="item.id"
+              >
               </el-option>
             </el-select>
           </div>
           <div class="login_item">
-            <el-input v-model="formLogin.username"
-                      placeholder="请输入登录账号"></el-input>
-
+            <el-input
+              v-model="formLogin.username"
+              placeholder="请输入登录账号"
+            ></el-input>
           </div>
           <div class="login_item">
-            <el-input v-model="formLogin.password"
-                      show-password
-                      placeholder="请输入登录密码"></el-input>
+            <el-input
+              v-model="formLogin.password"
+              show-password
+              placeholder="请输入登录密码"
+            ></el-input>
           </div>
           <div class="login_btn_box">
-            <el-button type="primary"
-                       class="login_btn"
-                       @click="submit">登录</el-button>
+            <el-button type="primary" class="login_btn" @click="submit"
+              >登录</el-button
+            >
           </div>
-          <div class="login_tips">
-            首次登录或者忘记密码，请扫码登录
-          </div>
+          <div class="login_tips">首次登录或者忘记密码，请扫码登录</div>
         </div>
       </div>
     </div>
@@ -55,82 +60,78 @@
 </template>
 
 <script>
-import { GET_SUBJECT_LIST, LOGIN } from '../../../api/login.js'
-import { mapActions } from 'vuex'
+import { GET_SUBJECT_LIST, LOGIN } from "../../../api/login.js";
+import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      errorText: '', //错误提示语
-      account: '', //账号
-      usinessEntity: '', //业务主体
+      errorText: "", //错误提示语
+      account: "", //账号
+      usinessEntity: "", //业务主体
       usinessEntityOptions: [], //业务主体列表
       // 表单
       formLogin: {
         usinessEntity: 1, //业务主体
-        username: 'liuxi',
-        password: 'admin123',
-        url: 'https://php.ceping.nuofeida.net' //登录后跳转地
-      }
-    }
+        username: "liuxi",
+        password: "admin123",
+        url: "http://www.baidu.com", //登录后跳转地
+      },
+    };
   },
 
   mounted() {
-    this.getSubjectList()
+    this.getSubjectList();
   },
   methods: {
-    ...mapActions('d2admin/account', ['login']),
+    ...mapActions("d2admin/account", ["login"]),
     // 获取主体
     getSubjectList() {
-      GET_SUBJECT_LIST().then(res => {
+      GET_SUBJECT_LIST().then((res) => {
         if (res.status == 0) {
-          this.usinessEntityOptions = res.data
+          this.usinessEntityOptions = res.data;
         }
-      })
+      });
     },
     /**
      * @description 提交表单
      */
     // 提交登录信息
     submit() {
-      this.login({
-        username: this.formLogin.username,
-        password: this.formLogin.password
-      }).then(() => {
-        // 重定向对象不存在则返回顶层路径
-        this.$router.replace(this.$route.query.redirect || '/')
-      })
-      return
+     
       let errorText = {
-        usinessEntity: '请选择业务主体',
-        username: '请输入登录账号',
-        password: '请输入登录密码'
-      }
-      document.getElementsByClassName('errorTip')[0].style.display = 'none'
+        usinessEntity: "请选择业务主体",
+        username: "请输入登录账号",
+        password: "请输入登录密码",
+      };
+      document.getElementsByClassName("errorTip")[0].style.display = "none";
       for (let key in this.formLogin) {
         if (!this.formLogin[key]) {
-          this.errorText = errorText[key]
-          document.getElementsByClassName('errorTip')[0].style.display = 'block'
-          document.getElementsByClassName('errorTip')[0].style.bottom = '56px'
-          return
+          this.errorText = errorText[key];
+          document.getElementsByClassName("errorTip")[0].style.display =
+            "block";
+          document.getElementsByClassName("errorTip")[0].style.bottom = "56px";
+          return;
         }
       }
       let obj = {
         account: this.formLogin.username,
         pwd: this.formLogin.password,
         url: this.formLogin.url,
-        subject_id: this.formLogin.usinessEntity
-      }
+        subject_id: this.formLogin.usinessEntity,
+      };
       LOGIN(obj)
         .then(
-          res => {},
-          err => {
+          (res) => {
+            // console.log(res);
+          },
+          (err) => {
             this.$router.push({
-              path: '/index'
-            })
+              path: "/index",
+            });
           }
         )
-        .catch(err => {
+        .catch((err) => {
           // console.log('dd阿萨达收到d', err.msg)
           // if (err.msg == undefined) {
           //   debugger
@@ -139,10 +140,10 @@ export default {
           //     this.formLogin.usinessEntity
           //   )
           // }
-        })
-    }
-  }
-}
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -392,7 +393,7 @@ export default {
   }
 }
 .login_content {
-  background: url('./image/bg.png') no-repeat;
+  background: url("./image/bg.png") no-repeat;
   background-size: cover;
   width: 100%;
   height: 100%;
