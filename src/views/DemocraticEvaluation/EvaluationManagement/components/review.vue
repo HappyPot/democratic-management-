@@ -155,7 +155,16 @@
         <div class="people_content">
           <div class="pc_head">
             <div>
-              <el-select v-model="unit"
+              <wlTreeSelect leaf
+                            width="140"
+                            placeholder="选择单位"
+                            style="margin-right:10px"
+                            checkbox
+                            :data="unitOptions"
+                            @change="getSuperiorUnit"
+                            v-model="unitt">
+              </wlTreeSelect>
+              <!-- <el-select v-model="unit"
                          class="pc_item"
                          size="medium"
                          placeholder="选择单位">
@@ -164,7 +173,7 @@
                            :label="item.label"
                            :value="item.value">
                 </el-option>
-              </el-select>
+              </el-select> -->
             </div>
             <div>
               <el-select v-model="department"
@@ -256,6 +265,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Review',
   poprs: {
@@ -310,6 +321,12 @@ export default {
       ],
       appraisalSubject: [1, 2, 3, 5, 6] //评议主体
     }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId', 'unitList'])
+  },
+  created() {
+    this.unitOptions = this.unitList
   },
   methods: {
     // 表单校验

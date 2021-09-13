@@ -10,6 +10,7 @@
           <component v-for="item in drawingList"
                      :key="item.id"
                      :info="item"
+                     @getData="getData"
                      :is="item.type"></component>
         </draggable>
       </div>
@@ -128,18 +129,63 @@ export default {
           }
         }
       ],
-      drawingList: [],
-      componentsMap: {
-        TextCom: 'TextCom'
-      }
+      drawingList: [], //左侧
+      componentDataList: []
     }
   },
   watch: {
+    componentDataList: {
+      handler(val) {
+        this.$emit('getComponentParam', val)
+      },
+      deep: true
+    },
     drawingList(val) {
-      console.log(val)
+      console.log('drawingListdrawingListdrawingList', val)
     }
   },
   methods: {
+    // 获取组件中的数据
+    getData(val) {
+      if (this.componentDataList.length == 0) {
+        this.componentDataList.push(val)
+      } else {
+        let arr = this.$deepClone(this.componentDataList)
+        let flag = arr.findIndex(item => {
+          return item.uuid == val.uuid
+        })
+        if (flag == -1) {
+          this.componentDataList.push(val)
+        }
+        console.log('获取组件中的数据LIST', this.componentDataList)
+        let qu = {
+          question_id: '3',
+          issue_list: [
+            {
+              issue: '问题1',
+              type: '1',
+              sort: '1',
+              config: [
+                {
+                  value: '1',
+                  content: '满意'
+                },
+                {
+                  value: '2',
+                  content: '不满意'
+                }
+              ]
+            },
+            {
+              issue: '文本问题2',
+              type: '4',
+              sort: '2'
+            }
+          ]
+        }
+        console.log('需要包装的参数', '需要包装的参数')
+      }
+    },
     // 开始拖动
     start(e) {
       console.log('开始', e)

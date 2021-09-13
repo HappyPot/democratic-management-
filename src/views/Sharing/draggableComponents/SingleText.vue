@@ -51,7 +51,7 @@
             class="dialog-footer">
         <el-button @click="dialogConfigure = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogConfigure = false">确 定</el-button>
+                   @click="saveData">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -79,6 +79,13 @@ export default {
     this.comInfo = this.$deepClone(this.info)
   },
   methods: {
+    // 保存数据
+    saveData() {
+      console.log('单行文字', this.comInfo)
+      this.comInfo.uuid = this.uuid.v1()
+      this.$emit('getData', this.comInfo)
+      this.dialogConfigure = false
+    },
     // 设置文本
     settingCom() {
       this.dialogConfigure = true

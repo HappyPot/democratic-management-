@@ -41,13 +41,13 @@ Vue.use(draggableComponents)
 
 import wlTreeSelect from './components/wl-tree-select/index'
 Vue.use(wlTreeSelect)
-
+import { uuid } from 'vue-uuid'; 
 
 import { deepClone } from "./untils";
 Vue.prototype.$deepClone = deepClone
 // 核心插件
 Vue.use(d2Admin)
-
+Vue.prototype.uuid = uuid
 Vue.prototype.msgSuccess = function (msg) {
   this.$message({
     showClose: true,

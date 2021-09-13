@@ -69,7 +69,7 @@
             class="dialog-footer">
         <el-button @click="dialogConfigure = false">取 消</el-button>
         <el-button type="primary"
-                   @click="dialogConfigure = false">确 定</el-button>
+                   @click="saveData">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -97,6 +97,13 @@ export default {
   },
   mounted() {},
   methods: {
+    // 保存数据
+    saveData() {
+      console.log('单选', this.comInfo)
+      this.comInfo.uuid = this.uuid.v1()
+      this.$emit('getData', this.comInfo)
+      this.dialogConfigure = false
+    },
     // 添加选项
     addConfigItem() {
       let arr = this.comInfo.config.valueArr

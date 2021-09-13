@@ -527,3 +527,14 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
 		params: query
 	})
 }
+
+	/**
+  * @description 保存测评配置
+  */
+ export function SAVE_QUESTION_CONFIG(query) {
+	
+	return requestForMock({
+		url: '/admin/question/saveQuestionConfig',
+		method: 'get',
+	})
+}

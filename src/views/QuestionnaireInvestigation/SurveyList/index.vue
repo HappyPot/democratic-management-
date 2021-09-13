@@ -133,7 +133,7 @@
                class="dialogSelf"
                :visible.sync="dialogConfigure"
                width="1000px">
-      <Configure></Configure>
+      <Configure @getComponentParam="getComponentParam"></Configure>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
@@ -210,6 +210,9 @@ export default {
     this.getQuestionList()
   },
   methods: {
+    getComponentParam(val) {
+      console.log('组价中传输来的数据', val)
+    },
     // 获取测评列表
     getQuestionList() {
       GET_QUESTION_LIST().then(res => {

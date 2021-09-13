@@ -226,3 +226,16 @@ mock
 			method: 'get',
 		})
 	}
+
+
+	/**
+  * @description 保存测评配置
+  */
+export function SAVE_QUESTION_CONFIG(query) {
+	
+		return requestForMock({
+			url: '/admin/question/saveQuestionConfig',
+			method: 'get',
+		})
+	}
+	

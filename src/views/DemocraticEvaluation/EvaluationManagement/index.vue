@@ -136,7 +136,7 @@
                class="dialogSelf"
                :visible.sync="dialogConfigure"
                width="1000px">
-      <Configure></Configure>
+      <Configure @getComponentParam="getComponentParam"></Configure>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
@@ -152,7 +152,7 @@ import Statistics from '@/views/Sharing/components/statistics'
 import Configure from '@/views/Sharing/components/configure'
 import {
   GET_QUESTION_LIST,
-  GET_COUNT_QUESTION
+  GET_COUNT_QUESTION,
 } from '@/api/questionnaireInvestigation.js'
 import { mapState } from 'vuex'
 export default {
@@ -188,6 +188,9 @@ export default {
     this.getQuestionList()
   },
   methods: {
+    getComponentParam(val) {
+      console.log('组价中传输来的数据', val)
+    },
     // 获取测评列表
     getQuestionList() {
       GET_QUESTION_LIST().then(res => {
@@ -230,8 +233,11 @@ export default {
     showConfig() {
       this.dialogConfigure = true
     },
-    // 配置框数据提交
-    configData() {},
+    // 配置框数据提交 保存测评
+    configData() {
+      let obj = {}
+      SAVE_QUESTION_CONFIG(obj).then(res => {})
+    },
     // 展示底稿框
     showPapers() {},
     handleSelectionChange() {},
