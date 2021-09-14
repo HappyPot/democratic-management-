@@ -16,6 +16,8 @@ import './assets/icon/iconfont.css';
 import '@/views/common/index.scss'
 import MixinValidate from '@/views/mixin/validate.js';
 Vue.mixin(MixinValidate);
+import dayjs from "dayjs"
+Vue.prototype.dayjs=dayjs
 // import VueI18n from 'vue-i18n';
 // import VeeValidate from 'vee-validate';
 // import zh_CN from 'vee-validate/dist/locale/zh_CN'

@@ -62,7 +62,7 @@ import * as tools from '@/api/_tools.js'
       ]
     }))
 
-  return requestForMock({
+  return request({
     url: '/admin/unit/getUnitTreeList?is_enable=1',
     method: 'get',
   })
@@ -87,7 +87,7 @@ import * as tools from '@/api/_tools.js'
 
   // 模拟数据
   mock
-    .onAny('/admin/duty/getDutyList?subject_id=1')
+    .onAny('/admin/duty/getDutyList')
     .reply(config => tools.responseSuccess({
         "status": 0,
         "msg": "OK",
@@ -115,9 +115,10 @@ import * as tools from '@/api/_tools.js'
           "current_page": 1
         }
     }))
-  return requestForMock({
-    url: '/admin/duty/getDutyList?subject_id=1',
+  return request({
+    url: '/admin/duty/getDutyList',
     method: 'get',
+    params:query
   })
 }
 
@@ -140,7 +141,7 @@ import * as tools from '@/api/_tools.js'
 
  // 模拟数据
  mock
- .onAny('/admin/department/getDepartmentList?subject_id=1')
+ .onAny('/admin/department/getDepartmentList')
  .reply(config => tools.responseSuccess({
   "status": 0,
 	"msg": "OK",
@@ -169,9 +170,10 @@ import * as tools from '@/api/_tools.js'
 	}
  }))
 
-  return requestForMock({
-    url: '/admin/department/getDepartmentList?subject_id=1',
+  return request({
+    url: '/admin/department/getDepartmentList',
     method: 'get',
+    params:query
   })
 }
 
@@ -194,7 +196,7 @@ import * as tools from '@/api/_tools.js'
 
 // 模拟数据
 mock
-.onAny('/admin/user/getUserList?subject_id=1')
+.onAny('/admin/user/getUserList')
 .reply(config => tools.responseSuccess({
     "status": 0,
     "msg": "OK",
@@ -279,9 +281,10 @@ mock
     }
 }))
 
-  return requestForMock({
-    url: '/admin/user/getUserList?subject_id=1',
+  return request({
+    url: '/admin/user/getUserList',
     method: 'get',
+    params:query
   })
 }
 

@@ -7,15 +7,16 @@
         <div class="si_title">系统信息</div>
         <div class="si_user">
           <div class="si_user_icon">
-            <img src="" alt="" />
+            <img src=""
+                 alt="头像" />
           </div>
           <div class="si_user_info">
-            <div class="sui_name">王志辉，欢迎您！</div>
-            <div class="sui_time">最后更新时间：2021-01-01</div>
+            <div class="sui_name">{{account}}，欢迎您！</div>
+            <div class="sui_time">最后更新时间：{{updated_at | formatUpdateTime}}</div>
           </div>
         </div>
         <div class="other_info">
-          <div>上次登录时间：2021-09-10 10:30:56</div>
+          <div>上次登录时间：{{created_at}}</div>
           <div>技术服务电话：029-55667788</div>
           <div>版本号：V1.0.0pro</div>
         </div>
@@ -26,7 +27,8 @@
         <div class="data_group">
           <div class="dg_left">
             <div class="dg_left_title">
-              <img src="./image/mzcp.png" alt="" />
+              <img src="./image/mzcp.png"
+                   alt="" />
               <span>民主测评</span>
             </div>
             <div class="data_text">
@@ -36,7 +38,8 @@
           </div>
           <div class="dg_right">
             <div class="dg_left_title">
-              <img src="./image/wjdc.png" alt="" />
+              <img src="./image/wjdc.png"
+                   alt="" />
               <span>调查问卷</span>
             </div>
             <div class="data_text">
@@ -52,74 +55,102 @@
       <div class="process_title">民主测评操作流程</div>
       <div class="process_1">
         <div class="p_item">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           基础阶段
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           基础信息
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           民主测评表
         </div>
       </div>
       <div class="p_arrow_down">
-        <img class="sp_down" src="./image/down.png" alt="" />
+        <img class="sp_down"
+             src="./image/down.png"
+             alt="" />
       </div>
       <div class="process_2">
         <div class="p_item p_item_2">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           评测阶段
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_2">
-          <img src="./image/p_4.png" alt="" />
+          <img src="./image/p_4.png"
+               alt="" />
           新建测评
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_2">
-          <img src="./image/p_5.png" alt="" />
+          <img src="./image/p_5.png"
+               alt="" />
           启动测评
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_2">
-          <img src="./image/p_6.png" alt="" />
+          <img src="./image/p_6.png"
+               alt="" />
           测评监控
         </div>
       </div>
       <div class="p_arrow_down">
-        <img class="sp_down" src="./image/down.png" alt="" />
+        <img class="sp_down"
+             src="./image/down.png"
+             alt="" />
       </div>
       <div class="process_3">
         <div class="p_item p_item_3">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           反馈阶段
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_3">
-          <img src="./image/p_7.png" alt="" />
+          <img src="./image/p_7.png"
+               alt="" />
           强行结束
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_3">
-          <img src="./image/p_8.png" alt="" />
+          <img src="./image/p_8.png"
+               alt="" />
           统计分析
         </div>
       </div>
@@ -131,17 +162,39 @@
 import {
   GET_UNITTREE_LIST,
   GET_DUTY_LIST,
-  GET_DEPARTMENT_LIST,
-} from "@/api/personnelmanagement.js";
+  GET_DEPARTMENT_LIST
+} from '@/api/personnelmanagement.js'
 
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
   data() {
-    return {};
+    return {
+      account: '', //用户名
+      updated_at: '', // 更新时间
+      created_at: '' //上次登录时间
+    }
+  },
+  computed: {
+    ...mapState('evaluation/base', ['subjectId', 'userInfo'])
+  },
+  created() {
+    console.log(this.userInfo)
+    this.account = this.userInfo.account
+    this.updated_at = this.userInfo.updated_at
+    this.created_at = this.dayjs(this.userInfo.created_at).format(
+      'YYYY-MM-DD HH:mm:ss'
+    )
+  },
+  filters: {
+    formatUpdateTime(val) {
+      if (val) {
+        return val.split('T')[0]
+      }
+    }
   },
   mounted() {},
-  methods: {},
-};
+  methods: {}
+}
 </script>
 
 <style lang="scss" scoped>

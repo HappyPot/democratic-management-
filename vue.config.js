@@ -116,7 +116,7 @@ module.exports = {
   pages,
   configureWebpack: config => {
     const configNew = {
-      devtool:'souce-map'
+      devtool:'inline-cheap-source-map'
     }
     if (process.env.NODE_ENV === 'production') {
       configNew.externals = externals

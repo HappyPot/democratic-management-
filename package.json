@@ -19,7 +19,7 @@
     "clipboard-polyfill": "^2.8.6",
     "core-js": "^3.4.3",
     "countup.js": "^2.0.4",
-    "dayjs": "^1.8.17",
+    "dayjs": "^1.10.7",
     "echarts": "^5.2.0",
     "element-ui": "^2.13.2",
     "faker": "^4.1.0",
