@@ -79,6 +79,17 @@ import * as tools from '@/api/_tools.js'
   })
 }
 
+/**
+  * @description 删除单位
+  */
+ export function DEL_UNIT(query) {
+  return request({
+    url: '/admin/unit/deleteUnit',
+    method: 'post',
+    data:query
+  })
+}
+
 
 /**
   * @description 获取职务列表
@@ -132,7 +143,16 @@ import * as tools from '@/api/_tools.js'
     data:query
   })
 }
-
+/**
+  * @description 删除职务
+  */
+ export function DEL_DUTY(query) {
+  return request({
+    url: '/admin/unit/deleteDuty',
+    method: 'post',
+    data:query
+  })
+}
 
 /**
   * @description 获取部门列表
@@ -187,7 +207,16 @@ import * as tools from '@/api/_tools.js'
     data:query
   })
 }
-
+/**
+  * @description 删除部门
+  */
+ export function DEL_DEPARTMENT(query) {
+  return request({
+    url: '/admin/unit/deleteDepartment',
+    method: 'post',
+    data:query
+  })
+}
 
 /**
   * @description 获取员工列表
@@ -294,6 +323,17 @@ mock
  export function SAVE_USER(query) {
   return request({
     url: '/admin/user/saveUser',
+    method: 'post',
+    data:query
+  })
+}
+
+/**
+  * @description 删除员工
+  */
+ export function DEL_USER(query) {
+  return request({
+    url: '/admin/user/deleteUser',
     method: 'post',
     data:query
   })

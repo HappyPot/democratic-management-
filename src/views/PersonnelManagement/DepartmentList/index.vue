@@ -171,7 +171,8 @@ import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
 import {
   GET_DEPARTMENT_LIST,
-  SAVE_DEPARTMENT
+  SAVE_DEPARTMENT,
+  DEL_DEPARTMENT
 } from '@/api/personnelmanagement.js'
 import { mapState } from 'vuex'
 export default {

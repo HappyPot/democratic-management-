@@ -58,10 +58,10 @@
         </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showEdit">编辑</el-link>
+                     @click="showEdit(scope.$index,scope.row)">编辑</el-link>
             <el-link type="danger"
                      @click="delItem">删除</el-link>
           </template>
@@ -109,11 +109,9 @@
       <div class="addNew">
         <div class="dc_item">
           <div class="dc_text">上级单位</div>
-          <wlTreeSelect leaf
-                        width="500"
+          <wlTreeSelect width="500"
                         placeholder="请选择上级单位"
                         style="margin-right: 10px"
-                        checkbox
                         :data="superiorUnitOptions"
                         @change="getSuperiorUnit"
                         v-model="from.superiorUnit">
@@ -176,7 +174,11 @@ import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
 import { validateTelephone } from '@/untils/validate'
-import { GET_UNITTREE_LIST, SAVE_UNIT } from '@/api/personnelmanagement.js'
+import {
+  GET_UNITTREE_LIST,
+  SAVE_UNIT,
+  DEL_UNIT
+} from '@/api/personnelmanagement.js'
 import { mapState } from 'vuex'
 export default {
   components: {
@@ -202,14 +204,14 @@ export default {
         unitNo: '', //单位编号
         unitName: '', //单位名称
         sortValue: '', //排序
-        superiorUnit: '', //上级单位
+        superiorUnit: [], //上级单位
         isDisableUnit: 1 //单位是否禁用
       }
     }
   },
-  computed: {
-    ...mapState('evaluation/base', ['subjectId'])
-  },
+  // computed: {
+  //   ...mapState('evaluation/base', ['subjectId'])
+  // },
   mounted() {
     this.restaurants = this.loadAll()
     this.subjectId = localStorage.getItem('evaluation_id')
@@ -239,19 +241,20 @@ export default {
       console.log(val, 2)
     },
     // 展示编辑弹框
-    showEdit() {
+    showEdit(index, row) {
       this.resetErrorTip()
       this.typeDialog = '编辑'
       this.dialogAdd = true
+      this.from.unitNo = row.unit_code
+      this.from.unitName = row.unit_name
+      this.from.sortValue = row.sort
+      this.from.is_enable = row.is_enable
+      this.from.superiorUnit = [row]
+      this.from.id = row.id
+      console.log(this.from)
     },
     editData() {
-      this.fromValidate(this.from)
-      // 更新接口
-      if (this.accessSubmit) {
-        alert('更新成功')
-      } else {
-        alert('更新失败')
-      }
+      this.addNewData()
     },
     // 批量导入
     batchImport() {
@@ -259,6 +262,7 @@ export default {
     },
     // 展示新增弹框
     addNew() {
+      this.from.id = undefined
       this.resetErrorTip()
       this.dialogAdd = true
       this.typeDialog = '新增'
@@ -277,6 +281,7 @@ export default {
           is_enable: this.from.isDisableUnit,
           parent_id: this.from.superiorUnit[0].parent_id
         }
+        obj.id = this.from.id || undefined
         console.log('SAVE_UNIT', obj)
         SAVE_UNIT(obj).then(res => {
           if (res.status === 0) {
@@ -295,7 +300,7 @@ export default {
         unitNo: '', //单位编号
         unitName: '', //单位名称
         sortValue: '', //排序
-        superiorUnit: '', //上级单位
+        superiorUnit: [], //上级单位
         isDisableUnit: 1 //单位是否禁用
       }
     },

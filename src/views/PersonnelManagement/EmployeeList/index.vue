@@ -255,7 +255,8 @@ import {
   SAVE_USER,
   GET_UNITTREE_LIST,
   GET_DUTY_LIST,
-  GET_DEPARTMENT_LIST
+  GET_DEPARTMENT_LIST,
+  DEL_USER
 } from '@/api/personnelmanagement.js'
 import { mapState } from 'vuex'
 export default {

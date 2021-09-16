@@ -55,10 +55,10 @@
         </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showEdit">编辑</el-link>
+                     @click="showEdit(scope.$index,scope.row)">编辑</el-link>
             <el-link type="danger"
                      @click="delItem">删除</el-link>
           </template>
@@ -108,7 +108,7 @@
       </span>
     </el-dialog>
     <!--新增 -->
-    <el-dialog title="新增职务"
+    <el-dialog :title="typeDialog"
                center
                :visible.sync="dialogAdd"
                width="700px">
@@ -168,7 +168,11 @@
 import D2Badge from '../../system/index/components/d2-badge'
 import D2Help from '../../system/index/components/d2-help'
 import D2PageCover from '../../system/index/components/d2-page-cover'
-import { GET_DUTY_LIST, SAVE_DUTY } from '@/api/personnelmanagement.js'
+import {
+  GET_DUTY_LIST,
+  SAVE_DUTY,
+  DEL_DUTY
+} from '@/api/personnelmanagement.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -223,7 +227,7 @@ export default {
     },
     // 获取职务列表
     getDutyList() {
-      this.queryParams.subject_id = this.subjectId
+      // this.queryParams.subject_id = this.subjectId
       GET_DUTY_LIST(this.queryParams).then(res => {
         if (res.status === 0) {
           console.log('获取职务列表', res.data.data)
@@ -250,7 +254,7 @@ export default {
       this.fromValidate(this.from)
       if (this.accessSubmit) {
         let obj = {
-          subject_id: this.subjectId,
+          // subject_id: this.subjectId,
           duty_name: this.from.jobName,
           duty_code: this.from.jobNo,
           is_enable: this.from.isDisableJob,
@@ -276,19 +280,18 @@ export default {
       }
     },
     // 展示编辑弹框
-    showEdit() {
+    showEdit(index, row) {
       this.resetErrorTip()
       this.typeDialog = '编辑'
       this.dialogAdd = true
+      this.from.jobNo = row.duty_code
+      this.from.jobName = row.duty_name
+      this.from.sortValue = row.sort
+      this.from.isDisableJob = row.is_enable
+      this.from.id = row.id
     },
     editData() {
-      this.fromValidate(this.from)
-      // 更新接口
-      if (this.accessSubmit) {
-        alert('更新成功')
-      } else {
-        alert('更新失败')
-      }
+      this.addNewData()
     },
     // 删除
     delItem() {

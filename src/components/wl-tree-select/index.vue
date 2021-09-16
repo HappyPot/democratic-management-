@@ -211,7 +211,7 @@ export default {
     event: 'change'
   },
   mounted() {
-    console.log(this.placeholder)
+    console.log(this.value)
   },
   methods: {
     /**
@@ -390,7 +390,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./index.css";
+@import './index.css';
 
 .wl-tree-select {
   position: relative;

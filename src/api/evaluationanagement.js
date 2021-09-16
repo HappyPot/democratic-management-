@@ -19,23 +19,6 @@ mock
 	"data": {
 		"data": [
 			{
-				"id": 1,
-				"title": "机关部门担当作为评议",
-				"type": 1,
-				"form_type": 1,
-				"subject_id": 1,
-				"desc": null,
-				"index_desc": null,
-				"start_time": "2021-09-01 16:10:55",
-				"end_time": "2021-09-02 16:11:00",
-				"is_waiver": null,
-				"is_ip": null,
-				"ip_value": null,
-				"created_at": null,
-				"updated_at": null,
-				"status_name": "已结束"
-			},
-			{
 				"id": 2,
 				"title": "自定义测评",
 				"type": 1,
@@ -93,8 +76,8 @@ mock
 	}
 }))
 
-  return requestForMock({
-    url: '/admin/question/getQuestionList',
+  return request({
+		url: '/admin/question/getQuestionList',
     method: 'get',
   })
 }
@@ -239,3 +222,27 @@ export function SAVE_QUESTION_CONFIG(query) {
 		})
 	}
 	
+	/**
+  * @description 保存测评
+  */
+ export function SAVE_QUESTION(query) {
+	
+	return request({
+		url: '/admin/question/saveQuestion',
+		method: 'post',
+		data:query
+	})
+}
+
+// 
+	/**
+  * @description 测评明细
+  */
+ export function SAVE_QUESTION_DETAIL(query) {
+	
+	return request({
+		url: '/admin/question/getQuestionDetail',
+		method: 'get',
+		params:query
+	})
+}

@@ -22,7 +22,7 @@ export default {
         let arr = Array.from(document.getElementsByClassName('errorTip'))
         for (let index = 0; index < arr.length; index++) {
           const element = arr[index]
-          if (element.getAttribute('data-name') == key && !from[key]) {
+          if (element.getAttribute('data-name') == key && !from[key] || (element.getAttribute('data-name') == key && from[key].length == 0)) {
             element.style.display = 'block'
             this.accessSubmit = false
           }
