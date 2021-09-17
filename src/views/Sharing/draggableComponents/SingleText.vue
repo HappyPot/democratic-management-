@@ -10,6 +10,7 @@
       <div>
         <el-input class="inputcom"
                   size="medium"
+                  disabled
                   v-model="comInfo.value"></el-input>
       </div>
     </div>

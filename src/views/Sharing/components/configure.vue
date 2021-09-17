@@ -54,6 +54,7 @@ export default {
         {
           id: 1,
           type: 'TextCom',
+          typeParam: 2,
           des: '文字',
           value: '默认',
           url: require('../image/text.png'),
@@ -65,6 +66,7 @@ export default {
         {
           id: 2,
           type: 'RadioCom',
+          typeParam: 1,
           des: '单选', //标题全称
           url: require('../image/radio.png'),
           config: {
@@ -73,12 +75,12 @@ export default {
             valueArr: [
               {
                 id: 1,
-                label: '默认',
+                content: '默认',
                 value: 1
               },
               {
                 id: 2,
-                label: '默认2',
+                content: '默认2',
                 value: 2
               }
             ]
@@ -87,6 +89,7 @@ export default {
         {
           id: 3,
           type: 'CheckboxCom',
+          typeParam: 3,
           des: '多选',
           url: require('../image/checkbox.png'),
           config: {
@@ -95,12 +98,12 @@ export default {
             valueArr: [
               {
                 id: 1,
-                label: '默认',
+                content: '默认',
                 value: 1
               },
               {
                 id: 2,
-                label: '默认2',
+                content: '默认2',
                 value: 2
               }
             ]
@@ -109,6 +112,7 @@ export default {
         {
           id: 4,
           type: 'SingleText',
+          typeParam: 4,
           des: '单行文本',
           value: '默认单行文本',
           url: require('../image/linetext.png'),
@@ -120,6 +124,7 @@ export default {
         {
           id: 5,
           type: 'MultilineText',
+          typeParam: 5,
           des: '多行文本',
           value: '默认单行文本',
           url: require('../image/multiline.png'),
@@ -130,7 +135,8 @@ export default {
         }
       ],
       drawingList: [], //左侧
-      componentDataList: []
+      componentDataList: [],
+      issue_list: []
     }
   },
   watch: {
@@ -142,6 +148,26 @@ export default {
     },
     drawingList(val) {
       console.log('drawingListdrawingListdrawingList', val)
+      this.issue_list = []
+      val.map((item, index) => {
+        if (item.typeParam == 1 || item.typeParam == 3) {
+          let obj = {
+            issue: item.des,
+            type: item.typeParam,
+            sort: index,
+            config: item.config.valueArr
+          }
+          this.issue_list.push(obj)
+        } else {
+          let obj = {
+            issue: item.des,
+            type: item.typeParam,
+            sort: index
+          }
+          this.issue_list.push(obj)
+        }
+      })
+      console.log(this.issue_list)
     }
   },
   methods: {
@@ -158,32 +184,26 @@ export default {
           this.componentDataList.push(val)
         }
         console.log('获取组件中的数据LIST', this.componentDataList)
-        let qu = {
-          question_id: '3',
-          issue_list: [
-            {
-              issue: '问题1',
-              type: '1',
-              sort: '1',
-              config: [
-                {
-                  value: '1',
-                  content: '满意'
-                },
-                {
-                  value: '2',
-                  content: '不满意'
-                }
-              ]
-            },
-            {
-              issue: '文本问题2',
-              type: '4',
-              sort: '2'
+        this.issue_list = []
+        this.componentDataList.map((item, index) => {
+          if (item.typeParam == 1 || item.typeParam == 3) {
+            let obj = {
+              issue: item.des,
+              type: item.typeParam,
+              sort: index,
+              config: item.config.valueArr
             }
-          ]
-        }
-        console.log('需要包装的参数', '需要包装的参数')
+            this.issue_list.push(obj)
+          } else {
+            let obj = {
+              issue: item.des,
+              type: item.typeParam,
+              sort: index
+            }
+            this.issue_list.push(obj)
+          }
+        })
+        console.log(this.issue_list)
       }
     },
     // 开始拖动

@@ -148,7 +148,7 @@ import * as tools from '@/api/_tools.js'
   */
  export function DEL_DUTY(query) {
   return request({
-    url: '/admin/unit/deleteDuty',
+    url: '/admin/duty/deleteDuty',
     method: 'post',
     data:query
   })
@@ -212,7 +212,7 @@ import * as tools from '@/api/_tools.js'
   */
  export function DEL_DEPARTMENT(query) {
   return request({
-    url: '/admin/unit/deleteDepartment',
+    url: '/admin/department/deleteDepartment',
     method: 'post',
     data:query
   })

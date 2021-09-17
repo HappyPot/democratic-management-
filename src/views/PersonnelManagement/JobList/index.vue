@@ -60,7 +60,7 @@
                      style="margin-right: 12px"
                      @click="showEdit(scope.$index,scope.row)">编辑</el-link>
             <el-link type="danger"
-                     @click="delItem">删除</el-link>
+                     @click="delItem(scope.$index,scope.row)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -249,12 +249,10 @@ export default {
     },
     // 新增数据
     addNewData() {
-      // 新增数据接口
       // 表单校验
       this.fromValidate(this.from)
       if (this.accessSubmit) {
         let obj = {
-          // subject_id: this.subjectId,
           duty_name: this.from.jobName,
           duty_code: this.from.jobNo,
           is_enable: this.from.isDisableJob,
@@ -294,13 +292,21 @@ export default {
       this.addNewData()
     },
     // 删除
-    delItem() {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+    delItem(index, row) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        alert('删除接口')
+        let obj = {
+          id_list: [row.id]
+        }
+        DEL_DUTY(obj).then(res => {
+          if (res.status == 0) {
+            this.getDutyList()
+            this.msgSuccess('删除成功')
+          }
+        })
       })
     },
     toggleSelection(rows) {

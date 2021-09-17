@@ -37,34 +37,36 @@
         <el-table-column type="selection"
                          width="55">
         </el-table-column>
-        <el-table-column prop="id"
+        <el-table-column type="index"
                          label="序号">
         </el-table-column>
-        <el-table-column prop="name"
+        <el-table-column prop="account"
                          label="登录账号">
         </el-table-column>
-        <el-table-column prop="date"
+        <el-table-column prop="account_type"
                          label="所属角色">
+          <template slot-scope="scope">
+            {{scope.row.account_type == 1?'管理员':'子管理员'}}
+          </template>
         </el-table-column>
-        <el-table-column prop="date"
+        <el-table-column prop="unit_name"
                          label="单位名称">
-        </el-table-column>
-        <el-table-column prop="date"
-                         label="调查时间">
         </el-table-column>
         <el-table-column prop="date"
                          label="是否启用">
           <template slot-scope="scope">
-            <el-switch v-model="tableData[scope.$index].isEnable">
+            <el-switch :active-value="1"
+                       :inactive-value="0"
+                       v-model="tableData[scope.$index].is_enable">
             </el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right:12px"
-                     @click="showEdit">编辑</el-link>
+                     @click="showEdit(scope.row, scope.$index)">编辑</el-link>
             <el-link type="danger"
                      style="margin-right:12px"
                      @click="delItem">删除</el-link>
@@ -72,7 +74,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- 统计 -->
     <el-dialog :title="typeTitle"
                center
                class="dialogSelf"
@@ -99,12 +100,10 @@
         </div>
         <div class="dc_item">
           <div class="dc_text">选择单位</div>
-          <wlTreeSelect leaf
-                        width="500"
-                        placeholder="请选择上级单位"
+          <wlTreeSelect width="500"
+                        placeholder="请选择单位"
                         style="margin-right:10px"
-                        checkbox
-                        :data="unitList"
+                        :data="superiorUnitOptions"
                         v-model="from.unitNo">
           </wlTreeSelect>
           <span class="errorTip"
@@ -142,7 +141,7 @@
 <script>
 import { GET_ADMINUSER_LIST, SAVE_ADMINUSER } from '@/api/rolepermissions.js'
 import { mapState } from 'vuex'
-
+import { GET_UNITTREE_LIST } from '@/api/personnelmanagement.js'
 export default {
   data() {
     return {
@@ -151,15 +150,8 @@ export default {
       dialogAccount: false,
       searchValue: '',
       restaurants: [],
-      tableData: [
-        {
-          id: 1,
-          date: '2021-10-01至2021-10-31',
-          status: 1,
-          name: '01师',
-          isEnable: false
-        }
-      ],
+      tableData: [],
+      superiorUnitOptions: [], //单位数组
       from: {
         loginAccount: '',
         initialPassword: '',
@@ -169,16 +161,33 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapState('evaluation/base', ['subjectId', 'unitList'])
+  created() {
+    this.getAdminUserList()
+    this.getUnitLIst()
   },
   mounted() {
     this.restaurants = this.loadAll()
   },
   methods: {
+    // //获取单位列表
+    getUnitLIst() {
+      GET_UNITTREE_LIST().then(res => {
+        if (res.status === 0) {
+          this.superiorUnitOptions = res.data
+        }
+      })
+    },
+    // 获取角色权限列表
+    getAdminUserList() {
+      GET_ADMINUSER_LIST().then(res => {
+        if (res.status == 0) {
+          this.tableData = res.data.data
+        }
+      })
+    },
     handleSelectionChange() {},
     delItem() {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -187,18 +196,20 @@ export default {
       })
     },
     // 展示编辑框
-    showEdit() {
+    showEdit(row, index) {
       this.dialogAccount = true
       this.typeTitle = '编辑账号'
+      this.from = {
+        loginAccount: row.account,
+        initialPassword: '',
+        unitNo: row,
+        sortValue: row.sort,
+        status: row.is_enable
+      }
     },
     editData() {
       this.fromValidate(this.from)
-      // 更新接口
-      if (this.accessSubmit) {
-        alert('更新成功')
-      } else {
-        alert('更新失败')
-      }
+      this.addNewData()
     },
     // 新增
     addNew() {
@@ -213,20 +224,29 @@ export default {
           account: this.from.loginAccount,
           pwd: this.from.initialPassword,
           unit_id: this.from.unitNo[0].unit_code,
-          subject_id: this.subjectId,
           sort: this.from.sortValue,
-          is_enable: this.from.status
+          is_enable: this.from.status,
+          unit_name: this.from.unitNo[0].unit_name
         }
         console.log('角色新增', obj)
-        return
         SAVE_ADMINUSER(obj).then(res => {
           if (res.status === 0) {
+            this.dialogAccount = false
+            this.initParam()
             this.msgSuccess('新增成功')
           }
         })
-        alert('新增成功')
       } else {
         alert('新增失败')
+      }
+    },
+    initParam() {
+      this.from = {
+        loginAccount: '',
+        initialPassword: '',
+        unitNo: '',
+        sortValue: 1,
+        status: 1
       }
     },
     // 联想补全

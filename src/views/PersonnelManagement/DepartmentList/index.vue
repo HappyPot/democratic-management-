@@ -56,12 +56,12 @@
         </el-table-column>
         <el-table-column label="操作"
                          show-overflow-tooltip>
-          <template>
+          <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showEdit">编辑</el-link>
+                     @click="showEdit(scope.$index,scope.row)">编辑</el-link>
             <el-link type="danger"
-                     @click="delItem">删除</el-link>
+                     @click="delItem(scope.$index,scope.row)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -278,28 +278,35 @@ export default {
       }
     },
     // 展示编辑弹框
-    showEdit() {
+    showEdit(index, row) {
       this.resetErrorTip()
       this.typeDialog = '编辑'
       this.dialogAdd = true
+      this.from.departmentNo = row.department_code
+      this.from.departmentName = row.department_name
+      this.from.sortValue = row.sort
+      this.from.isDisableJob = row.is_enable
+      this.from.id = row.id
     },
     editData() {
-      this.fromValidate(this.from)
-      // 更新接口
-      if (this.accessSubmit) {
-        alert('更新成功')
-      } else {
-        alert('更新失败')
-      }
+      this.addNewData()
     },
     // 删除
-    delItem() {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+    delItem(index, row) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        alert('删除接口')
+        let obj = {
+          id_list: [row.id]
+        }
+        DEL_DEPARTMENT(obj).then(res => {
+          if (res.status == 0) {
+            this.getDepartmentList()
+            this.msgSuccess('删除成功')
+          }
+        })
       })
     },
     toggleSelection(rows) {

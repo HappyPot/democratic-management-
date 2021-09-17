@@ -90,7 +90,7 @@ export function GET_COUNT_QUESTION(query) {
 
 	// 模拟数据
 	mock
-		.onAny('/admin/question/getCountQuestion?page_size=10&question_id=1')
+		.onAny('/admin/question/getCountQuestion')
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
@@ -180,12 +180,12 @@ export function GET_COUNT_QUESTION(query) {
 							},
 							{
 								"num": 1,
-								"value": "3",
+								"value": "2",
 								"proportion": "20.00"
 							},
 							{
 								"num": 1,
-								"value": "4",
+								"value": "3",
 								"proportion": "20.00"
 							}
 						]
@@ -204,9 +204,10 @@ export function GET_COUNT_QUESTION(query) {
 			]
 		}))
 
-	return requestForMock({
-		url: '/admin/question/getCountQuestion?page_size=10&question_id=1',
+	return request({
+		url: '/admin/question/getCountQuestion',
 		method: 'get',
+		params:query
 	})
 }
 
@@ -306,9 +307,10 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 				// }
 			]
 		}))
-	return requestForMock({
-		url: '/admin/question/getQuestionObjectDetail?question_issue_id=4&question_id=1',
-		method: 'get',
+	return request({
+		url: '/admin/question/getQuestionObjectDetail',
+		method: 'post',
+		data:query
 	})
 }
 
@@ -516,8 +518,106 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
   */
  export function SAVE_QUESTION_CONFIG(query) {
 	
-	return requestForMock({
+	return request({
 		url: '/admin/question/saveQuestionConfig',
+		method: 'post',
+		data:query
+	})
+}
+
+	/**
+  * @description 测评明细
+  */
+ export function SAVE_QUESTION_DETAIL(query) {
+
+	// 模拟数据
+	mock
+		.onAny('/admin/question/getQuestionDetail')
+		.reply(config => tools.responseSuccess({
+			"status": 0,
+			"msg": "OK",
+			"data": {
+				"data": [
+					{
+						"question_top_id": 1,
+						"question_issue_id": 4,
+						"user_id": 1,
+						"value": "1",
+						"created_at": null,
+						"code": "100",
+						"department_id": 1,
+						"unit_id": 1,
+						"duty_id": 1,
+						"duty_name": "师领导班子成员",
+						"unit_name": "西安凡数",
+						"department_name": "技术部"
+					},
+					{
+						"question_top_id": 2,
+						"question_issue_id": 4,
+						"user_id": 1,
+						"value": "1",
+						"created_at": null,
+						"code": "100",
+						"department_id": 1,
+						"unit_id": 1,
+						"duty_id": 1,
+						"duty_name": "师领导班子成员",
+						"unit_name": "西安凡数",
+						"department_name": "技术部"
+					},
+					{
+						"question_top_id": 1,
+						"question_issue_id": 4,
+						"user_id": 1,
+						"value": "3",
+						"created_at": null,
+						"code": "100",
+						"department_id": 1,
+						"unit_id": 1,
+						"duty_id": 1,
+						"duty_name": "师领导班子成员",
+						"unit_name": "西安凡数",
+						"department_name": "技术部"
+					},
+					{
+						"question_top_id": 2,
+						"question_issue_id": 4,
+						"user_id": 1,
+						"value": "4",
+						"created_at": null,
+						"code": "100",
+						"department_id": 1,
+						"unit_id": 1,
+						"duty_id": 1,
+						"duty_name": "师领导班子成员",
+						"unit_name": "西安凡数",
+						"department_name": "技术部"
+					},
+					{
+						"question_top_id": 1,
+						"question_issue_id": 4,
+						"user_id": 2,
+						"value": "1",
+						"created_at": null,
+						"code": "101",
+						"department_id": 2,
+						"unit_id": 2,
+						"duty_id": 2,
+						"duty_name": "团场领导班子成员",
+						"unit_name": "凡数分公司",
+						"department_name": "财务部"
+					}
+				],
+				"total": 5,
+				"last_page": 1,
+				"current_page": 1
+			}
+		}))
+	
+	return request({
+		url: '/admin/question/getQuestionDetail',
 		method: 'get',
+		params:query
 	})
 }

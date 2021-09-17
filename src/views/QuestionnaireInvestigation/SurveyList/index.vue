@@ -97,7 +97,7 @@
           <template slot-scope="scope">
             <el-link type="primary"
                      style="margin-right:12px"
-                     @click="showEdit">编辑</el-link>
+                     @click="showEdit(scope.row, scope.$index)">编辑</el-link>
             <el-link type="primary"
                      style="margin-right:12px"
                      @click="showStatistical(scope.row,scope.$index)">统计</el-link>
@@ -117,13 +117,16 @@
     <el-dialog title="统计结果"
                center
                class="dialogSelf"
+               top="7vh"
                :visible.sync="dialogStatistics"
                width="972px">
-      <Statistics></Statistics>
+      <Statistics :statisticsData="statisticsData"
+                  @openDetail="openDetail"
+                  v-if="dialogStatistics"></Statistics>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
-                   @click="dialogStatistics = false">确 定</el-button>
+                   @click="statisticalData">确 定</el-button>
         <el-button @click="dialogStatistics = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -133,7 +136,8 @@
                class="dialogSelf"
                :visible.sync="dialogConfigure"
                width="1000px">
-      <Configure @getComponentParam="getComponentParam"></Configure>
+      <Configure ref="configure"
+                 @getComponentParam="getComponentParam"></Configure>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
@@ -156,7 +160,7 @@
       </span>
     </el-dialog>
     <!-- 明细查询 -->
-    <el-dialog title="事项配置"
+    <el-dialog title="明细查询"
                center
                class="dialogSelf"
                :visible.sync="dialogDetail"
@@ -181,6 +185,7 @@ import {
   GET_QUESTION_LIST,
   GET_COUNT_QUESTION
 } from '@/api/questionnaireInvestigation.js'
+import { SAVE_QUESTION_CONFIG } from '@/api/evaluationanagement.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -196,10 +201,18 @@ export default {
       dialogEdit: false, //新增和编辑
       dialogStatistics: false, //统计弹框展示
       dialogConfigure: false, //事项配置
-      dialogDetail: true, //明细弹框
+      dialogDetail: false, //明细弹框
       searchValue: '',
       restaurants: [],
-      tableData: []
+      tableData: [],
+      //分页参数
+      queryParams: {
+        page: 1,
+        page_size: 10
+      },
+      total: 0,
+      statisticsData: [], //统计回显的数据
+      question_id: -1
     }
   },
   computed: {
@@ -238,9 +251,10 @@ export default {
     },
     delItem() {},
     // 展示编辑框
-    showEdit() {
+    showEdit(row, index) {
       this.dialogEdit = true
       this.typeTitle = '编辑'
+     
     },
     // 更新
     editData() {
@@ -249,27 +263,42 @@ export default {
     },
     // 打开统计弹框
     showStatistical(row, index) {
-      this.dialogStatistics = true
       let obj = {
-        page_size: 10,
+        page_size: this.queryParams.page_size,
+        page: this.queryParams.page,
         question_id: row.id
       }
       console.log('统计查询参数', obj)
       GET_COUNT_QUESTION(obj).then(res => {
+        this.dialogStatistics = true
+        let map = res.data[0].config
+        this.statisticsData = res.data
         if (res.status === 0) {
+          console.log('统计返回值', res.data)
         }
       })
     },
     // 获取统计信息
-    statisticalData() {
-      GET_COUNT_QUESTION().then(res => {})
-    },
+    statisticalData() {},
     // 展示配置框
     showConfig() {
       this.dialogConfigure = true
+      this.question_id = row.id
     },
     // 配置框数据提交
-    configData() {},
+    configData() {
+      debugger
+      let obj = {
+        question_id: this.question_id,
+        issue_list: this.$refs['configure'].issue_list
+      }
+      SAVE_QUESTION_CONFIG(obj).then(res => {
+        if (res.status == 0) {
+          this.dialogConfigure = false
+          this.msgSuccess('保存成功')
+        }
+      })
+    },
     // 展示底稿框
     showPapers() {},
     // 联想补全

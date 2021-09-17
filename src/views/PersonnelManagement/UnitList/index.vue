@@ -63,7 +63,7 @@
                      style="margin-right: 12px"
                      @click="showEdit(scope.$index,scope.row)">编辑</el-link>
             <el-link type="danger"
-                     @click="delItem">删除</el-link>
+                     @click="delItem(scope.$index,scope.row)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -220,9 +220,7 @@ export default {
   methods: {
     // //获取单位列表
     getUnitLIst() {
-      GET_UNITTREE_LIST({
-        subject_id: this.subjectId
-      }).then(res => {
+      GET_UNITTREE_LIST().then(res => {
         if (res.status === 0) {
           this.tableData = res.data
           this.superiorUnitOptions = res.data
@@ -305,13 +303,22 @@ export default {
       }
     },
     // 删除
-    delItem() {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+    delItem(index, row) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        alert('删除接口')
+        let obj = {
+          id_list: [row.id]
+        }
+        console.log('obj', obj)
+        DEL_UNIT(obj).then(res => {
+          if (res.status == 0) {
+            this.getUnitLIst()
+            this.msgSuccess('删除成功')
+          }
+        })
       })
     },
     toggleSelection(rows) {

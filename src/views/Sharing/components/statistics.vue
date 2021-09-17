@@ -2,84 +2,101 @@
   <div class="statistics">
     <div class="subject_group">
       <el-collapse v-model="activeNames">
-        <el-collapse-item title="1.品德修养好，为人诚实守信"
-                          name="1">
-          <div class="table">
-            <div class="table_head table_column">
-              <div class="th th_1">选项</div>
-              <div class="th th_2">小计</div>
-              <div class="th">百分比</div>
+        <el-collapse-item :title="group.issue+'【'+group.type+'】'"
+                          v-for="(group,i) in list"
+                          :name="i"
+                          :key="i">
+          <!-- 单选和多选显示 -->
+          <div v-show="group.type == '单选' || group.type == '多选'">
+            <div class="table">
+              <div class="table_head table_column">
+                <div class="th th_1">选项</div>
+                <div class="th th_2">小计</div>
+                <div class="th">百分比</div>
+              </div>
+              <div class="table_body table_column"
+                   v-for="(item,index) in group.tableData"
+                   :key="index"
+                   v-show="group['mapData'][item['value']]">
+                <div class="th th_1">{{group['mapData'][item['value']]}}</div>
+                <div class="th th_2">{{item.num}}</div>
+                <div class="th">{{item.proportion}}%</div>
+              </div>
+              <div class="table_head table_column">
+                <div class="th th_1">回答本题的人数总计</div>
+                <div class="th th_2">{{group.count}}</div>
+                <div class="th showDetail"
+                     @click="viewDetails">查看明细</div>
+              </div>
             </div>
-            <div class="table_body table_column">
-              <div class="th th_1">满意</div>
-              <div class="th th_2">30</div>
-              <div class="th">20%</div>
-            </div>
-            <div class="table_head table_column">
-              <div class="th th_1">回答本题的人数总计</div>
-              <div class="th th_2">100</div>
-              <div class="th showDetail"
-                   @click="viewDetails">查看明细</div>
-            </div>
-          </div>
-          <div class="result">
-            <div class="result_text">统计结果展示</div>
-            <div class="result_chart">
-              <!-- 按钮部分 -->
-              <div class="rc_switch">
-                <div :class="btnType==1?'rc_btn_gruop fouse':'rc_btn_gruop'"
-                     @click="changeChart(1)">
-                  <img v-if="btnType == 1"
-                       src="../image/pie.png"
-                       alt="">
-                  <img v-else
-                       src="../image/pie_gray.png"
-                       alt="">
-                  饼状图
+            <div class="result">
+              <div class="result_text">统计结果展示</div>
+              <div class="result_chart">
+                <!-- 按钮部分 -->
+                <div class="rc_switch">
+                  <div :class="btnType==1?'rc_btn_gruop fouse':'rc_btn_gruop'"
+                       @click="changeChart(1,group.chartData,i)">
+                    <img v-if="btnType == 1"
+                         src="../image/pie.png"
+                         alt="">
+                    <img v-else
+                         src="../image/pie_gray.png"
+                         alt="">
+                    饼状图
+                  </div>
+                  <div :class="btnType==2?'rc_btn_gruop fouse':'rc_btn_gruop'"
+                       @click="changeChart(2,group.chartData,i)">
+                    <img v-if="btnType == 2"
+                         src="../image/bar.png"
+                         alt="">
+                    <img v-else
+                         src="../image/bar_gray.png"
+                         alt="">
+                    柱状图
+                  </div>
+                  <div :class="btnType==3?'rc_btn_gruop fouse':'rc_btn_gruop'"
+                       @click="changeChart(3,group.chartData,i)">
+                    <img v-if="btnType == 3"
+                         src="../image/line.png"
+                         alt="">
+                    <img v-else
+                         src="../image/line_gray.png"
+                         alt="">
+                    条形图
+                  </div>
+                  <div :class="btnType==4?'rc_btn_gruop fouse':'rc_btn_gruop'"
+                       @click="changeChart(4,group.chartData,i)">
+                    <img v-if="btnType == 4"
+                         src="../image/brokenline.png"
+                         alt="">
+                    <img v-else
+                         src="../image/brokenline_gray.png"
+                         alt="">
+                    折线图
+                  </div>
                 </div>
-                <div :class="btnType==2?'rc_btn_gruop fouse':'rc_btn_gruop'"
-                     @click="changeChart(2)">
-                  <img v-if="btnType == 2"
-                       src="../image/bar.png"
-                       alt="">
-                  <img v-else
-                       src="../image/bar_gray.png"
-                       alt="">
-                  柱状图
-                </div>
-                <div :class="btnType==3?'rc_btn_gruop fouse':'rc_btn_gruop'"
-                     @click="changeChart(3)">
-                  <img v-if="btnType == 3"
-                       src="../image/line.png"
-                       alt="">
-                  <img v-else
-                       src="../image/line_gray.png"
-                       alt="">
-                  条形图
-                </div>
-                <div :class="btnType==4?'rc_btn_gruop fouse':'rc_btn_gruop'"
-                     @click="changeChart(4)">
-                  <img v-if="btnType == 4"
-                       src="../image/brokenline.png"
-                       alt="">
-                  <img v-else
-                       src="../image/brokenline_gray.png"
-                       alt="">
-                  折线图
+                <!-- 图表部分 -->
+                <div class="rc_chart">
+                  <div :id="'my_chart_'+i"
+                       class="my_chart">
+
+                  </div>
                 </div>
               </div>
-              <!-- 图表部分 -->
-              <div class="rc_chart">
-                <div id="my_chart">
-
-                </div>
+            </div>
+          </div>
+          <div v-show="group.type == '文本' || group.type == '单行文本框' || group.type == '文本' || group.type == '多行文本框'">
+            <div class="table">
+              <div class="table_head table_column">
+                <div class="th th_1">{{group.issue}}</div>
+                <div class="th th_2">{{group.text_count}}</div>
+                <div class="th showDetail"
+                     @click="viewDetails">查看明细</div>
               </div>
             </div>
           </div>
         </el-collapse-item>
-
       </el-collapse>
-
     </div>
   </div>
 </template>
@@ -88,50 +105,86 @@ import * as echarts from 'echarts'
 let my_chart = null
 export default {
   name: 'Statistics',
+  props: {
+    statisticsData: {
+      require: true,
+      default: () => []
+    }
+  },
   data() {
     return {
       btnType: 1,
-      activeNames: ['1'],
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+      activeNames: [],
+      mapData: {}, //值与文字的映射
+      list: [], //循环数据
+      typeMap: {
+        1: '单选',
+        2: '文本',
+        3: '多选',
+        4: '单行文本框',
+        5: '多行文本框'
+      }
+    }
+  },
+  created() {
+    console.log('statisticsData', this.statisticsData)
+    let mapData = {}
+    for (let i = 0; i < this.statisticsData.length; i++) {
+      console.log(this.statisticsData[i].type)
+      if (
+        this.statisticsData[i].type == 3 ||
+        this.statisticsData[i].type == 1
+      ) {
+        this.statisticsData[i].config.map(item => {
+          mapData[item.value] = item.content
+        })
+        let arr = []
+        this.statisticsData[i].count[0].map(item => {
+          if (mapData[item['value']]) {
+            let obj = {
+              value: item.num,
+              name: mapData[item['value']]
+            }
+            arr.push(obj)
+          }
+        })
+        let num = 0
+        this.statisticsData[i].count[0].map(item => {
+          num += item.num - 0
+        })
+        let obj = {
+          type: this.typeMap[this.statisticsData[i].type],
+          count: num,
+          issue: this.statisticsData[i].issue,
+          tableData: this.statisticsData[i].count[0],
+          mapData: mapData,
+          chartData: arr
         }
-      ]
+        this.list.push(obj)
+        console.log('this.list', this.list)
+      } else if (
+        this.statisticsData[i].type == 2 ||
+        this.statisticsData[i].type == 4 ||
+        this.statisticsData[i].type == 5
+      ) {
+        let obj = {
+          type: this.typeMap[this.statisticsData[i].type],
+          text_count: this.statisticsData[i].text_count,
+          issue: this.statisticsData[i].issue
+        }
+        this.list.push(obj)
+      }
     }
   },
   methods: {
     // 切换图表
-    changeChart(type) {
+    changeChart(type, data, i) {
       this.btnType = type
-      this.initCharts()
-      // switch (key) {
-      //   case value:
-      //     break
-
-      //   default:
-      //     break
-      // }
+      this.initCharts(type, data, i)
     },
     // 初始化图表
-    initCharts() {
-      my_chart = echarts.init(document.getElementById('my_chart'))
+    initCharts(type, data, i) {
+      let mychart = echarts.init(document.getElementById('my_chart_' + i))
       let option = {
         tooltip: {
           trigger: 'item'
@@ -145,6 +198,7 @@ export default {
             name: '',
             type: 'pie',
             radius: ['30%', '80%'],
+            barWidth: 20,
             emphasis: {
               label: {
                 show: true,
@@ -152,25 +206,101 @@ export default {
                 fontWeight: 'bold'
               }
             },
-            data: [
-              { value: 1048, name: '搜索引擎' },
-              { value: 735, name: '直接访问' },
-              { value: 580, name: '邮件营销' },
-              { value: 484, name: '联盟广告' }
-            ]
+            data: data
           }
         ]
       }
-      my_chart.setOption(option)
+      // let option = {
+      //   tooltip: { trigger: 'item' },
+      //   legend: { orient: 'vertical', right: '0' },
+      //   series: [
+      //     {
+      //       name: '',
+      //       type: 'pie',
+      //       radius: ['30%', '80%'],
+      //       emphasis: {
+      //         label: { show: true, fontSize: '40', fontWeight: 'bold' }
+      //       },
+      //       data: [
+      //         { value: 5, name: '满意' },
+      //         { value: 1, name: '一般' }
+      //       ]
+      //     }
+      //   ]
+      // }
+      let arr = []
+      data.map(item => {
+        arr.push(item.name)
+      })
+      switch (type) {
+        case 1:
+          option.series[0].type = 'pie'
+          break
+        case 2:
+          option.series[0].type = 'bar'
+          option.grid = {
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: 20
+          }
+          option.xAxis = {
+            type: 'category',
+            data: arr
+          }
+          option.yAxis = {
+            type: 'value'
+          }
+          break
+        case 3:
+          option.series[0].type = 'bar'
+          option.yAxis = {
+            type: 'category',
+            data: arr
+          }
+          option.xAxis = {
+            type: 'value'
+          }
+          option.grid = {
+            left: 40,
+            right: 20,
+            top: 20,
+            bottom: 20
+          }
+          break
+        case 4:
+          option.series[0].type = 'line'
+          option.xAxis = {
+            type: 'category',
+            data: arr
+          }
+          option.yAxis = {
+            type: 'value'
+          }
+          option.grid = {
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: 20
+          }
+          break
+      }
+      console.log('option', JSON.stringify(option))
+      mychart.setOption(option, true)
     },
     // 查看明细
     viewDetails() {
+      this.$emit('openDetail')
       console.log('查看明细')
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+.statistics {
+  height: 662px;
+  overflow: auto;
+}
 .subject_item {
   font-size: 14px;
   font-family: PingFang SC;
@@ -243,7 +373,7 @@ export default {
   border: 1px solid #018bf8 !important;
   color: #018bf8 !important;
 }
-#my_chart {
+.my_chart {
   width: 600px;
   height: 200px;
   position: absolute;

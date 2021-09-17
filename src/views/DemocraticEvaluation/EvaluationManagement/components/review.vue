@@ -78,14 +78,15 @@
               </el-radio-group>
             </div>
           </div>
-          <div class="baseInfo_item">
+          <div class="baseInfo_item"
+               v-show="review.type == 1">
             <div class="bt_title">参评人员</div>
             <div class="bt_input">
               <el-input v-model="review.showPeopleConut"
                         style="width: 500px"
                         size="medium"
                         placeholder="请选择参评人员"
-                        @focus="selectPeople" />
+                        @focus="selectPeopleHandle" />
               <span class="errorTip"
                     data-name="people">
                 <i class="el-icon-circle-close"></i>
@@ -258,7 +259,7 @@ export default {
   name: 'Review',
   data() {
     return {
-      activeName: 'third',
+      activeName: 'first',
       peopleOptions: [], //参评人员列表
       review: {
         title: '', //评议标题
@@ -315,7 +316,6 @@ export default {
     // 测试
     test(rows) {
       rows.forEach(row => {
-        debugger
         this.$refs.multipleTable.toggleRowSelection(row, true)
       })
     },
@@ -389,18 +389,18 @@ export default {
     // 选择参选人员
     handleSelectionChange(val) {
       console.log('参选人员', val)
-      // this.review.peopleList = val
-      // this.review.people = ''
-      // let arr = []
-      // val.map(item => {
-      //   arr.push(item.id)
-      // })
-      // this.review.people = arr.join(',')
-      // this.review.showPeopleConut = arr.length + '人'
-      // console.log('aaaa', this.review.people)
+      this.review.peopleList = val
+      this.review.people = ''
+      let arr = []
+      val.map(item => {
+        arr.push(item.id)
+      })
+      this.review.people = arr.join(',')
+      this.review.showPeopleConut = arr.length + '人'
+      console.log('aaaa', this.review.people)
     },
     // 跳转到选择人员
-    selectPeople() {
+    selectPeopleHandle() {
       this.activeName = 'third'
     },
     // 表单校验

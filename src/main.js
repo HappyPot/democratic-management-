@@ -18,25 +18,9 @@ import MixinValidate from '@/views/mixin/validate.js';
 Vue.mixin(MixinValidate);
 import dayjs from "dayjs"
 Vue.prototype.dayjs=dayjs
-// import VueI18n from 'vue-i18n';
-// import VeeValidate from 'vee-validate';
-// import zh_CN from 'vee-validate/dist/locale/zh_CN'
 
-// //启用Vue国际化插件
-// Vue.use(VueI18n)
 
-// //配置VeeValidate
-// const i18n1 = new VueI18n({
-//     locale: 'zh_CN',
-// })
-
-// Vue.use(VeeValidate, {
-//     i18n1,
-//     i18nRootKey: 'validation',
-//     dictionary: {
-//         zh_CN
-//     }
-// });
+Vue.prototype.$EventBus = new Vue()
 
 Vue.config.devtools = true
 Vue.use(draggableComponents)

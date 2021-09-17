@@ -12,7 +12,7 @@
           <div class="compo">
             <el-radio v-for="(item) in comInfo.config.valueArr"
                       :key="item.id"
-                      :label="item.value">{{item.label}}</el-radio>
+                      :label="item.value">{{item.content}}</el-radio>
           </div>
         </el-radio-group>
       </div>
@@ -49,7 +49,7 @@
           </div>
           <el-input class="inputcom"
                     size="medium"
-                    v-model="item.label">
+                    v-model="item.content">
           </el-input>
           <div class="del_icon"
                @click="delItem(index)">
@@ -109,7 +109,7 @@ export default {
       let arr = this.comInfo.config.valueArr
       arr.push({
         id: arr.length + 1,
-        label: `默认${arr.length + 1}`,
+        content: `默认${arr.length + 1}`,
         value: arr.length + 1
       })
     },

@@ -12,6 +12,7 @@
                   style="width: 500px;"
                   type="textarea"
                   size="medium"
+                  disabled
                   v-model="comInfo.value"></el-input>
       </div>
     </div>

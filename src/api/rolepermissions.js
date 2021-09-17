@@ -12,7 +12,7 @@ import * as tools from '@/api/_tools.js'
 
  // 模拟数据
  mock
- .onAny('/admin/adminUser/getAdminUserList?subject_id=1')
+ .onAny('/admin/adminUser/getAdminUserList')
  .reply(config => tools.responseSuccess({
 	"status": 0,
 	"msg": "OK",
@@ -33,8 +33,8 @@ import * as tools from '@/api/_tools.js'
 	}
 }))
 
-  return requestForMock({
-    url: '/admin/adminUser/getAdminUserList?subject_id=1',
+  return request({
+    url: '/admin/adminUser/getAdminUserList',
     method: 'get',
   })
 }
@@ -46,7 +46,7 @@ import * as tools from '@/api/_tools.js'
 
   // 模拟数据
   mock
-  .onAny('/admin/adminUser/getAdminUserList?subject_id=1')
+  .onAny('/admin/adminUser/getAdminUserList')
   .reply(config => tools.responseSuccess({
    "status": 0,
    "msg": "OK",
@@ -67,7 +67,7 @@ import * as tools from '@/api/_tools.js'
    }
  }))
  
-   return requestForMock({
+   return request({
      url: '/admin/adminUser/saveAdminUser',
      method: 'POST',
      data:query

@@ -85,7 +85,7 @@
                      @click="showStatistical(scope.row, scope.$index)">统计</el-link>
             <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showConfig">配置</el-link>
+                     @click="showConfig(scope.row, scope.$index)">配置</el-link>
             <el-link type="primary"
                      style="margin-right: 12px"
                      @click="showPapers">底稿</el-link>
@@ -120,7 +120,9 @@
                class="dialogSelf"
                :visible.sync="dialogStatistics"
                width="972px">
-      <Statistics></Statistics>
+      <Statistics :statisticsData="statisticsData"
+                  @openDetail="openDetail"
+                  v-if="dialogStatistics"></Statistics>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
@@ -135,12 +137,27 @@
                class="dialogSelf"
                :visible.sync="dialogConfigure"
                width="1000px">
-      <Configure @getComponentParam="getComponentParam"></Configure>
+      <Configure ref="configure"
+                 @getComponentParam="getComponentParam"></Configure>
       <span slot="footer"
             class="dialog-footer">
         <el-button type="primary"
                    @click="configData">确 定</el-button>
         <el-button @click="dialogConfigure = false">取 消</el-button>
+      </span>
+    </el-dialog>
+    <!-- 明细查询 -->
+    <el-dialog title="明细查询"
+               center
+               class="dialogSelf"
+               :visible.sync="dialogDetail"
+               width="1000px">
+      <DetailQuery v-if="dialogDetail"></DetailQuery>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="dialogDetail = false">确 定</el-button>
+        <el-button @click="dialogDetail = false">取 消</el-button>
       </span>
     </el-dialog>
   </d2-container>
@@ -149,13 +166,16 @@
 import Review from './components/review'
 import Statistics from '@/views/Sharing/components/statistics'
 import Configure from '@/views/Sharing/components/configure'
+import DetailQuery from '../../QuestionnaireInvestigation/SurveyList/components/detailQuery'
+
 import {
   GET_QUESTION_LIST,
   GET_COUNT_QUESTION
 } from '@/api/questionnaireInvestigation.js'
 import {
   SAVE_QUESTION,
-  SAVE_QUESTION_DETAIL
+  SAVE_QUESTION_DETAIL,
+  SAVE_QUESTION_CONFIG
 } from '@/api/evaluationanagement.js'
 
 import { mapState } from 'vuex'
@@ -163,7 +183,8 @@ export default {
   components: {
     Review,
     Configure,
-    Statistics
+    Statistics,
+    DetailQuery
   },
   data() {
     return {
@@ -172,11 +193,19 @@ export default {
       dialogStatistics: false, //控制统计框
       dialogConfigure: false, //控制配置框
       dialogPapers: false, //控制低稿框
+      dialogDetail: false, //明细查询
       searchValue: '', //搜索值
       restaurants: [],
       tableData: [],
       parentData: {}, //编辑组件中的数据
-      data: {}
+      //分页参数
+      queryParams: {
+        page: 1,
+        page_size: 10
+      },
+      total: 0,
+      statisticsData: [], //统计回显的数据
+      question_id: -1
     }
   },
   mounted() {
@@ -185,6 +214,9 @@ export default {
     this.getQuestionList()
   },
   methods: {
+    openDetail() {
+      this.dialogDetail = true
+    },
     getComponentParam(val) {
       console.log('组价中传输来的数据', val)
     },
@@ -198,6 +230,7 @@ export default {
     },
     // 展示编辑框
     showEdit(row, index) {
+      debugger
       SAVE_QUESTION_DETAIL({
         id: row.id
       }).then(res => {
@@ -241,13 +274,16 @@ export default {
     },
     // 展示统计框
     showStatistical(row, index) {
-      this.dialogStatistics = true
       let obj = {
-        page_size: 10,
+        page_size: this.queryParams.page_size,
+        page: this.queryParams.page,
         question_id: row.id
       }
       console.log('统计查询参数', obj)
       GET_COUNT_QUESTION(obj).then(res => {
+        this.dialogStatistics = true
+        let map = res.data[0].config
+        this.statisticsData = res.data
         if (res.status === 0) {
           console.log('统计返回值', res.data)
         }
@@ -256,13 +292,22 @@ export default {
     // 统计数据提交
     statisticalData() {},
     // 展示配置框
-    showConfig() {
+    showConfig(row, index) {
       this.dialogConfigure = true
+      this.question_id = row.id
     },
     // 配置框数据提交 保存测评
     configData() {
-      let obj = {}
-      SAVE_QUESTION_CONFIG(obj).then(res => {})
+      let obj = {
+        question_id: this.question_id,
+        issue_list: this.$refs['configure'].issue_list
+      }
+      SAVE_QUESTION_CONFIG(obj).then(res => {
+        if (res.status == 0) {
+          this.dialogConfigure = false
+          this.msgSuccess('保存成功')
+        }
+      })
     },
     // 展示底稿框
     showPapers() {},
@@ -271,6 +316,24 @@ export default {
     addNew() {
       this.dialogReview = true
       this.typeTitle = '评议添加'
+      this.initParam()
+    },
+    initParam() {
+      this.$refs['review'].review = {
+        title: '', //评议标题
+        date: [], //评议时间
+        mark: '', //评议说明
+        isIp: 1, //是否同IP参评
+        accessIp: '', //允许IP段
+        type: 1, //评议类型
+        isWaiver: 1, //是否允许弃权
+        status: 1, //评议状态
+        people: '', //参评人员
+        showPeopleConut: 0, //参评人员数量
+        peopleList: [], //参评人员具体对象
+        textarea: '', //首页说明
+        appraisalSubject: [] //评议主体
+      }
     },
     // 新增
     addNewDate() {
@@ -303,6 +366,9 @@ export default {
         console.log('param11', param)
         SAVE_QUESTION(param).then(res => {
           if (res.status === 0) {
+            this.dialogReview = false
+            this.getQuestionList()
+
             this.msgSuccess('保存成功')
           }
         })
