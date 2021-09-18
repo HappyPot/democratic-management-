@@ -338,3 +338,14 @@ mock
     data:query
   })
 }
+
+/**
+  * @description 删除员工
+  */
+ export function GET_USER_INFO(query) {
+  return request({
+    url: '/admin/user/getUserInfoß',
+    method: 'get',
+    params:query
+  })
+}
