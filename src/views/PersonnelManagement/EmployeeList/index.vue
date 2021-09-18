@@ -333,7 +333,6 @@ export default {
     // 获取职务列表
     getDutyList() {
       GET_DUTY_LIST({
-        subject_id: this.subjectId,
         page: 1,
         page_size: 9999
       }).then(res => {
@@ -379,7 +378,6 @@ export default {
     },
     // 获取员工列表
     getUserList() {
-      this.queryParams.subject_id = this.subjectId
       GET_USER_LIST(this.queryParams).then(res => {
         if (res.status === 0) {
           this.tableData = res.data.data

@@ -3,14 +3,17 @@
     <div class="unit_list">
       <div class="unit_list_search">
         <div class="ul_item">
-          <el-autocomplete class="inline-input"
-                           size="medium"
-                           v-model="searchValue"
-                           :fetch-suggestions="querySearch"
-                           placeholder="部门名称或者部门编码"
-                           prefix-icon="el-icon-search"
-                           :trigger-on-focus="false"
-                           @select="handleSelect"></el-autocomplete>
+          <el-input class="inline-input"
+                    size="medium"
+                    v-model="queryParams.search_name"
+                    placeholder="单位名称或者单位编码">
+            <template slot="append">
+              <div class="search_append"
+                   @click="searchList">
+                搜索
+              </div>
+            </template>
+          </el-input>
         </div>
         <div class="ul_item">
           <el-button type="primary"
@@ -201,13 +204,11 @@ export default {
       //分页参数
       queryParams: {
         page: 1, //当前第几页
-        page_size: 10 //每页显示的条数
+        page_size: 10, //每页显示的条数
+        search_name: ''
       },
       total: 0
     }
-  },
-  computed: {
-    ...mapState('evaluation/base', ['subjectId'])
   },
   mounted() {
     this.restaurants = this.loadAll()
@@ -215,6 +216,10 @@ export default {
     this.getDepartmentList()
   },
   methods: {
+    // 搜索功能
+    searchList() {
+      this.getDepartmentList()
+    },
     // 设置每页条数
     handleSizeChange(val) {
       this.queryParams.page_size = val
@@ -227,7 +232,6 @@ export default {
     },
     // 获取部门列表
     getDepartmentList() {
-      this.queryParams.subject_id = this.subject_id
       GET_DEPARTMENT_LIST(this.queryParams).then(res => {
         if (res.status === 0) {
           this.tableData = res.data.data
@@ -259,6 +263,7 @@ export default {
           sort: this.from.sortValue - 0
         }
         console.log('保存部门', obj)
+        obj.id = this.from.id || undefined
         SAVE_DEPARTMENT(obj).then(res => {
           if (res.status === 0) {
             this.dialogAdd = false

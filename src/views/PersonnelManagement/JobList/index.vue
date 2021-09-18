@@ -3,14 +3,17 @@
     <div class="unit_list">
       <div class="unit_list_search">
         <div class="ul_item">
-          <el-autocomplete class="inline-input"
-                           size="medium"
-                           v-model="searchValue"
-                           :fetch-suggestions="querySearch"
-                           placeholder="职务名称或者职务编码"
-                           prefix-icon="el-icon-search"
-                           :trigger-on-focus="false"
-                           @select="handleSelect"></el-autocomplete>
+          <el-input class="inline-input"
+                    size="medium"
+                    v-model="queryParams.search_name"
+                    placeholder="单位名称或者单位编码">
+            <template slot="append">
+              <div class="search_append"
+                   @click="searchList">
+                搜索
+              </div>
+            </template>
+          </el-input>
         </div>
         <div class="ul_item">
           <el-button type="primary"
@@ -201,13 +204,11 @@ export default {
       //分页参数
       queryParams: {
         page: 1,
-        page_size: 10
+        page_size: 10,
+        search_name: ''
       },
       total: 0
     }
-  },
-  computed: {
-    ...mapState('evaluation/base', ['subjectId'])
   },
   mounted() {
     this.restaurants = this.loadAll()
@@ -215,6 +216,10 @@ export default {
     this.getDutyList()
   },
   methods: {
+    // 搜索功能
+    searchList() {
+      this.getDutyList()
+    },
     // 设置每页条数
     handleSizeChange(val) {
       this.queryParams.page_size = val
@@ -227,7 +232,6 @@ export default {
     },
     // 获取职务列表
     getDutyList() {
-      // this.queryParams.subject_id = this.subjectId
       GET_DUTY_LIST(this.queryParams).then(res => {
         if (res.status === 0) {
           console.log('获取职务列表', res.data.data)
@@ -258,6 +262,7 @@ export default {
           is_enable: this.from.isDisableJob,
           sort: this.from.sortValue
         }
+        obj.id = this.from.id || undefined
         console.log('职务提交', obj)
         SAVE_DUTY(obj).then(res => {
           if (res.status === 0) {

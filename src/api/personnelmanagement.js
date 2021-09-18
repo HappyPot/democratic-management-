@@ -312,8 +312,8 @@ mock
 
   return request({
     url: '/admin/user/getUserList',
-    method: 'get',
-    params:query
+    method: 'post',
+    data:query
   })
 }
 
