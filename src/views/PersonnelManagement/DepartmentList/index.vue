@@ -7,7 +7,7 @@
             class="inline-input"
             size="medium"
             v-model="queryParams.search_name"
-            placeholder="单位名称或者单位编码"
+            placeholder="部门名称或者部门编码"
           >
             <template slot="append">
               <div class="search_append" @click="searchList">搜索</div>

@@ -79,6 +79,7 @@ export function GET_QUESTION_LIST(query) {
 	return request({
 		url: '/admin/question/getQuestionList',
 		method: 'get',
+		params: query
 	})
 }
 
@@ -207,7 +208,7 @@ export function GET_COUNT_QUESTION(query) {
 	return request({
 		url: '/admin/question/getCountQuestion',
 		method: 'get',
-		params:query
+		params: query
 	})
 }
 
@@ -310,7 +311,7 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 	return request({
 		url: '/admin/question/getQuestionObjectDetail',
 		method: 'post',
-		data:query
+		data: query
 	})
 }
 
@@ -513,22 +514,22 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
 	})
 }
 
-	/**
-  * @description 保存测评配置
-  */
- export function SAVE_QUESTION_CONFIG(query) {
-	
+/**
+* @description 保存测评配置
+*/
+export function SAVE_QUESTION_CONFIG(query) {
+
 	return request({
 		url: '/admin/question/saveQuestionConfig',
 		method: 'post',
-		data:query
+		data: query
 	})
 }
 
-	/**
-  * @description 测评明细
-  */
- export function SAVE_QUESTION_DETAIL(query) {
+/**
+* @description 测评明细
+*/
+export function SAVE_QUESTION_DETAIL(query) {
 
 	// 模拟数据
 	mock
@@ -614,10 +615,10 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
 				"current_page": 1
 			}
 		}))
-	
+
 	return request({
 		url: '/admin/question/getQuestionDetail',
 		method: 'get',
-		params:query
+		params: query
 	})
 }

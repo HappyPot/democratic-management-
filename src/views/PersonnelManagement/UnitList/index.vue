@@ -320,6 +320,7 @@ export default {
       // 新增数据接口
       // 表单校验
       this.fromValidate(this.from);
+      debugger;
       if (this.accessSubmit) {
         let obj = {
           subject_id: this.subjectId,
@@ -327,8 +328,11 @@ export default {
           unit_code: this.from.unitNo,
           sort: this.from.sortValue,
           is_enable: this.from.isDisableUnit,
-          parent_id: this.from.superiorUnit[0].parent_id,
+          parent_id: null,
         };
+        if (this.from.superiorUnit.length > 0) {
+          obj["parent_id"] = this.from.superiorUnit[0].id;
+        }
         obj.id = this.from.id || undefined;
         console.log("SAVE_UNIT", obj);
         SAVE_UNIT(obj).then((res) => {

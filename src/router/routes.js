@@ -85,6 +85,11 @@ const errorPage = [
     path: '*',
     name: '404',
     component: _import('system/error/404')
+  },
+  {
+    path: '/offline',
+    name: 'offline',
+    component: _import('system/error/offline')
   }
 ]
 

@@ -182,7 +182,7 @@
     >
       <div class="addNew">
         <div class="dc_item">
-          <div class="dc_text">所属单位</div>
+          <div class="dc_text"><i class="redTip">*</i>所属单位</div>
           <wlTreeSelect
             leaf
             width="500"
@@ -491,7 +491,6 @@ export default {
     // 展示编辑弹框
     showEdit(index, row) {
       console.log(row);
-      debugger;
       this.resetErrorTip();
       this.typeDialog = "编辑员工";
       this.dialogAdd = true;

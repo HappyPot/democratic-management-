@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {getToken} from "@/untils/auth.js"
+import { getToken } from "@/untils/auth.js"
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -10,14 +10,15 @@ import util from '@/libs/util.js'
 
 // 路由数据
 import routes from './routes'
+const isOnline = require('is-online');
 
 // fix vue-router NavigationDuplicated
 const VueRouterPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
   return VueRouterPush.call(this, location).catch(err => err)
 }
 const VueRouterReplace = VueRouter.prototype.replace
-VueRouter.prototype.replace = function replace (location) {
+VueRouter.prototype.replace = function replace(location) {
   return VueRouterReplace.call(this, location).catch(err => err)
 }
 
@@ -25,15 +26,16 @@ Vue.use(VueRouter)
 
 // 导出路由 在 main.js 里使用
 const router = new VueRouter({
-  mode:"history",
+  mode: "history",
   routes
 })
-
+let isOnlineFlag = true
 /**
  * 路由拦截
  * 权限验证
  */
 router.beforeEach(async (to, from, next) => {
+
   // 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
   await store.dispatch('d2admin/page/isLoaded')
   // 确认已经加载组件尺寸设置 https://github.com/d2-projects/d2-admin/issues/198

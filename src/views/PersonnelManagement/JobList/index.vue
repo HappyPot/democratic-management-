@@ -7,7 +7,7 @@
             class="inline-input"
             size="medium"
             v-model="queryParams.search_name"
-            placeholder="单位名称或者单位编码"
+            placeholder="职务名称或者职务编码"
           >
             <template slot="append">
               <div class="search_append" @click="searchList">搜索</div>
@@ -259,6 +259,7 @@ export default {
     // 设置每页条数
     handleSizeChange(val) {
       this.queryParams.page_size = val;
+      this.getDutyList();
       console.log(`每页 ${val} 条`);
     },
     // 触发分页

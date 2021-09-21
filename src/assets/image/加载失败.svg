@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 800 800" style="enable-background:new 0 0 800 800;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:url(#SVGID_2_);}
+	.st2{fill:url(#SVGID_3_);}
+	.st3{fill:url(#SVGID_4_);}
+	.st4{fill-rule:evenodd;clip-rule:evenodd;fill:url(#形状结合_1_);}
+	.st5{fill-rule:evenodd;clip-rule:evenodd;fill:url(#形状结合备份_1_);}
+	.st6{fill-rule:evenodd;clip-rule:evenodd;fill:#C2C6CC;}
+	.st7{fill-rule:evenodd;clip-rule:evenodd;fill:url(#Fill-1_3_);}
+	.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#C2C6CB;}
+	.st9{fill-rule:evenodd;clip-rule:evenodd;fill:url(#Fill-1_4_);}
+	.st10{fill-rule:evenodd;clip-rule:evenodd;fill:url(#Fill-1_5_);}
+	.st11{opacity:0.98;fill:url(#SVGID_5_);enable-background:new    ;}
+	.st12{fill:url(#SVGID_6_);}
+	.st13{fill:#FFFFFF;}
+</style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="400.4156" y1="-171" x2="400.4156" y2="333.2725" gradientTransform="matrix(1 0 0 -1 0 802)">
+	<stop  offset="0.4171" style="stop-color:#F8FAFC;stop-opacity:0"/>
+	<stop  offset="1" style="stop-color:#ECEFF4"/>
+</linearGradient>
+<ellipse class="st0" cx="400.4" cy="720.9" rx="286.2" ry="252.1"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="397.4156" y1="180.2725" x2="397.4156" y2="319.2725" gradientTransform="matrix(1 0 0 -1 0 802)">
+	<stop  offset="0" style="stop-color:#DFE2E5;stop-opacity:0"/>
+	<stop  offset="1" style="stop-color:#D7DCE2;stop-opacity:0.5"/>
+</linearGradient>
+<ellipse class="st1" cx="397.4" cy="552.2" rx="193.9" ry="69.5"/>
+<g>
+	
+		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="397.4156" y1="201.2725" x2="397.4156" y2="290.3725" gradientTransform="matrix(1 0 0 -1 0 802)">
+		<stop  offset="0" style="stop-color:#A7B1C1"/>
+		<stop  offset="1" style="stop-color:#D7DDE2"/>
+	</linearGradient>
+	<path class="st2" d="M571.4,550.6c0,27.7-77.9,50.1-174,50.1s-174-22.4-174-50.1c0-6,0-10,0-16.7c24.1-19.3,98.6-22.3,174-22.3
+		c76.8,0,150.9,0.2,174,20C571.4,542.8,571.4,545,571.4,550.6z"/>
+	
+		<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="397.4156" y1="219.0725" x2="397.4156" y2="319.2725" gradientTransform="matrix(1 0 0 -1 0 802)">
+		<stop  offset="0" style="stop-color:#C6D0E0"/>
+		<stop  offset="1" style="stop-color:#FFFFFF"/>
+	</linearGradient>
+	<ellipse class="st3" cx="397.4" cy="532.8" rx="174" ry="50.1"/>
+</g>
+<linearGradient id="形状结合_1_" gradientUnits="userSpaceOnUse" x1="97.8705" y1="788.5439" x2="97.8705" y2="790.4552" gradientTransform="matrix(40.61 0 0 -26.2 -3723.1196 20906.7031)">
+	<stop  offset="0" style="stop-color:#F5F7FA;stop-opacity:0"/>
+	<stop  offset="1" style="stop-color:#D9DEE4"/>
+</linearGradient>
+<path id="形状结合" class="st4" d="M250.5,196.8c15.6,0,29.5,7.1,38.7,18.1c2-0.4,4.1-0.6,6.2-0.6c18.5,0,33.5,14.9,33.5,33.4
+	s-15,33.4-33.5,33.4c-2.6,0-5.1-0.3-7.5-0.8c-9.2,10.2-22.6,16.7-37.4,16.7c-14.7,0-28-6.3-37.2-16.4c-2,0.4-4,0.5-6,0.5
+	c-18.5,0-33.5-14.9-33.5-33.4s15-33.4,33.5-33.4c1.6,0,3.2,0.1,4.7,0.3C221.2,203.7,235.1,196.8,250.5,196.8z"/>
+<linearGradient id="形状结合备份_1_" gradientUnits="userSpaceOnUse" x1="99.8366" y1="791.259" x2="99.8366" y2="793.1702" gradientTransform="matrix(51.745 0 0 -33.405 -4661.7344 26628.7832)">
+	<stop  offset="0" style="stop-color:#F5F7FA;stop-opacity:0"/>
+	<stop  offset="1" style="stop-color:#D9DEE4"/>
+</linearGradient>
+<path id="形状结合备份" class="st5" d="M503.2,132.9c19.9,0,37.6,9,49.4,23.1c2.6-0.5,5.2-0.7,8-0.7
+	c23.6,0,42.7,19.1,42.7,42.6s-19.1,42.6-42.7,42.6c-3.3,0-6.5-0.4-9.6-1.1c-11.7,13-28.8,21.2-47.7,21.2c-18.8,0-35.6-8-47.4-20.9
+	c-2.5,0.5-5.1,0.7-7.7,0.7c-23.6,0-42.7-19.1-42.7-42.6s19.1-42.6,42.7-42.6c2,0,4,0.1,6,0.4C465.9,141.8,483.5,132.9,503.2,132.9z"
+	/>
+<g id="编组-6" transform="translate(57.515382, 71.394997)">
+	<polygon id="Fill-3" class="st6" points="107.6,512.8 116.3,512.8 116.3,443.7 107.6,443.7 	"/>
+	
+		<linearGradient id="Fill-1_3_" gradientUnits="userSpaceOnUse" x1="39.0055" y1="708.8625" x2="36.6639" y2="708.8625" gradientTransform="matrix(15.72 0 0 -26.2 -490.3282 19015.8496)">
+		<stop  offset="0" style="stop-color:#D9DEE4"/>
+		<stop  offset="1" style="stop-color:#F5F7FA"/>
+	</linearGradient>
+	<path id="Fill-1" class="st7" d="M137.9,461c0,20.5-11.6,25.8-25.9,25.8S86,481.6,86,461s11.6-60.6,25.9-60.6
+		S137.9,440.5,137.9,461"/>
+	<polygon id="路径-20" class="st6" points="120.2,510.6 73.1,526.2 111.5,510.6 	"/>
+</g>
+<g id="编组-5" transform="translate(39.175383, 96.939996)">
+	<polygon id="Fill-3_1_" class="st8" points="280.5,572.4 286.4,572.4 286.4,525.4 280.5,525.4 	"/>
+	
+		<linearGradient id="Fill-1_4_" gradientUnits="userSpaceOnUse" x1="73.8962" y1="670.8529" x2="71.5546" y2="670.8529" gradientTransform="matrix(10.6896 0 0 -17.816 -499.0704 12477.2686)">
+		<stop  offset="0" style="stop-color:#D9DEE4"/>
+		<stop  offset="1" style="stop-color:#F5F7FA"/>
+	</linearGradient>
+	<path id="Fill-1_1_" class="st9" d="M301.1,537.2c0,14-7.9,17.6-17.6,17.6s-17.6-3.6-17.6-17.6s7.9-41.2,17.6-41.2
+		S301.1,523.2,301.1,537.2"/>
+	<polygon id="路径-20_1_" class="st8" points="289,570.9 257,581.5 283.2,570.9 	"/>
+</g>
+<g id="编组-3" transform="translate(186.930385, 97.500000) scale(-1, 1) translate(-186.930385, -97.500000) translate(179.930385, 82.500000)">
+	<polygon id="Fill-3_2_" class="st8" points="-431.3,522.5 -425.4,522.5 -425.4,475.5 -431.3,475.5 	"/>
+	
+		<linearGradient id="Fill-1_5_" gradientUnits="userSpaceOnUse" x1="129.7348" y1="688.7028" x2="127.3932" y2="688.7028" gradientTransform="matrix(-10.6896 0 0 -17.816 965.5263 12734.5322)">
+		<stop  offset="0" style="stop-color:#D9DEE4"/>
+		<stop  offset="1" style="stop-color:#F5F7FA"/>
+	</linearGradient>
+	<path id="Fill-1_2_" class="st10" d="M-411.1,476.4c0,14-7.9,17.6-17.6,17.6c-9.7,0-17.6-3.6-17.6-17.6s7.9-41.2,17.6-41.2
+		C-419,435.2-411.1,462.4-411.1,476.4"/>
+	<polygon id="路径-20_2_" class="st8" points="-424.2,522.6 -456.2,533.2 -430.1,522.6 	"/>
+</g>
+<linearGradient id="SVGID_5_" gradientUnits="userSpaceOnUse" x1="346.6318" y1="516.0831" x2="479.5905" y2="516.0831" gradientTransform="matrix(1.1345 -0.9018 -3.149744e-02 2.0736 -31.2689 -192.4848)">
+	<stop  offset="0" style="stop-color:#B4C0CC"/>
+	<stop  offset="1" style="stop-color:#CED8E0;stop-opacity:0"/>
+</linearGradient>
+<path class="st11" d="M495.1,524.7c-3.6,13.6-39.6,15.8-80.4,5s-71-30.6-67.5-44.1c3.6-13.6,39.6-15.8,80.4-5
+	S498.7,511.1,495.1,524.7z"/>
+<g>
+	<linearGradient id="SVGID_6_" gradientUnits="userSpaceOnUse" x1="312.464" y1="433.232" x2="482" y2="433.232">
+		<stop  offset="0" style="stop-color:#C6D0E0"/>
+		<stop  offset="1" style="stop-color:#EFF2F6"/>
+	</linearGradient>
+	<circle class="st12" cx="397.2" cy="433.2" r="84.8"/>
+	<polygon class="st13" points="438.2,401.2 429.3,392.3 397.2,424.3 365.2,392.3 356.3,401.2 388.3,433.2 356.3,465.3 365.2,474.2 
+		397.2,442.1 429.3,474.2 438.2,465.3 406.2,433.2 	"/>
+</g>
+</svg>

@@ -1,31 +1,38 @@
 <template>
-  <div class="d2-layout-header-aside-group"
-       :style="styleLayoutMainGroup"
-       :class="{ grayMode: grayActive }">
+  <div
+    class="d2-layout-header-aside-group"
+    :style="styleLayoutMainGroup"
+    :class="{ grayMode: grayActive }"
+  >
     <!-- 半透明遮罩 -->
     <div class="d2-layout-header-aside-mask"></div>
     <!-- 主体内容 -->
-    <div class="d2-layout-header-aside-content"
-         flex="dir:top">
+    <div class="d2-layout-header-aside-content" flex="dir:top">
       <!-- 顶栏 -->
-      <div class="d2-theme-header"
-           :style="{ opacity: this.searchActive ? 0.5 : 1 }"
-           flex-box="0"
-           flex>
-        <router-link to="/index"
-                     style="
+      <div
+        class="d2-theme-header"
+        :style="{ opacity: this.searchActive ? 0.5 : 1 }"
+        flex-box="0"
+        flex
+      >
+        <router-link
+          to="/index"
+          style="
             display: flex;
             align-items: center;
             justify-content: center;
             color: #000;
           "
-                     :class="{ 'logo-group': true, 'logo-transition': asideTransition }"
-                     :style="{ width: asideCollapse ? asideWidthCollapse : asideWidth }"
-                     flex-box="0">
+          :class="{ 'logo-group': true, 'logo-transition': asideTransition }"
+          :style="{ width: asideCollapse ? asideWidthCollapse : asideWidth }"
+          flex-box="0"
+        >
           <!-- <img v-if="asideCollapse" :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/icon-only.png`">
           <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all.png`"> -->
-          <img style="width: 16px; height: 16px; margin-right: 5px"
-               src="../../assets/image/logo.png" />
+          <img
+            style="width: 16px; height: 16px; margin-right: 5px"
+            src="../../assets/image/logo.png"
+          />
           <span class="logo_title">民主评测管理</span>
         </router-link>
         <!-- <div class="toggle-aside-btn"
@@ -35,27 +42,23 @@
         </div> -->
         <d2-menu-header flex-box="1" />
         <!-- 顶栏右侧 -->
-        <div class="d2-header-right"
-             flex-box="0">
+        <div class="d2-header-right" flex-box="0">
           <div class="contactUs">
-            <img src="../../assets/image/contactUs.png"
-                 alt="" />
+            <img src="../../assets/image/contactUs.png" alt="" />
             联系我们
           </div>
           <div class="userInfo">
-            <img src="../../assets/image/userinfo.jpeg"
-                 alt="" />
+            <img src="../../assets/image/userinfo.jpeg" alt="" />
             <span>赵微微</span>
-            <i class="el-icon-arrow-down"
-               @click="extend"></i>
-            <div :class="showActive ? 'extend_menu active_extend' : 'extend_menu'">
+            <i class="el-icon-arrow-down" @click="extend"></i>
+            <div
+              :class="showActive ? 'extend_menu active_extend' : 'extend_menu'"
+            >
               <span class="triangle-up"></span>
-              <div class="extend_item"
-                   style="margin-bottom: 20px">
+              <div class="extend_item" style="margin-bottom: 20px">
                 修改密码
               </div>
-              <div class="extend_item"
-                   @click="logout">退出登录</div>
+              <div class="extend_item" @click="logout">退出登录</div>
             </div>
           </div>
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
@@ -70,51 +73,54 @@
         </div>
       </div>
       <!-- 下面 主体 -->
-      <div class="d2-theme-container"
-           flex-box="1"
-           flex>
+      <div class="d2-theme-container" flex-box="1" flex>
         <!-- 主体 侧边栏 -->
-        <div flex-box="0"
-             ref="aside"
-             :class="{
+        <div
+          flex-box="0"
+          ref="aside"
+          :class="{
             'd2-theme-container-aside': true,
             'd2-theme-container-transition': asideTransition,
           }"
-             id="my_menu"
-             :style="{
+          id="my_menu"
+          :style="{
             width: asideCollapse ? asideWidthCollapse : asideWidth,
             opacity: this.searchActive ? 0.5 : 1,
-          }">
+          }"
+        >
           <d2-menu-side />
         </div>
         <!-- 主体 -->
-        <div class="d2-theme-container-main"
-             style="background: #f4f5f8"
-             flex-box="1"
-             flex>
+        <div
+          class="d2-theme-container-main"
+          style="background: #f4f5f8"
+          flex-box="1"
+          flex
+        >
           <!-- 搜索 -->
           <transition name="fade-scale">
-            <div v-if="searchActive"
-                 class="d2-theme-container-main-layer"
-                 style="top: 23px; left: 22px"
-                 flex>
-              <d2-panel-search ref="panelSearch"
-                               @close="searchPanelClose" />
+            <div
+              v-if="searchActive"
+              class="d2-theme-container-main-layer"
+              style="top: 23px; left: 22px"
+              flex
+            >
+              <d2-panel-search ref="panelSearch" @close="searchPanelClose" />
             </div>
           </transition>
           <!-- 内容 -->
           <transition name="fade-scale">
-            <div v-if="!searchActive"
-                 class="d2-theme-container-main-layer"
-                 flex="dir:top">
+            <div
+              v-if="!searchActive"
+              class="d2-theme-container-main-layer"
+              flex="dir:top"
+            >
               <!-- tab -->
-              <div class="d2-theme-container-main-header"
-                   flex-box="0">
+              <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />
               </div>
               <!-- 页面 -->
-              <div class="d2-theme-container-main-body"
-                   flex-box="1">
+              <div class="d2-theme-container-main-body" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
                   <keep-alive :include="keepAlive">
                     <router-view :key="routerViewKey" />
@@ -133,28 +139,28 @@
 </template>
 
 <script>
-import d2MenuSide from './components/menu-side'
-import d2MenuHeader from './components/menu-header'
-import d2Tabs from './components/tabs'
-import d2HeaderFullscreen from './components/header-fullscreen'
-import d2HeaderLocales from './components/header-locales'
-import d2HeaderSearch from './components/header-search'
-import d2HeaderSize from './components/header-size'
-import d2HeaderTheme from './components/header-theme'
-import d2HeaderUser from './components/header-user'
-import d2HeaderLog from './components/header-log'
-import d2HeaderColor from './components/header-color'
-import { mapState, mapGetters, mapActions } from 'vuex'
-import mixinSearch from './mixins/search'
-import { LOGOUT } from '@/api/login'
+import d2MenuSide from "./components/menu-side";
+import d2MenuHeader from "./components/menu-header";
+import d2Tabs from "./components/tabs";
+import d2HeaderFullscreen from "./components/header-fullscreen";
+import d2HeaderLocales from "./components/header-locales";
+import d2HeaderSearch from "./components/header-search";
+import d2HeaderSize from "./components/header-size";
+import d2HeaderTheme from "./components/header-theme";
+import d2HeaderUser from "./components/header-user";
+import d2HeaderLog from "./components/header-log";
+import d2HeaderColor from "./components/header-color";
+import { mapState, mapGetters, mapActions } from "vuex";
+import mixinSearch from "./mixins/search";
+import { LOGOUT } from "@/api/login";
 
 import {
   GET_UNITTREE_LIST,
   GET_DUTY_LIST,
-  GET_DEPARTMENT_LIST
-} from '@/api/personnelmanagement.js'
+  GET_DEPARTMENT_LIST,
+} from "@/api/personnelmanagement.js";
 export default {
-  name: 'd2-layout-header-aside',
+  name: "d2-layout-header-aside",
   mixins: [mixinSearch],
   components: {
     d2MenuSide,
@@ -167,27 +173,27 @@ export default {
     d2HeaderTheme,
     d2HeaderUser,
     d2HeaderLog,
-    d2HeaderColor
+    d2HeaderColor,
   },
   data() {
     return {
       showActive: false, //控制头像处的菜单展示
       // [侧边栏宽度] 正常状态
-      asideWidth: '200px',
+      asideWidth: "200px",
       // [侧边栏宽度] 折叠状态
-      asideWidthCollapse: '65px'
-    }
+      asideWidthCollapse: "65px",
+    };
   },
   computed: {
-    ...mapState('d2admin', {
-      keepAlive: state => state.page.keepAlive,
-      grayActive: state => state.gray.active,
-      transitionActive: state => state.transition.active,
-      asideCollapse: state => state.menu.asideCollapse,
-      asideTransition: state => state.menu.asideTransition
+    ...mapState("d2admin", {
+      keepAlive: (state) => state.page.keepAlive,
+      grayActive: (state) => state.gray.active,
+      transitionActive: (state) => state.transition.active,
+      asideCollapse: (state) => state.menu.asideCollapse,
+      asideTransition: (state) => state.menu.asideTransition,
     }),
-    ...mapGetters('d2admin', {
-      themeActiveSetting: 'theme/activeSetting'
+    ...mapGetters("d2admin", {
+      themeActiveSetting: "theme/activeSetting",
     }),
     /**
      * @description 用来实现带参路由的缓存
@@ -195,8 +201,8 @@ export default {
     routerViewKey() {
       // 默认情况下 key 类似 __transition-n-/foo
       // 这里的字符串操作是为了最终 key 的格式和原来相同 类似 __transition-n-__stamp-time-/foo
-      const stamp = this.$route.meta[`__stamp-${this.$route.path}`] || ''
-      return `${stamp ? `__stamp-${stamp}-` : ''}${this.$route.path}`
+      const stamp = this.$route.meta[`__stamp-${this.$route.path}`] || "";
+      return `${stamp ? `__stamp-${stamp}-` : ""}${this.$route.path}`;
     },
     /**
      * @description 最外层容器的背景图片样式
@@ -204,10 +210,10 @@ export default {
     styleLayoutMainGroup() {
       return this.themeActiveSetting.backgroundImage
         ? {
-            backgroundImage: `url('${this.$baseUrl}${this.themeActiveSetting.backgroundImage}')`
+            backgroundImage: `url('${this.$baseUrl}${this.themeActiveSetting.backgroundImage}')`,
           }
-        : {}
-    }
+        : {};
+    },
   },
   created() {
     // this.getUnitLIst()
@@ -217,57 +223,57 @@ export default {
   methods: {
     //获取单位列表
     getUnitLIst() {
-      GET_UNITTREE_LIST().then(res => {
+      GET_UNITTREE_LIST().then((res) => {
         if (res.status === 0) {
           // 存储主体信息
-          console.log('获取单位列表', res.data)
-          this.$store.dispatch('evaluation/base/saveUnitList', res.data)
+          console.log("获取单位列表", res.data);
+          this.$store.dispatch("evaluation/base/saveUnitList", res.data);
         }
-      })
+      });
     },
     // 获取职务
     // 获取职务列表
     getDutyList() {
       GET_DUTY_LIST({
-        subject_id: 1
-      }).then(res => {
+        subject_id: 1,
+      }).then((res) => {
         if (res.status === 0) {
-          console.log('获取职务列表', res.data.data)
-          this.$store.dispatch('evaluation/base/saveJobList', res.data)
+          console.log("获取职务列表", res.data.data);
+          this.$store.dispatch("evaluation/base/saveJobList", res.data);
         }
-      })
+      });
     },
     // 获取部门列表
     getDepartmentList() {
-      GET_DEPARTMENT_LIST().then(res => {
+      GET_DEPARTMENT_LIST().then((res) => {
         if (res.status === 0) {
-          console.log('获取部门列表', res.data.data)
-          this.$store.dispatch('evaluation/base/saveDepartmentList', res.data)
+          console.log("获取部门列表", res.data.data);
+          this.$store.dispatch("evaluation/base/saveDepartmentList", res.data);
         }
-      })
+      });
     },
     // 退出登录
     logout() {
-      LOGOUT().then(res => {})
+      LOGOUT().then((res) => {});
     },
     // 展开
     extend() {
-      this.showActive = !this.showActive
+      this.showActive = !this.showActive;
     },
-    ...mapActions('d2admin/menu', ['asideCollapseToggle']),
+    ...mapActions("d2admin/menu", ["asideCollapseToggle"]),
     /**
      * 接收点击切换侧边栏的按钮
      */
     handleToggleAside() {
-      this.asideCollapseToggle()
-    }
-  }
-}
+      this.asideCollapseToggle();
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 // 注册主题
-@import '~@/assets/style/theme/register.scss';
+@import "~@/assets/style/theme/register.scss";
 .copyright {
   position: absolute;
   bottom: 14px;
@@ -365,7 +371,7 @@ export default {
   }
   .extend_menu {
     position: absolute;
-    top: 31px;
+    top: -310px;
     left: 5px;
     z-index: 9999;
     width: 120px;

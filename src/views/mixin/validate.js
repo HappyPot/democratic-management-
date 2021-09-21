@@ -1,12 +1,12 @@
 
 export default {
-  data(){
+  data() {
     return {
-      accessSubmit:true
+      accessSubmit: true
     }
   },
   methods: {
-     // 重置错误提示
+    // 重置错误提示
     resetErrorTip() {
       let arr = Array.from(document.getElementsByClassName('errorTip'))
       for (let index = 0; index < arr.length; index++) {
