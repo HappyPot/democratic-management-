@@ -72,6 +72,13 @@
             >
           </template>
         </el-table-column>
+        <div slot="empty">
+          <img
+            style="height: 30vh"
+            src="../../../assets/image/数据为空.svg"
+            alt=""
+          />
+        </div>
       </el-table>
     </div>
     <el-dialog title="批量导入" center :visible.sync="dialogImport" width="30%">
@@ -488,24 +495,24 @@ export default {
     }
   }
 }
-.search_append {
-  width: 71px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #409eff;
-  box-sizing: border-box;
-  color: #409eff;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  cursor: pointer;
-}
-.unit_list_search
-  .ul_item
-  .inline-input.el-input-group
-  .el-input-group__append {
-  padding: 0 !important;
-  border: none;
-}
+// .search_append {
+//   width: 71px;
+//   height: 36px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border: 1px solid #409eff;
+//   box-sizing: border-box;
+//   color: #409eff;
+//   border-top-right-radius: 4px;
+//   border-bottom-right-radius: 4px;
+//   cursor: pointer;
+// }
+// .unit_list_search
+//   .ul_item
+//   .inline-input.el-input-group
+//   .el-input-group__append {
+//   padding: 0 !important;
+//   border: none;
+// }
 </style>
