@@ -49,8 +49,7 @@ mock
   */
  export function LOGOUT(query) {
   return request({
-    url: '/admin/logout?url=dev.wj.com',
+    url: '/admin/logout',
     method: 'POST',
-    // data:query
   })
 }

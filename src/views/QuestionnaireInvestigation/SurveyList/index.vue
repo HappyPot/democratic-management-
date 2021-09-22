@@ -306,7 +306,7 @@ export default {
     initParam() {
       this.$refs['addAndEdit'].review = {
         title: '', //评议标题
-        date: [], //评议时间
+        date: ['', ''], //评议时间
         mark: '', //评议说明
         isIp: 1, //是否同IP参评
         accessIp: '', //允许IP段
@@ -376,8 +376,10 @@ export default {
             this.$refs['addAndEdit'].review.type = data.form_type
             this.$refs['addAndEdit'].review.mark = data.desc
             this.$refs['addAndEdit'].review.textarea = data.index_desc
-            this.$refs['addAndEdit'].review.date[0] = data.start_time
-            this.$refs['addAndEdit'].review.date[1] = data.end_time
+            this.$refs['addAndEdit'].review.date = [
+              data.start_time,
+              data.end_time
+            ]
             this.$refs['addAndEdit'].review.isWaiver = data.is_waiver
             this.$refs['addAndEdit'].review.isIp = data.is_ip
             this.$refs['addAndEdit'].review.accessIp = data.ip_value

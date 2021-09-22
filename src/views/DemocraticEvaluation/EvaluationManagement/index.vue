@@ -302,8 +302,7 @@ export default {
             this.$refs['review'].review.type = data.form_type
             this.$refs['review'].review.mark = data.desc
             this.$refs['review'].review.textarea = data.index_desc
-            this.$refs['review'].review.date[0] = data.start_time
-            this.$refs['review'].review.date[1] = data.end_time
+            this.$refs['review'].review.date = [data.start_time, data.end_time]
             this.$refs['review'].review.isWaiver = data.is_waiver
             this.$refs['review'].review.isIp = data.is_ip
             this.$refs['review'].review.accessIp = data.ip_value
@@ -316,6 +315,7 @@ export default {
             this.$refs['review'].review.peopleList = data.user_list //用于参评人员的table的展示
             this.$refs['review'].review.showPeopleConut =
               data.user_list.length + '人'
+            console.log('啊啊啊啊啊', this.$refs['review'].review.date)
           })
         }
       })
@@ -376,7 +376,7 @@ export default {
     initParam() {
       this.$refs['review'].review = {
         title: '', //评议标题
-        date: [], //评议时间
+        date: ['', ''], //评议时间
         mark: '', //评议说明
         isIp: 1, //是否同IP参评
         accessIp: '', //允许IP段

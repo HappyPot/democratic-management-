@@ -151,6 +151,7 @@
                             placeholder="选择单位"
                             style="margin-right: 10px"
                             checkbox
+                            clearable
                             :data="superiorUnitOptions"
                             @change="getSuperiorUnit"
                             v-model="searchParam.unit">
@@ -160,6 +161,7 @@
               <el-select v-model="searchParam.department"
                          class="pc_item"
                          size="medium"
+                         clearable
                          placeholder="选择部门">
                 <el-option v-for="item in departmentOptions"
                            :key="item.department_code"
@@ -172,6 +174,7 @@
               <el-select v-model="searchParam.peopleType"
                          class="pc_item"
                          size="medium"
+                         clearable
                          placeholder="选择人员类别">
                 <el-option v-for="item in jobOptions"
                            :key="item.duty_name"
@@ -263,7 +266,7 @@ export default {
       peopleOptions: [], //参评人员列表
       review: {
         title: '', //评议标题
-        date: [], //评议时间
+        date: ['', ''], //评议时间
         mark: '', //评议说明
         isIp: 1, //是否同IP参评
         accessIp: '', //允许IP段
@@ -307,6 +310,7 @@ export default {
     review: {
       handler(newVal, oldVal) {
         this.selectPeople = newVal.peopleList
+        console.log('newVal', newVal)
       },
       deep: true
     }
@@ -341,7 +345,6 @@ export default {
       })
     },
     filter() {
-      console.log('搜索条件', this.searchParam)
       this.peopleTableData = this.originList.filter(item => {
         return (
           item.department_name == this.department ||
