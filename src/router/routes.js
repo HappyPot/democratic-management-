@@ -86,12 +86,16 @@ const errorPage = [
     name: '404',
     component: _import('system/error/404')
   },
+
+]
+const offline = [
   {
     path: '/offline',
     name: 'offline',
     component: _import('system/error/offline')
   }
 ]
+
 
 // 导出需要显示菜单的
 export const frameInRoutes = frameIn
@@ -100,5 +104,6 @@ export const frameInRoutes = frameIn
 export default [
   ...frameIn,
   ...frameOut,
-  ...errorPage
+  ...errorPage,
+  ...offline
 ]

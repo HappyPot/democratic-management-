@@ -72,7 +72,17 @@
             >
           </template>
         </el-table-column>
-        <div slot="empty">
+        <div slot="empty" style="position: relative">
+          <div
+            style="
+              position: absolute;
+              top: 35%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            "
+          >
+            数据为空
+          </div>
           <img
             style="height: 30vh"
             src="../../../assets/image/数据为空.svg"
