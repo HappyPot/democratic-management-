@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 import {
-  Button
+  Button, Field
 } from 'vant'
 
 Vue.use(Button)
+Vue.use(Field)
