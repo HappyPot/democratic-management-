@@ -7,7 +7,8 @@
         <div class="si_title">系统信息</div>
         <div class="si_user">
           <div class="si_user_icon">
-            <img src="../../../assets/image/userinfo.jpeg" alt="头像" />
+            <img src="../../../assets/image/userinfo.jpeg"
+                 alt="头像" />
           </div>
           <div class="si_user_info">
             <div class="sui_name">{{ userInfo.account }}，欢迎您！</div>
@@ -28,22 +29,24 @@
         <div class="data_group">
           <div class="dg_left">
             <div class="dg_left_title">
-              <img src="./image/mzcp.png" alt="" />
+              <img src="./image/mzcp.png"
+                   alt="" />
               <span>民主测评</span>
             </div>
             <div class="data_text">
               民主测评项目
-              <span>19259</span>
+              <span>{{test}}</span>
             </div>
           </div>
           <div class="dg_right">
             <div class="dg_left_title">
-              <img src="./image/wjdc.png" alt="" />
+              <img src="./image/wjdc.png"
+                   alt="" />
               <span>调查问卷</span>
             </div>
             <div class="data_text">
               问卷调查项目
-              <span style="color: #7bb3ff">19259</span>
+              <span style="color: #7bb3ff">{{investigation}}</span>
             </div>
           </div>
         </div>
@@ -54,74 +57,102 @@
       <div class="process_title">民主测评操作流程</div>
       <div class="process_1">
         <div class="p_item">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           基础阶段
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           基础信息
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           民主测评表
         </div>
       </div>
       <div class="p_arrow_down">
-        <img class="sp_down" src="./image/down.png" alt="" />
+        <img class="sp_down"
+             src="./image/down.png"
+             alt="" />
       </div>
       <div class="process_2">
         <div class="p_item p_item_2">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           评测阶段
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_2">
-          <img src="./image/p_4.png" alt="" />
+          <img src="./image/p_4.png"
+               alt="" />
           新建测评
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_2">
-          <img src="./image/p_5.png" alt="" />
+          <img src="./image/p_5.png"
+               alt="" />
           启动测评
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_2">
-          <img src="./image/p_6.png" alt="" />
+          <img src="./image/p_6.png"
+               alt="" />
           测评监控
         </div>
       </div>
       <div class="p_arrow_down">
-        <img class="sp_down" src="./image/down.png" alt="" />
+        <img class="sp_down"
+             src="./image/down.png"
+             alt="" />
       </div>
       <div class="process_3">
         <div class="p_item p_item_3">
-          <img src="./image/p_1.png" alt="" />
+          <img src="./image/p_1.png"
+               alt="" />
           反馈阶段
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_3">
-          <img src="./image/p_7.png" alt="" />
+          <img src="./image/p_7.png"
+               alt="" />
           强行结束
         </div>
         <div class="p_item p_arrow">
-          <img class="sp_img" src="./image/arrow.png" alt="" />
+          <img class="sp_img"
+               src="./image/arrow.png"
+               alt="" />
         </div>
         <div class="p_item p_item_3">
-          <img src="./image/p_8.png" alt="" />
+          <img src="./image/p_8.png"
+               alt="" />
           统计分析
         </div>
       </div>
@@ -133,37 +164,52 @@
 import {
   GET_UNITTREE_LIST,
   GET_DUTY_LIST,
-  GET_DEPARTMENT_LIST,
-} from "@/api/personnelmanagement.js";
+  GET_DEPARTMENT_LIST
+} from '@/api/personnelmanagement.js'
+import { GET_INDEX } from '@/api/login.js'
 
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      account: "", //用户名
-      updated_at: "", // 更新时间
-      created_at: "", //上次登录时间
+      account: '', //用户名
+      updated_at: '', // 更新时间
+      created_at: '', //上次登录时间
       userInfo: {},
-    };
+      test: '', //民主测评项目
+      investigation: '' //问卷调查项目
+    }
   },
   created() {
-    this.userInfo = JSON.parse(localStorage.getItem("evaluation"));
-    this.account = this.userInfo.account;
-    this.updated_at = this.userInfo.updated_at;
+    this.userInfo = JSON.parse(localStorage.getItem('evaluation'))
+    this.account = this.userInfo.account
+    this.updated_at = this.userInfo.updated_at
     this.created_at = this.dayjs(this.userInfo.created_at).format(
-      "YYYY-MM-DD HH:mm:ss"
-    );
+      'YYYY-MM-DD HH:mm:ss'
+    )
+    GET_INDEX().then(res => {
+      if (res.status == 0) {
+        res.data.question_count.map(item => {
+          if (item.type == 1) {
+            this.test = item.count
+          }
+          if (item.type == 2) {
+            this.investigation = item.count
+          }
+        })
+      }
+    })
   },
   filters: {
     formatUpdateTime(val) {
       if (val) {
-        return val.split("T")[0];
+        return val.split('T')[0]
       }
-    },
+    }
   },
   mounted() {},
-  methods: {},
-};
+  methods: {}
+}
 </script>
 
 <style lang="scss" scoped>

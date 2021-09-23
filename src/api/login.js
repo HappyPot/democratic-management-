@@ -53,3 +53,13 @@ mock
     method: 'POST',
   })
 }
+
+/**
+  * @description 首页数据
+  */
+ export function GET_INDEX(query) {
+  return request({
+    url: '/admin/index',
+    method: 'GET',
+  })
+}
