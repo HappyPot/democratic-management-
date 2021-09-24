@@ -99,4 +99,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import './index.scss';
+.component {
+  padding-bottom: 39px;
+}
 </style>

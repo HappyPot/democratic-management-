@@ -106,9 +106,9 @@ module.exports = {
       },
       less: {
         lessOptions: {
-          modifyVars: {
-            blue: '#2262AB'
-          }
+          // modifyVars: {
+          //   // blue: '#2262AB'
+          // }
         }
       }
     }
