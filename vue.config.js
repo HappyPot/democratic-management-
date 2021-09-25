@@ -105,11 +105,11 @@ module.exports = {
         additionalData: '@use "@/assets/style/public.scss" as *;'
       },
       less: {
-        lessOptions: {
-          // modifyVars: {
-          //   // blue: '#2262AB'
-          // }
-        }
+        // lessOptions: {
+        //   modifyVars: {
+        //     blue: '#2262AB'
+        //   }
+        // }
       }
     }
   },

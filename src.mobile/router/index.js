@@ -28,6 +28,18 @@ const routes = [
     path: '/evaluationdetails',
     name: 'EvaluationDetails',
     component: () => import('../views/EvaluationDetails/index.vue')
+  }, {
+    path: '/successtip',
+    name: 'SuccessTip',
+    component: () => import('../views/SuccessTip/index.vue')
+  }, {
+    path: '/errortip',
+    name: 'ErrorTip',
+    component: () => import('../views/ErrorTip/index.vue')
+  }, {
+    path: '/changepassword',
+    name: 'ChangePassword',
+    component: () => import('../views/ChangePassword/index.vue')
   }
 ]
 
