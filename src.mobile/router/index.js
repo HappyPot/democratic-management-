@@ -40,7 +40,13 @@ const routes = [
     path: '/changepassword',
     name: 'ChangePassword',
     component: () => import('../views/ChangePassword/index.vue')
+  },
+  {
+    path: '/assessmentList',
+    name: 'AssessmentList',
+    component: () => import('../views/AssessmentList/index.vue')
   }
+
 ]
 
 const router = new VueRouter({

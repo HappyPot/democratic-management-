@@ -2,52 +2,56 @@
   <div class="mhome_page">
     <div class="m_title">登陆</div>
     <div class="profile">
-      <img src="../assets/image/userimg.jpeg"
-           alt="" />
+      <img src="../assets/image/userimg.jpeg" alt="" />
     </div>
     <div class="tips">我的账号</div>
     <div class="filed">
       <div class="input_item">
-        <van-field size="small"
-                   v-model="value"
-                   placeholder="请输入账号" />
+        <van-field size="small" v-model="account" placeholder="请输入账号" />
       </div>
       <div class="input_item">
-        <van-field size="small"
-                   v-model="password"
-                   type="password"
-                   placeholder="请输入密码" />
+        <van-field
+          size="small"
+          v-model="password"
+          type="password"
+          placeholder="请输入密码"
+        />
       </div>
-      <div class="input_item"
-           style="margin-top: 0.5rem">
-        <van-button type="info"
-                    @click="login"
-                    block>确认</van-button>
+      <div class="input_item" style="margin-top: 0.5rem">
+        <van-button type="info" @click="submit" block>确认</van-button>
       </div>
       <div class="fpwd">忘记密码？</div>
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+
 export default {
-  name: 'Index',
+  name: "Index",
   data() {
     return {
-      acount: '', //账号
-      password: '' //密码
-    }
+      account: "", //账号
+      password: "", //密码
+    };
   },
   methods: {
-    login() {
-      this.$router.push({
-        name: 'MyAssessment'
-      })
-    }
-  }
-}
+    ...mapActions("evaluationm/account", ["login"]),
+    submit() {
+      this.login({
+        account: this.account,
+        pwd: this.password,
+        subject_id: 1,
+      }).then(() => {
+        // 重定向对象不存在则返回顶层路径
+        // this.$router.replace(this.$route.query.redirect || "/index");
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
-@import '../assets/style/index.less';
+@import "../assets/style/index.less";
 .profile {
   text-align: center;
   img {
@@ -65,7 +69,6 @@ export default {
   text-align: center;
   margin-bottom: 0.24rem;
 }
-
 
 .fpwd {
   font-size: 0.12rem;
