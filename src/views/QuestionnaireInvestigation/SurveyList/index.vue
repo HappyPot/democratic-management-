@@ -108,12 +108,12 @@
                      @click="showStatistical(scope.row, scope.$index)">统计</el-link>
             <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showConfig">配置</el-link>
-            <el-link type="primary"
+                     @click="showConfig(scope.row, scope.$index)">配置</el-link>
+            <!-- <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showPapers">底稿</el-link>
-            <el-link type="danger"
-                     style="margin-right: 12px">删除</el-link>
+                     @click="showPapers">底稿</el-link> -->
+            <!-- <el-link type="danger"
+                     style="margin-right: 12px">删除</el-link> -->
           </template>
         </el-table-column>
         <div slot="empty"
@@ -475,7 +475,7 @@ export default {
     // 获取统计信息
     statisticalData() {},
     // 展示配置框
-    showConfig() {
+    showConfig(row, index) {
       this.dialogConfigure = true
       this.question_id = row.id
     },
@@ -491,9 +491,9 @@ export default {
           this.msgSuccess('保存成功')
         }
       })
-    },
+    }
     // 展示底稿框
-    showPapers() {}
+    // showPapers() {}
   }
 }
 </script>

@@ -53,7 +53,7 @@ Vue.prototype.msgError = function (msg) {
 Vue.prototype.msgInfo = function (msg) {
   this.$message.info(msg);
 }
-
+Vue.config.devtools = true;
 
 new Vue({
   router,

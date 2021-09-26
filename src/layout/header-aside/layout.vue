@@ -51,7 +51,8 @@
             <div :class="showActive ? 'extend_menu active_extend' : 'extend_menu'">
               <span class="triangle-up"></span>
               <div class="extend_item"
-                   style="margin-bottom: 20px">
+                   style="margin-bottom: 20px"
+                   @click="updatePwd">
                 修改密码
               </div>
               <div class="extend_item"
@@ -129,6 +130,24 @@
         </div>
       </div>
     </div>
+    <el-dialog title="修改密码"
+               :visible.sync="dialogVisible"
+               width="30%">
+      <div class="pwd_box">
+        <el-input v-model='from.pwd'
+                  placeholder="请输入密码"></el-input>
+        <span class="errorTip"
+              data-name="pwd">
+          <i class="el-icon-circle-close"></i> 请输入密码，在提交</span>
+      </div>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button type="primary"
+                   @click="setPwd">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -146,7 +165,7 @@ import d2HeaderLog from './components/header-log'
 import d2HeaderColor from './components/header-color'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import mixinSearch from './mixins/search'
-import { LOGOUT } from '@/api/login'
+import { LOGOUT, SAVE_PWD } from '@/api/login'
 
 import {
   GET_UNITTREE_LIST,
@@ -171,6 +190,10 @@ export default {
   },
   data() {
     return {
+      from: {
+        pwd: '' //密码
+      },
+      dialogVisible: false,
       showActive: false, //控制头像处的菜单展示
       // [侧边栏宽度] 正常状态
       asideWidth: '200px',
@@ -217,6 +240,27 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem('evaluation'))
   },
   methods: {
+    // 确认密码
+    setPwd() {
+      this.fromValidate(this.from)
+      if (this.accessSubmit) {
+        let obj = {
+          pwd: this.from.pwd
+        }
+        SAVE_PWD(obj).then(res => {
+          if (res.status == 0) {
+            this.dialogVisible = false
+            this.msgSuccess('修改成功')
+          } else {
+            this.msgError('修改失败')
+          }
+        })
+      }
+    },
+    // 修改密码
+    updatePwd() {
+      this.dialogVisible = true
+    },
     ...mapActions('evaluation/account', ['logout']),
     //获取单位列表
     getUnitLIst() {
@@ -410,4 +454,7 @@ export default {
   left: 5px !important;
 }
 // @@@
+.pwd_box {
+  position: relative;
+}
 </style>

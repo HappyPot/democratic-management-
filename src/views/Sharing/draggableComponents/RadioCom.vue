@@ -1,7 +1,8 @@
 <template>
   <div class="component">
     <div class="setting">
-      <div class="setting_btn"><img src="../image/delCom.png"></div>
+      <div class="setting_btn"
+           @click="delCom"><img src="../image/delCom.png"></div>
       <div class="setting_btn"><img src="../image/settingCom.png"
              @click="settingCom"></div>
     </div>
@@ -100,7 +101,6 @@ export default {
     // 保存数据
     saveData() {
       console.log('单选', this.comInfo)
-      this.comInfo.uuid = this.uuid.v1()
       this.$emit('getData', this.comInfo)
       this.dialogConfigure = false
     },
@@ -119,6 +119,9 @@ export default {
     },
     settingCom() {
       this.dialogConfigure = true
+    },
+    delCom() {
+      this.$emit('delCom', this.comInfo.uuid)
     }
   }
 }

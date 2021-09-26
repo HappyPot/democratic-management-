@@ -154,39 +154,43 @@
                             clearable
                             :data="superiorUnitOptions"
                             @change="getSuperiorUnit"
-                            v-model="searchParam.unit">
+                            v-model="superiorUnit">
               </wlTreeSelect>
             </div>
             <div>
-              <el-select v-model="searchParam.department"
+              <el-select v-model="queryParams.department_id_list"
                          class="pc_item"
                          size="medium"
                          clearable
+                         multiple
+                         collapse-tags
                          placeholder="选择部门">
                 <el-option v-for="item in departmentOptions"
                            :key="item.department_code"
                            :label="item.department_name"
-                           :value="item.department_name">
+                           :value="item.id">
                 </el-option>
               </el-select>
             </div>
             <div>
-              <el-select v-model="searchParam.peopleType"
+              <el-select v-model="queryParams.duty_id_list"
                          class="pc_item"
                          size="medium"
                          clearable
+                         multiple
+                         collapse-tags
                          placeholder="选择人员类别">
                 <el-option v-for="item in jobOptions"
                            :key="item.duty_name"
                            :label="item.duty_name"
-                           :value="item.duty_name">
+                           :value="item.id">
                 </el-option>
               </el-select>
             </div>
             <div class="pc_item">
               <el-button size="medium"
                          type="primary"
-                         @click="filter"
+                         @click="getUserList"
                          plain>搜索</el-button>
             </div>
             <div class="pc_item"></div>
@@ -262,6 +266,7 @@ export default {
   name: 'Review',
   data() {
     return {
+      superiorUnit: [], //搜索条件的单位名称
       activeName: 'first',
       peopleOptions: [], //参评人员列表
       review: {
@@ -277,7 +282,7 @@ export default {
         showPeopleConut: 0, //参评人员数量
         peopleList: [], //参评人员具体对象
         textarea: '', //首页说明
-        appraisalSubject: [1, 2, 3, 5, 6] //评议主体
+        appraisalSubject: [] //评议主体
       },
       unit: '', //单位
       department: '', //部门
@@ -288,11 +293,14 @@ export default {
       departmentOptions: [], //部门列表
       jobOptions: [], //职务列表
       subjectId: '',
-      //搜索条件
-      searchParam: {
-        unit: '',
-        department: '',
-        peopleType: ''
+      //分页参数
+      queryParams: {
+        page: 1, //当前第几页
+        page_size: 10, //每页显示的条数
+        department_id_list: [], //搜索条件的部门名称
+        duty_id_list: [], //搜索条件的职务名称
+        search_name: '',
+        unit_id_list: []
       },
       selectPeople: []
     }
@@ -325,7 +333,27 @@ export default {
     },
     // 获取员工列表
     getUserList() {
-      GET_USER_LIST().then(res => {
+      let obj = {
+        page: this.queryParams.page,
+        page_size: this.queryParams.page_size
+      }
+      if (this.queryParams.department_id_list.length > 0) {
+        obj['department_id_list'] = this.queryParams.department_id_list
+      }
+      if (this.queryParams.duty_id_list.length > 0) {
+        obj['duty_id_list'] = this.queryParams.duty_id_list
+      }
+      if (this.superiorUnit.length > 0) {
+        let idlist = []
+        this.superiorUnit.map(item => {
+          idlist.push(item.id)
+        })
+        obj['unit_id_list'] = idlist
+      }
+      if (this.queryParams.search_name) {
+        obj['search_name'] = this.queryParams.search_name
+      }
+      GET_USER_LIST(obj).then(res => {
         if (res.status === 0) {
           this.peopleTableData = res.data.data
           this.originList = res.data.data
@@ -342,15 +370,6 @@ export default {
             }
           })
         }
-      })
-    },
-    filter() {
-      this.peopleTableData = this.originList.filter(item => {
-        return (
-          item.department_name == this.department ||
-          item.duty_name == this.searchParam.peopleType ||
-          item.unit_name == this.searchParam.unit[0].unit_name
-        )
       })
     },
     // 获取职务列表

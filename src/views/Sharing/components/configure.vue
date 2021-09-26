@@ -11,6 +11,7 @@
                      :key="item.id"
                      :info="item"
                      @getData="getData"
+                     @delCom="delCom"
                      :is="item.type"></component>
         </draggable>
       </div>
@@ -150,6 +151,9 @@ export default {
       console.log('drawingListdrawingListdrawingList', val)
       this.issue_list = []
       val.map((item, index) => {
+        if (!item.uuid) {
+          item.uuid = this.uuid.v1()
+        }
         if (item.typeParam == 1 || item.typeParam == 3) {
           let obj = {
             issue: item.des,
@@ -171,6 +175,13 @@ export default {
     }
   },
   methods: {
+    // 删除组件
+    delCom(val) {
+      let index = this.drawingList.findIndex(item => {
+        return item.uuid == val
+      })
+      this.drawingList.splice(index, 1)
+    },
     // 获取组件中的数据
     getData(val) {
       if (this.componentDataList.length == 0) {

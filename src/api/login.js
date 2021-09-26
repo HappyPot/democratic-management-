@@ -63,3 +63,14 @@ mock
     method: 'GET',
   })
 }
+
+/**
+  * @description 管理员修改密码
+  */
+ export function SAVE_PWD(query) {
+  return request({
+    url: '/admin/saveAdminPassword',
+    method: 'post',
+    data:query
+  })
+}

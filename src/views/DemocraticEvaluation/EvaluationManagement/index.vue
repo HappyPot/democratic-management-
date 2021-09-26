@@ -95,9 +95,9 @@
             <el-link type="primary"
                      style="margin-right: 12px"
                      @click="showConfig(scope.row, scope.$index)">配置</el-link>
-            <el-link type="primary"
+            <!-- <el-link type="primary"
                      style="margin-right: 12px"
-                     @click="showPapers">底稿</el-link>
+                     @click="showPapers">底稿</el-link> -->
           </template>
         </el-table-column>
         <div slot="empty"
