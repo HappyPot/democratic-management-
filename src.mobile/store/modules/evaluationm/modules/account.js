@@ -1,5 +1,5 @@
 import { LOGIN } from '../../../../api/mobile'
-// import { setToken, removeToken } from "@.mobile/untils/auth"
+import { setToken, removeToken } from "@.mobile/untils/auth"
 export default {
   namespaced: true,
   actions: {
@@ -11,13 +11,12 @@ export default {
      * @param {Object} payload route {Object} 登录成功后定向的路由对象 任何 vue-router 支持的格式
      */
     async login({ dispatch }, {
-      account = '',
       pwd = '',
-      subject_id = ""
+      subject_id = "",
+      code = "",
     } = {}) {
-      debugger
-      const res = await LOGIN({ account, pwd, subject_id })
-      setToken(res.data.adminToken)
+      const res = await LOGIN({ pwd, subject_id, code })
+      setToken(res.data.token)
       // 设置 vuex 用户信息
       // dispatch('evaluationm/base/saveUserInfo', res.data, { root: true })
       // dispatch('evaluationm/base/saveSubjectId', res.data.subject_id, { root: true })

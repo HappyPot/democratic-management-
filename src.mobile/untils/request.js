@@ -46,9 +46,6 @@ service.interceptors.response.use(res => {
       })
     })
   } else if (code !== 0) {
-    Notification.error({
-      title: res.data.msg
-    })
     return Promise.reject(res.data)
   } else {
     return res.data

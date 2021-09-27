@@ -26,7 +26,6 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-
 export default {
   name: "Index",
   data() {
@@ -39,12 +38,12 @@ export default {
     ...mapActions("evaluationm/account", ["login"]),
     submit() {
       this.login({
-        account: this.account,
+        code: this.account,
         pwd: this.password,
         subject_id: 1,
       }).then(() => {
         // 重定向对象不存在则返回顶层路径
-        // this.$router.replace(this.$route.query.redirect || "/index");
+        this.$router.replace(this.$route.query.redirect || "/myassessment");
       });
     },
   },

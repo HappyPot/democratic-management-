@@ -3,13 +3,11 @@
     <div class="m_title">个人中心</div>
     <div class="pc_content">
       <div class="pc_item">
-        <img src="../../assets/image/userimg.jpeg"
-             alt="">
+        <img src="../../assets/image/我的测评.svg" alt="" />
         <div>我的测评</div>
       </div>
       <div class="pc_item">
-        <img src="../../assets/image/userimg.jpeg"
-             alt="">
+        <img src="../../assets/image/我的问卷.svg" alt="" />
         <div>我的问卷</div>
       </div>
     </div>
@@ -27,11 +25,11 @@
 </template>
 <script>
 export default {
-  name: 'PersonalCenter'
-}
+  name: "PersonalCenter",
+};
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/index.less';
+@import "../../assets/style/index.less";
 .PersonalCenter {
   background: #f9fafc;
   padding: 0.15rem;

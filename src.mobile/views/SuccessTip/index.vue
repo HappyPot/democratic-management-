@@ -2,7 +2,7 @@
   <div class="SuccessTip">
     <!-- <div class="m_title">测评对象</div> -->
     <div class="su_content">
-      <img src="../../assets/image/successtip.png" alt="" />
+      <img src="../../assets/image/successtip.svg" alt="" />
       <div class="tip_text">恭喜您，提交成功！</div>
       <div class="su_btn">
         <van-button type="default" style="margin-right: 0.12rem"

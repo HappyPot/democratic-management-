@@ -1,9 +1,7 @@
 <template >
   <div class="MyAssessment">
     <div class="m_title">我的测评</div>
-    <div class="m_title_item">
-      兵直机关部门作风建设网上评议
-    </div>
+    <div class="m_title_item">兵直机关部门作风建设网上评议</div>
     <div class="m_content">
       <div class="sTitle">指导语</div>
       <div class="m_content_box">
@@ -13,22 +11,29 @@
         3.如果您认为必要，可以留下姓名和联系方式以
         便相关部门进一步了解情况，反馈整改结果。
       </div>
-      <div class="user"></div>
+      <div class="user">
+        <img src="../../assets/image/个人中心.svg" alt="" />
+      </div>
     </div>
     <div class="input_item">
-      <van-button plain
-                  type="info"
-                  block>开始测评</van-button>
+      <van-button plain type="info" block @click="start">开始测评</van-button>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'MyAssessment'
-}
+  name: "MyAssessment",
+  methods: {
+    start() {
+      this.$router.push({
+        path: "evaluationdetails",
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/index.less';
+@import "../../assets/style/index.less";
 .m_title_item {
   font-size: 0.16rem;
   font-family: PingFang SC;
@@ -64,12 +69,15 @@ export default {
   margin-bottom: 0.12rem;
 }
 .user {
-  width: 0.5rem;
-  height: 0.5rem;
   position: absolute;
   bottom: 0.15rem;
-  right: 0.32rem;
+  right: 0.12rem;
   border-radius: 100%;
-  background: blue;
+  // background: blue;
+  img {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+  }
 }
 </style>

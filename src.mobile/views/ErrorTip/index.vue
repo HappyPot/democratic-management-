@@ -2,7 +2,7 @@
   <div class="ErrorTip">
     <!-- <div class="m_title">测评对象</div> -->
     <div class="su_content">
-      <img src="../../assets/image/errortip.png" alt="" />
+      <img src="../../assets/image/errortip.svg" alt="" />
       <div class="tip_text">很遗憾，提交失败！</div>
       <div class="su_btn">
         <van-button type="default" style="margin-right: 0.12rem"
