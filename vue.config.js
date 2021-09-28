@@ -80,24 +80,25 @@ module.exports = {
   lintOnSave: false,//修改后lintOnSave: false
   devServer: {
     host: '0.0.0.0',
+    open: true,
     proxy: {
       [process.env.VUE_APP_API]: {
         target: `https://php.ceping.nuofeida.net`, // 86
-        secure: false,
+        // secure: false,
         changeOrigin: true,
-        logLevel:'debug',
+        // logLevel:'debug',
         pathRewrite: {
           ["^" + process.env.VUE_APP_API]: process.env.VUE_APP_API
         }
       },
     },
-    publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
-    disableHostCheck: false,
+    // publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
+    disableHostCheck: true,
     // disableHostCheck: process.env.NODE_ENV === 'development',
-    overlay:{
-      warnings:true,
-      errors:true
-    }
+    // overlay:{
+    //   warnings:false,
+    //   errors:false
+    // }
   },
   css: {
     loaderOptions: {
@@ -274,7 +275,7 @@ module.exports = {
       .set('@.mobile', resolve('src.mobile'))
   },
   // 不输出 map 文件
-  productionSourceMap: false,
+  productionSourceMap: true,
   // i18n
   pluginOptions: {
     i18n: {

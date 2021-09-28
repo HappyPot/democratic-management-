@@ -4,10 +4,15 @@
       <div class="m_title">测评详情</div>
       <div class="m_stitle">兵直机关部门作风建设网上评议</div>
       <div class="subject">测评主体：1.纪委监委机关</div>
-      <div class="ed_item">
+      <component v-for="(item) in issue"
+                 :key="item.id"
+                 :info="item"
+                 :is="map[item.type]"></component>
+      <!-- <div class="ed_item">
         <div class="ed_title">您对该部门作风建设情况总体评价是：</div>
         <div class="ed_select">
-          <van-radio-group v-model="radio" direction="horizontal">
+          <van-radio-group v-model="radio"
+                           direction="horizontal">
             <van-radio name="1">
               <span class="ed_select_label">满意</span>
             </van-radio>
@@ -25,7 +30,7 @@
             </van-radio>
           </van-radio-group>
         </div>
-      </div>
+      </div> -->
       <div class="ed_item">
         <div class="ed_title">您认为该部门作风建设存在的问题是：</div>
         <div class="child_item">
@@ -33,7 +38,8 @@
             1.围绕中心、服务大局，创造性开展工作的意识不强
           </div>
           <div class="ed_select">
-            <van-radio-group v-model="radio" direction="horizontal">
+            <van-radio-group v-model="radio"
+                             direction="horizontal">
               <van-radio name="1">
                 <span class="ed_select_label">满意</span>
               </van-radio>
@@ -54,7 +60,8 @@
           <div class="s_performance">
             <div class="s_tips">具体表现</div>
             <div class="s_textarea">
-              <van-field v-model="value" placeholder="" />
+              <van-field v-model="value"
+                         placeholder="" />
             </div>
           </div>
         </div>
@@ -63,7 +70,8 @@
             2.围绕中心、服务大局，创造性开展工作的意识不强
           </div>
           <div class="ed_select">
-            <van-radio-group v-model="radio" direction="horizontal">
+            <van-radio-group v-model="radio"
+                             direction="horizontal">
               <van-radio name="1">
                 <span class="ed_select_label">满意</span>
               </van-radio>
@@ -84,7 +92,8 @@
           <div class="s_performance">
             <div class="s_tips">具体表现</div>
             <div class="s_textarea">
-              <van-field v-model="value" placeholder="" />
+              <van-field v-model="value"
+                         placeholder="" />
             </div>
           </div>
         </div>
@@ -92,13 +101,13 @@
           <div class="ed_detail">3.其他方面(意见和建议)</div>
           <div class="s_performance">
             <div class="s_textarea">
-              <van-field v-model="value" placeholder="" />
+              <van-field v-model="value"
+                         placeholder="" />
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="submit">
       <div class="s_1">上一个</div>
       <div class="s_2">提交</div>
@@ -108,25 +117,97 @@
   </div>
 </template>
 <script>
-import { GET_QUESTION } from "../../api/mobile";
+import { GET_QUESTION_INFO } from '../../api/mobile'
 export default {
-  name: "EvaluationDetails",
+  name: 'EvaluationDetails',
   data() {
     return {
-      radio: "",
-      value: "",
-    };
+      radio: '',
+      value: '',
+      map: {
+        1: 'RadioCom',
+        // 2: 'TextCom',
+        3: 'CheckboxCom'
+        // 4: 'SingleText',
+        // 5: 'MultilineText'
+      },
+      issue: [
+        {
+          id: 31,
+          question_id: 1,
+          alias: null,
+          issue: '多选',
+          type: 3,
+          sort: 1,
+          config: [
+            {
+              id: 1,
+              content: '默认',
+              value: 1
+            },
+            {
+              id: 2,
+              content: '默认2',
+              value: 2
+            }
+          ]
+        },
+        // {
+        //   id: 30,
+        //   question_id: 1,
+        //   alias: null,
+        //   issue: '文字',
+        //   type: 2,
+        //   sort: 0,
+        //   config: null
+        // },
+        {
+          id: 37,
+          question_id: 1,
+          alias: null,
+          issue: ' 您对该部门作风建设情况总体评价是：',
+          type: 1,
+          sort: 0,
+          config: [
+            {
+              id: 1,
+              content: '满意',
+              value: 1
+            },
+            {
+              id: 2,
+              content: '比较满意',
+              value: 2
+            },
+            {
+              id: 3,
+              content: '一般',
+              value: 3
+            },
+            {
+              id: 4,
+              content: '不满意',
+              value: 4
+            }
+          ]
+        }
+      ]
+    }
   },
   created() {
-    GET_QUESTION().then((res) => {
-      debugger;
-    });
+    // GET_QUESTION_INFO({
+    //   id: 1
+    // }).then(res => {
+    //   if (res.status == 0) {
+    //     this.issue = res.data.issue
+    //   }
+    // })
   },
-  mounted() {},
-};
+  mounted() {}
+}
 </script>
 <style lang="less" scoped>
-@import "../../assets/style/index.less";
+@import '../../assets/style/index.less';
 .EvaluationDetails {
   padding: 0.2rem;
   padding-top: 0;

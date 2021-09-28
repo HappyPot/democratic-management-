@@ -3,6 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import draggableComponents from "./views/draggableComponents/index"
+Vue.use(draggableComponents)
+
+import { deepClone } from "./untils";
+Vue.prototype.$deepClone = deepClone
 import 'flex.css'
 import './vant'
 

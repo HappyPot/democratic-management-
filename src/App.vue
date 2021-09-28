@@ -5,50 +5,50 @@
 </template>
 
 <script>
-import util from "@/libs/util";
+import util from '@/libs/util'
 export default {
-  name: "app",
+  name: 'app',
   watch: {
-    "$i18n.locale": "i18nHandle",
+    '$i18n.locale': 'i18nHandle'
   },
   data() {
     return {
-      onLine: navigator.onLine,
-    };
+      onLine: navigator.onLine
+    }
   },
   created() {
-    this.i18nHandle(this.$i18n.locale);
+    this.i18nHandle(this.$i18n.locale)
   },
   mounted() {
-    window.addEventListener("online", this.updateOnlineStatus);
-    window.addEventListener("offline", this.updateOnlineStatus);
+    window.addEventListener('online', this.updateOnlineStatus)
+    window.addEventListener('offline', this.updateOnlineStatus)
   },
 
   methods: {
     updateOnlineStatus(e) {
-      console.log(e.type);
-      const { type } = e;
-      this.onLine = type === "online";
-      if (type != "online") {
+      console.log(e.type)
+      const { type } = e
+      this.onLine = type === 'online'
+      if (type != 'online') {
         this.$router.push({
-          name: "offline",
-        });
+          name: 'offline'
+        })
       } else {
         this.$router.push({
-          name: "index",
-        });
+          name: 'index'
+        })
       }
     },
     i18nHandle(val, oldVal) {
-      util.cookies.set("lang", val);
-      document.querySelector("html").setAttribute("lang", val);
-    },
-  },
-};
+      util.cookies.set('lang', val)
+      document.querySelector('html').setAttribute('lang', val)
+    }
+  }
+}
 </script>
 
 <style lang="scss">
-@import "~@/assets/style/public-class.scss";
+@import '~@/assets/style/public-class.scss';
 .search_append {
   width: 71px;
   height: 36px;

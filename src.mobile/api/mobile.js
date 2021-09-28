@@ -21,3 +21,14 @@ export function GET_QUESTION(query) {
     params: query
   })
 }
+
+/**
+  * @description 获取测评详情
+  */
+ export function GET_QUESTION_INFO(query) {
+  return request({
+    url: '/web/getQuestionDetail',
+    method: 'get',
+    params: query
+  })
+}

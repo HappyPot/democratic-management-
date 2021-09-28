@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Notify } from 'vant';
+import { Dialog } from 'vant';
 import {
   getToken,
 } from './auth'
@@ -33,19 +35,17 @@ service.interceptors.response.use(res => {
   }
   const code = res.data.status
   if (code === 1002) {
-    MessageBox.confirm(
-      '登录状态已过期，您可以继续留在该页面，或者重新登录',
-      '系统提示', {
-      confirmButtonText: '重新登录',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-    ).then(() => {
+    Dialog.alert({
+      title: '标题',
+      message: '弹窗内容',
+    }).then(() => {
       store.dispatch('evaluation/account/logout', {}, { root: true }).then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
-    })
+    });
+  
   } else if (code !== 0) {
+    Notify({ type: 'danger', message: res.data.msg });
     return Promise.reject(res.data)
   } else {
     return res.data
