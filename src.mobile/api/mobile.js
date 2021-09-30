@@ -32,3 +32,14 @@ export function GET_QUESTION(query) {
     params: query
   })
 }
+
+/**
+  * @description 修改密码
+  */
+ export function SAVE_PASSWORD(query) {
+  return request({
+    url: '/web/savePassword',
+    method: 'post',
+    data: query
+  })
+}

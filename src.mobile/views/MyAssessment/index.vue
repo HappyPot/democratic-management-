@@ -1,39 +1,61 @@
 <template >
   <div class="MyAssessment">
     <div class="m_title">我的测评</div>
-    <div class="m_title_item">兵直机关部门作风建设网上评议</div>
+    <div class="m_title_item">{{issueObj.title}}</div>
     <div class="m_content">
       <div class="sTitle">指导语</div>
       <div class="m_content_box">
-        欢迎您参加兵直机关部门作风建设网上评议，请您认真阅读说明，并根据提示进行评议。
-        1.列入被评议范围的兵团机关部门部门共6个，请您逐一做出评价。总体评价，可在"意"、"基本满意"、"不满意"、"不了解"四种选项中，选其中一种；具体评价，从七个方面，在意"、"基本满意"、"不满意"、"不了解"四种选项中，选其中一种，并可点击"意见建议"进行填写，有其他意见建议也可具体填写。
-        2.点击"暂存"临时保存评议数据,您以后可以多次登录系统继续录入评议数据。点击"提交"完成评议，根据评议规则，提交后不能再修改，请您务必确认无误后再行提交。
-        3.如果您认为必要，可以留下姓名和联系方式以
-        便相关部门进一步了解情况，反馈整改结果。
+        {{issueObj.index_desc}}
       </div>
-      <div class="user">
-        <img src="../../assets/image/个人中心.svg" alt="" />
+      <div class="user"
+           @click="updatePwd">
+        <img src="../../assets/image/个人中心.svg"
+             alt="" />
       </div>
     </div>
     <div class="input_item">
-      <van-button plain type="info" block @click="start">开始测评</van-button>
+      <van-button plain
+                  type="info"
+                  block
+                  @click="start">开始测评</van-button>
     </div>
   </div>
 </template>
 <script>
+import { GET_QUESTION_INFO } from '../../api/mobile'
+
 export default {
-  name: "MyAssessment",
+  name: 'MyAssessment',
+  data() {
+    return {
+      issueObj: null
+    }
+  },
+  created() {
+    GET_QUESTION_INFO({
+      id: 1
+    }).then(res => {
+      if (res.status == 0) {
+        this.issueObj = res.data
+      }
+    })
+  },
   methods: {
     start() {
       this.$router.push({
-        path: "evaluationdetails",
-      });
+        path: 'evaluationdetails'
+      })
     },
-  },
-};
+    updatePwd() {
+      this.$router.push({
+        path: 'personalcenter'
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
-@import "../../assets/style/index.less";
+@import '../../assets/style/index.less';
 .m_title_item {
   font-size: 0.16rem;
   font-family: PingFang SC;

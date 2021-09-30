@@ -31,7 +31,7 @@
           </van-radio-group>
         </div>
       </div> -->
-      <div class="ed_item">
+      <!-- <div class="ed_item">
         <div class="ed_title">您认为该部门作风建设存在的问题是：</div>
         <div class="child_item">
           <div class="ed_detail">
@@ -106,7 +106,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="submit">
       <div class="s_1">上一个</div>
@@ -195,13 +195,13 @@ export default {
     }
   },
   created() {
-    // GET_QUESTION_INFO({
-    //   id: 1
-    // }).then(res => {
-    //   if (res.status == 0) {
-    //     this.issue = res.data.issue
-    //   }
-    // })
+    GET_QUESTION_INFO({
+      id: 1
+    }).then(res => {
+      if (res.status == 0) {
+        this.issue = res.data.issue
+      }
+    })
   },
   mounted() {}
 }

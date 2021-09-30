@@ -18,8 +18,8 @@ export default {
       const res = await LOGIN({ pwd, subject_id, code })
       setToken(res.data.token)
       // 设置 vuex 用户信息
-      // dispatch('evaluationm/base/saveUserInfo', res.data, { root: true })
-      // dispatch('evaluationm/base/saveSubjectId', res.data.subject_id, { root: true })
+      dispatch('evaluationm/base/saveUserInfo', res.data, { root: true })
+      dispatch('evaluationm/base/saveSubjectId', res.data.subject_id, { root: true })
     },
   }
 }

@@ -4,27 +4,39 @@
     <div class="m_stitle">
       测评对象
     </div>
-    <div class="eo_item">
+    <div class="eo_item"
+         v-for="(item,index) in list"
+         :key="index">
       1.纪委监委机关
-      <i>1</i>
-    </div>
-    <div class="eo_item">
-      1.纪委监委机关
-      <i>1</i>
-    </div>
-    <div class="eo_item">
-      1.纪委监委机关
-      <i>1</i>
-    </div>
-    <div class="eo_item">
-      1.纪委监委机关
-      <i>1</i>
+      <img src="../../assets/image/下一级.svg"
+           alt="">
     </div>
   </div>
 </template>
 <script>
+import { GET_QUESTION } from '../../api/mobile'
 export default {
-  name: 'EvaluationObject'
+  name: 'EvaluationObject',
+  data() {
+    return {
+      list: [],
+      listNo: []
+    }
+  },
+  created() {
+    GET_QUESTION().then(res => {
+      if (res.status == 0) {
+        res.data.map(item => {
+          // 未提交
+          if (item.status == 1) {
+            this.listNo.push(item)
+          } else {
+            this.list.push(item)
+          }
+        })
+      }
+    })
+  }
 }
 </script>
 <style lang="less" scoped>
