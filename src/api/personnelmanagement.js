@@ -344,7 +344,7 @@ export function DEL_USER(query) {
   */
 export function GET_USER_INFO(query) {
   return request({
-    url: '/admin/user/getUserInfoß',
+    url: '/admin/user/getUserInfo',
     method: 'get',
     params: query
   })

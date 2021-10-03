@@ -1,14 +1,18 @@
 <template>
-  <div class="s_textarea">
-    <van-field
-      v-model="message"
-      rows="2"
-      autosize
-      type="textarea"
-      maxlength="50"
-      placeholder="请输入留言"
-      show-word-limit
-    />
+  <div class="ed_item">
+    <div class="ed_title">{{ comInfo.issue }}</div>
+    <div class="text_item">
+      <van-field
+        v-model="message"
+        rows="2"
+        autosize
+        type="textarea"
+        maxlength="50"
+        placeholder="请输入留言"
+        show-word-limit
+        @input="getValue"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -22,7 +26,6 @@ export default {
   },
   data() {
     return {
-      radio: "",
       message: "",
       comInfo: null,
     };
@@ -30,7 +33,14 @@ export default {
   created() {
     this.comInfo = this.$deepClone(this.info);
   },
-  methods: {},
+  methods: {
+    getValue() {
+      this.$emit("getValue", {
+        question_issue_id: this.comInfo.id,
+        value: this.message,
+      });
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

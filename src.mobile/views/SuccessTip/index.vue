@@ -33,6 +33,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 2rem;
     img {
       width: 0.44rem;
       height: 0.44rem;

@@ -1,61 +1,58 @@
 <template >
   <div class="MyAssessment">
-    <div class="m_title">我的测评</div>
-    <div class="m_title_item">{{issueObj.title}}</div>
-    <div class="m_content">
-      <div class="sTitle">指导语</div>
-      <div class="m_content_box">
-        {{issueObj.index_desc}}
+    <div v-if="issueObj">
+      <div class="m_title">我的测评</div>
+      <div class="m_title_item">{{ issueObj.title }}</div>
+      <div class="m_content">
+        <div class="sTitle">指导语</div>
+        <div class="m_content_box">
+          {{ issueObj.index_desc }}
+        </div>
+        <div class="user" @click="updatePwd">
+          <img src="../../assets/image/个人中心.svg" alt="" />
+        </div>
       </div>
-      <div class="user"
-           @click="updatePwd">
-        <img src="../../assets/image/个人中心.svg"
-             alt="" />
+      <div class="input_item">
+        <van-button plain type="info" block @click="start">开始测评</van-button>
       </div>
-    </div>
-    <div class="input_item">
-      <van-button plain
-                  type="info"
-                  block
-                  @click="start">开始测评</van-button>
     </div>
   </div>
 </template>
 <script>
-import { GET_QUESTION_INFO } from '../../api/mobile'
+import { GET_QUESTION_INFO } from "../../api/mobile";
 
 export default {
-  name: 'MyAssessment',
+  name: "MyAssessment",
   data() {
     return {
-      issueObj: null
-    }
+      issueObj: null,
+    };
   },
   created() {
     GET_QUESTION_INFO({
-      id: 1
-    }).then(res => {
+      id: 1,
+    }).then((res) => {
       if (res.status == 0) {
-        this.issueObj = res.data
+        this.issueObj = res.data;
       }
-    })
+    });
   },
   methods: {
     start() {
       this.$router.push({
-        path: 'evaluationdetails'
-      })
+        path: "evaluationobject",
+      });
     },
     updatePwd() {
       this.$router.push({
-        path: 'personalcenter'
-      })
-    }
-  }
-}
+        path: "personalcenter",
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/index.less';
+@import "../../assets/style/index.less";
 .m_title_item {
   font-size: 0.16rem;
   font-family: PingFang SC;

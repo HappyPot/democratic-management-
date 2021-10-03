@@ -1,46 +1,54 @@
 <template >
   <div class="EvaluationObject">
     <div class="m_title">测评对象</div>
-    <div class="m_stitle">
-      测评对象
-    </div>
-    <div class="eo_item"
-         v-for="(item,index) in list"
-         :key="index">
-      1.纪委监委机关
-      <img src="../../assets/image/下一级.svg"
-           alt="">
+    <div class="m_stitle">测评对象</div>
+    <div
+      class="eo_item"
+      v-for="(item, index) in toplist"
+      :key="index"
+      @click="togodetail(item)"
+    >
+      {{ index + 1 }}.{{ item.title }}
+      <img src="../../assets/image/下一级.svg" alt="" />
     </div>
   </div>
 </template>
 <script>
-import { GET_QUESTION } from '../../api/mobile'
+import { GET_QUESTION_INFO } from "../../api/mobile";
+
 export default {
-  name: 'EvaluationObject',
+  name: "EvaluationObject",
   data() {
     return {
-      list: [],
-      listNo: []
-    }
+      toplist: [],
+    };
   },
   created() {
-    GET_QUESTION().then(res => {
+    GET_QUESTION_INFO({
+      id: 1,
+    }).then((res) => {
       if (res.status == 0) {
-        res.data.map(item => {
-          // 未提交
-          if (item.status == 1) {
-            this.listNo.push(item)
-          } else {
-            this.list.push(item)
-          }
-        })
+        this.toplist = res.data.top;
       }
-    })
-  }
-}
+    });
+  },
+  methods: {
+    togodetail(item) {
+      this.$router.push({
+        path: "evaluationdetails",
+        query: {
+          question_id: item.question_id,
+          title: item.title,
+          top_id: item.id,
+          toplist: JSON.stringify(this.toplist),
+        },
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/index.less';
+@import "../../assets/style/index.less";
 .EvaluationObject {
   padding: 0.2rem;
   box-sizing: border-box;

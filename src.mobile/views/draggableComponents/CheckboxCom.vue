@@ -1,13 +1,18 @@
 <template>
   <div class="ed_item">
-    <div class="ed_title">{{comInfo.issue}}</div>
+    <div class="ed_title">{{ comInfo.issue }}</div>
     <div class="ed_select">
-      <van-checkbox-group v-model="radio"
-                          direction="horizontal">
-        <van-checkbox :name="item.value"
-                      v-for="(item) in comInfo.config"
-                      :key="item.id">
-          <span class="ed_select_label">{{item.content}}</span>
+      <van-checkbox-group
+        v-model="radio"
+        direction="horizontal"
+        @change="getValue"
+      >
+        <van-checkbox
+          :name="item.value"
+          v-for="item in comInfo.config"
+          :key="item.id"
+        >
+          <span class="ed_select_label">{{ item.content }}</span>
         </van-checkbox>
       </van-checkbox-group>
     </div>
@@ -15,27 +20,34 @@
 </template>
 <script>
 export default {
-  name: 'CheckboxCom',
+  name: "CheckboxCom",
   props: {
     info: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
       radio: [],
-      comInfo: null
-    }
+      comInfo: null,
+    };
   },
   created() {
-    this.comInfo = this.$deepClone(this.info)
+    this.comInfo = this.$deepClone(this.info);
   },
-  methods: {}
-}
+  methods: {
+    getValue() {
+      this.$emit("getValue", {
+        question_issue_id: this.comInfo.id,
+        value: this.radio,
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
-@import './index.less';
+@import "./index.less";
 .ed_item {
   margin-bottom: 0.24rem;
 }

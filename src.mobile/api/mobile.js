@@ -25,7 +25,7 @@ export function GET_QUESTION(query) {
 /**
   * @description 获取测评详情
   */
- export function GET_QUESTION_INFO(query) {
+export function GET_QUESTION_INFO(query) {
   return request({
     url: '/web/getQuestionDetail',
     method: 'get',
@@ -36,9 +36,20 @@ export function GET_QUESTION(query) {
 /**
   * @description 修改密码
   */
- export function SAVE_PASSWORD(query) {
+export function SAVE_PASSWORD(query) {
   return request({
     url: '/web/savePassword',
+    method: 'post',
+    data: query
+  })
+}
+
+/**
+  * @description 保存答案
+  */
+export function SAVE_ANSWER(query) {
+  return request({
+    url: '/web/saveQuestionUserValue',
     method: 'post',
     data: query
   })
