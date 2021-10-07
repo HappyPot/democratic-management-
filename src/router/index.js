@@ -35,7 +35,13 @@ let isOnlineFlag = true
  * 权限验证
  */
 router.beforeEach(async (to, from, next) => {
-
+  let url = window.location.href.split('/')
+  if (to.path == '/index' || to.path == '/login') {
+    if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
+      window.location.href = `${url[0]}//${url[2]}/mobile`
+      next();
+    }
+  }
   // 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
   await store.dispatch('d2admin/page/isLoaded')
   // 确认已经加载组件尺寸设置 https://github.com/d2-projects/d2-admin/issues/198

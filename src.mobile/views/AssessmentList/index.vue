@@ -45,7 +45,6 @@ export default {
     }
   },
   created() {
-    alert(1)
     GET_QUESTION().then(res => {
       if (res.status == 0) {
         res.data.map(item => {

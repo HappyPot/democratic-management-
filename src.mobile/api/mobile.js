@@ -54,3 +54,15 @@ export function SAVE_ANSWER(query) {
     data: query
   })
 }
+
+/**
+  * @description 获取用户答案
+  */
+ export function GET_ANSWER(query) {
+  return request({
+    url: '/web/getUserQuestionIssue',
+    method: 'get',
+    params: query
+  })
+}
+
