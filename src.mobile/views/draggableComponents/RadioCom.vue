@@ -26,17 +26,26 @@ export default {
       type: Object,
       default: () => {},
     },
+    valueList: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
       radio: "",
       comInfo: null,
+      comanserObject: null,
     };
   },
   created() {
     this.comInfo = this.$deepClone(this.info);
+    this.comanserObject = this.$deepClone(this.valueList);
   },
   methods: {
+    setValue() {
+      this.radio = this.comanserObject.value;
+    },
     getValue() {
       this.$emit("getValue", {
         question_issue_id: this.comInfo.id,

@@ -260,6 +260,7 @@
           <div class="dc_text">编号</div>
           <el-input
             v-model="from.number"
+            disabled
             size="medium"
             class="dc_select"
           ></el-input>

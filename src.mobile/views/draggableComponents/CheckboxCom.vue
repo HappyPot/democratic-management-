@@ -31,12 +31,16 @@ export default {
     return {
       radio: [],
       comInfo: null,
+      comanserObject: null,
     };
   },
   created() {
     this.comInfo = this.$deepClone(this.info);
   },
   methods: {
+    setValue() {
+      this.radio.push(this.comanserObject.value);
+    },
     getValue() {
       this.$emit("getValue", {
         question_issue_id: this.comInfo.id,

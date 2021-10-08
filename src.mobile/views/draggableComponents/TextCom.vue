@@ -21,7 +21,9 @@ export default {
   created() {
     this.comInfo = this.$deepClone(this.info)
   },
-  methods: {}
+  methods: {
+    
+  }
 }
 </script>
 <style lang="less" scoped>

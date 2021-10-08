@@ -4,64 +4,58 @@
     <div class="content">
       <van-tabs v-model="active">
         <van-tab title="未提交">
-          <div class="eo_item"
-               v-for="(item,index) in list"
-               :key="index">
-            {{index+1}}.{{item.title}}
-            <img src="../../assets/image/下一级.svg"
-                 alt="">
+          <div class="eo_item" v-for="(item, index) in list" :key="index">
+            {{ index + 1 }}.{{ item.title }}
+            <img src="../../assets/image/下一级.svg" alt="" />
           </div>
         </van-tab>
         <van-tab title="已提交">
-          <div class="eo_item"
-               v-for="(item,index) in listNo"
-               :key="index">
-            {{index}}.{{item.title}}
-            <img src="../../assets/image/下一级.svg"
-                 alt="">
+          <div class="eo_item" v-for="(item, index) in listNo" :key="index">
+            {{ index }}.{{ item.title }}
+            <img src="../../assets/image/下一级.svg" alt="" />
           </div>
         </van-tab>
         <!--样式占位 -->
-        <van-tab title=""
-                 disabled> </van-tab>
-        <van-tab title=""
-                 disabled> </van-tab>
-        <van-tab title=""
-                 disabled> </van-tab>
+        <van-tab title="" disabled> </van-tab>
+        <van-tab title="" disabled> </van-tab>
+        <van-tab title="" disabled> </van-tab>
       </van-tabs>
     </div>
   </div>
 </template>
 <script>
-import { GET_QUESTION } from '../../api/mobile'
+import { GET_QUESTION } from "../../api/mobile";
 
 export default {
-  name: 'AssessmentList',
+  name: "AssessmentList",
   data() {
     return {
-      active: '2',
+      active: "2",
       list: [],
-      listNo: []
-    }
+      listNo: [],
+    };
   },
   created() {
-    GET_QUESTION().then(res => {
+    this.type = this.$route.query.type;
+    GET_QUESTION({
+      type: this.type,
+    }).then((res) => {
       if (res.status == 0) {
-        res.data.map(item => {
+        res.data.map((item) => {
           // 未提交
           if (item.status == 1) {
-            this.listNo.push(item)
+            this.listNo.push(item);
           } else {
-            this.list.push(item)
+            this.list.push(item);
           }
-        })
+        });
       }
-    })
-  }
-}
+    });
+  },
+};
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/index.less';
+@import "../../assets/style/index.less";
 .content {
   width: 3.35rem;
   margin: 0 auto;

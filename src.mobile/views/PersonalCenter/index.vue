@@ -2,60 +2,58 @@
   <div class="PersonalCenter">
     <div class="m_title">个人中心</div>
     <div class="pc_content">
-      <div class="pc_item"
-           @click="togoMyTest">
-        <img src="../../assets/image/我的测评.svg"
-             alt="" />
+      <div class="pc_item" @click="togoMyTest(1)">
+        <img src="../../assets/image/我的测评.svg" alt="" />
         <div>我的测评</div>
       </div>
-      <div class="pc_item">
-        <img src="../../assets/image/我的问卷.svg"
-             alt="" />
+      <div class="pc_item" @click="togoMyTest(2)">
+        <img src="../../assets/image/我的问卷.svg" alt="" />
         <div>我的问卷</div>
       </div>
     </div>
     <div class="pc_acount">
       <div class="pca_item">
         <span>登录账号</span>
-        <span>{{userInfo.code}}</span>
+        <span>{{ userInfo.code }}</span>
       </div>
-      <div class="pca_item"
-           @click="updatePwd">
+      <div class="pca_item" @click="updatePwd">
         <span>修改密码</span>
-        <span><img src="../../assets/image/下一级.svg"
-               alt=""></span>
+        <span><img src="../../assets/image/下一级.svg" alt="" /></span>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'PersonalCenter',
+  name: "PersonalCenter",
   data() {
     return {
-      userInfo: null
-    }
+      userInfo: null,
+    };
   },
   created() {
-    this.userInfo = JSON.parse(localStorage.getItem('evaluationm'))
+    this.userInfo = JSON.parse(localStorage.getItem("evaluationm"));
   },
   methods: {
     // 我的测评
-    togoMyTest() {
+    togoMyTest(type) {
       this.$router.push({
-        path: '/assessmentList'
-      })
+        path: "/assessmentList",
+        query: {
+          type: type,
+        },
+      });
     },
     updatePwd() {
       this.$router.push({
-        path: '/changepassword'
-      })
-    }
-  }
-}
+        path: "/changepassword",
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/index.less';
+@import "../../assets/style/index.less";
 .PersonalCenter {
   background: #f9fafc;
   padding: 0.15rem;

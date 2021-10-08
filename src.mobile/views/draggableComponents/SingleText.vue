@@ -26,6 +26,9 @@ export default {
     console.log("this.comInfo", this.comInfo);
   },
   methods: {
+    setValue() {
+      this.value = this.comanserObject.value;
+    },
     getValue() {
       this.$emit("getValue", {
         question_issue_id: this.comInfo.id,

@@ -9,6 +9,7 @@
         :key="item.id"
         :info="item"
         :is="map[item.type]"
+        :ref="'type_' + item.id"
         @getValue="getValue"
       ></component>
       <!-- <div class="ed_item">
@@ -115,7 +116,7 @@
   </div>
 </template>
 <script>
-import { GET_QUESTION_INFO, SAVE_ANSWER } from "../../api/mobile";
+import { GET_QUESTION_INFO, SAVE_ANSWER, GET_ANSWER } from "../../api/mobile";
 export default {
   name: "EvaluationDetails",
   data() {
@@ -130,6 +131,7 @@ export default {
         4: "SingleText",
         5: "MultilineText",
       },
+      answerList: [],
       issue: [
         // {
         //   id: 31,
@@ -250,6 +252,29 @@ export default {
           });
         }
       });
+      this.getanswer();
+    },
+    // 获取答案
+    getanswer() {
+      GET_ANSWER({
+        question_top_id: this.top_id,
+        question_id: this.question_id,
+      }).then((res) => {
+        this.answerList = res.data;
+        for (let i = 0; i < this.issue.length; i++) {
+          const element = this.issue[i];
+          for (let k = 0; k < this.answerList.length; k++) {
+            const element2 = this.answerList[k];
+            if (element.id == element2.question_issue_id) {
+              console.log("question_issue_id", this.$refs["type_1"]);
+              this.$refs[
+                "type_" + element2.question_issue_id
+              ][0].comanserObject = element2;
+              this.$refs["type_" + element2.question_issue_id][0].setValue();
+            }
+          }
+        }
+      });
     },
     // 下一个
     next() {
@@ -271,6 +296,7 @@ export default {
           });
         }
       });
+      this.getanswer();
     },
     // 获取数据
     getValue(val) {
@@ -311,9 +337,9 @@ export default {
         values: values,
       };
       console.log("obj", obj);
-        this.$router.push({
-            path: "successtip",
-          });
+      this.$router.push({
+        path: "successtip",
+      });
       // SAVE_ANSWER(obj).then((res) => {
       //   if (res.status == 0) {
       //     this.$router.push({
