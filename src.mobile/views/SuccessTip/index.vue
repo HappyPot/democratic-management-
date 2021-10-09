@@ -2,24 +2,33 @@
   <div class="SuccessTip">
     <!-- <div class="m_title">测评对象</div> -->
     <div class="su_content">
-      <img src="../../assets/image/successtip.svg" alt="" />
+      <img src="../../assets/image/successtip.svg"
+           alt="" />
       <div class="tip_text">恭喜您，提交成功！</div>
       <div class="su_btn">
-        <van-button type="default" style="margin-right: 0.12rem"
-          >返回查看测评</van-button
-        >
-        <van-button type="info">完成</van-button>
+        <van-button type="default"
+                    style="margin-right: 0.12rem"
+                    @click="toback">返回查看测评</van-button>
+        <van-button type="info"
+                    @click="toback">完成</van-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "SuccessTip",
-};
+  name: 'SuccessTip',
+  methods: {
+    toback() {
+      this.$router.push({
+        path: 'evaluationobject'
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
-@import "../../assets/style/index.less";
+@import '../../assets/style/index.less';
 .SuccessTip {
   position: relative;
   height: 100vh;

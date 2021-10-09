@@ -2,12 +2,12 @@
   <div class="ErrorTip">
     <!-- <div class="m_title">测评对象</div> -->
     <div class="su_content">
-      <img src="../../assets/image/errortip.svg" alt="" />
+      <img src="../../assets/image/errortip.svg"
+           alt="" />
       <div class="tip_text">很遗憾，提交失败！</div>
       <div class="su_btn">
-        <van-button type="default" style="margin-right: 0.12rem"
-          >返回查看测评</van-button
-        >
+        <van-button type="default"
+                    style="margin-right: 0.12rem">返回查看测评</van-button>
         <van-button type="info">继续提交</van-button>
       </div>
     </div>
@@ -15,11 +15,18 @@
 </template>
 <script>
 export default {
-  name: "ErrorTip",
-};
+  name: 'ErrorTip',
+  methods: {
+    toback() {
+      this.$router.push({
+        path: 'evaluationobject'
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
-@import "../../assets/style/index.less";
+@import '../../assets/style/index.less';
 .ErrorTip {
   position: relative;
   height: 100vh;
