@@ -228,9 +228,7 @@
       width="400px"
     >
       <div ref="qrCodeUrl" id="qrcode" class="qrCodeUrl"></div>
-      <div class="qrCodeUrl_text">
-        地址：https://www.baidu.com/id={{ urlParam }}
-      </div>
+      <div class="qrCodeUrl_text">地址：{{ urlText }}</div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogTest = false">确 定</el-button>
         <el-button @click="dialogTest = false">取 消</el-button>
@@ -290,6 +288,7 @@ export default {
       updateId: undefined,
       urlParam: "",
       testTitle: "",
+      urlText: "", //访问网址文字
     };
   },
   mounted() {
@@ -304,8 +303,11 @@ export default {
       this.$nextTick(() => {
         const codeHtml = document.getElementById("qrcode");
         codeHtml.innerHTML = "";
+        let url = window.location.href;
+        let urlarr = url.split("/");
+        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/evaluationdetails?showSelect=0&question_id=${row.id}`;
         var qrcode = new QRCode(this.$refs.qrCodeUrl, {
-          text: "https://www.baidu.com/", // 需要转换为二维码的内容
+          text: `${urlarr[0]}//${urlarr[2]}/mobile#/evaluationdetails?showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
           width: 200,
           height: 200,
           colorDark: "#000000",

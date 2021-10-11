@@ -1,5 +1,7 @@
 import { LOGIN } from '../../../../api/mobile'
 import { setToken, removeToken } from "@.mobile/untils/auth"
+import router from '../../../../router/index'
+
 export default {
   namespaced: true,
   actions: {
@@ -21,5 +23,20 @@ export default {
       dispatch('evaluationm/base/saveUserInfo', res.data, { root: true })
       dispatch('evaluationm/base/saveSubjectId', res.data.subject_id, { root: true })
     },
+    /**
+   * @description 注销用户并返回登录页面
+   * @param {Object} context
+   * @param {Object} payload confirm {Boolean} 是否需要确认
+   */
+
+    async logout({ dispatch }) {
+      // 删除cookie
+      removeToken()
+      // 清空 vuex 用户信息
+      dispatch('evaluationm/base/saveUserInfo', {}, { root: true })
+      // 跳转路由
+      router.push({ name: 'login' })
+    },
+
   }
 }

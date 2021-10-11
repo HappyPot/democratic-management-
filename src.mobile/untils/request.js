@@ -36,10 +36,10 @@ service.interceptors.response.use(res => {
   const code = res.data.status
   if (code === 1002) {
     Dialog.alert({
-      title: '标题',
-      message: '弹窗内容',
+      title: '信息',
+      message: '登陆超时，请重新登陆',
     }).then(() => {
-      store.dispatch('evaluation/account/logout', {}, { root: true }).then(() => {
+      store.dispatch('evaluationm/account/logout', {}, { root: true }).then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     });

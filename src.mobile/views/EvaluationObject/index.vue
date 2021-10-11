@@ -37,6 +37,7 @@ export default {
       this.$router.push({
         path: "evaluationdetails",
         query: {
+          showSelect: 1,
           question_id: item.question_id,
           title: item.title,
           top_id: item.id,

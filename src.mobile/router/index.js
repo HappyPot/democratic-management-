@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/mobile',
+    path: '/',
     name: 'index',
     component: () => import('../views/index.vue')
   },
@@ -50,7 +50,6 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: "history",
   routes
 })
 
