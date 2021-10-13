@@ -122,7 +122,7 @@ export default {
     // node-key
     nodeKey: {
       type: String,
-      default: 'id'
+      default: 'unit_name'
     },
     // 选中数据
     value: [String, Number, Array, Object],

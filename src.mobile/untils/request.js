@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Notify } from 'vant';
 import { Dialog } from 'vant';
+import routes from '../router/index'
+
 import {
   getToken,
 } from './auth'
@@ -40,10 +42,18 @@ service.interceptors.response.use(res => {
       message: '登陆超时，请重新登陆',
     }).then(() => {
       store.dispatch('evaluationm/account/logout', {}, { root: true }).then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
+        let arr = location.href.split('/')
+        console.log(location.href.split('/'))
+        routes.push({
+          name: "index",
+          query: {
+            redirect: '/'+arr[arr.length - 1]
+          },
+        });
+        // location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     });
-  
+
   } else if (code !== 0) {
     Notify({ type: 'danger', message: res.data.msg });
     return Promise.reject(res.data)

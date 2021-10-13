@@ -15,17 +15,21 @@
 </template>
 <script>
 import { GET_QUESTION_INFO } from "../../api/mobile";
-
+import { getUserInfom } from "@.mobile/untils/userinfo";
 export default {
   name: "EvaluationObject",
   data() {
     return {
       toplist: [],
+      question_id: -1,
+      showSelect: 1,
     };
   },
   created() {
+    this.question_id = this.$route.query.question_id;
+    this.showSelect = this.$route.query.showSelect - 0;
     GET_QUESTION_INFO({
-      id: 1,
+      id: this.question_id,
     }).then((res) => {
       if (res.status == 0) {
         this.toplist = res.data.top;

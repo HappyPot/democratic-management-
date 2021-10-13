@@ -26,11 +26,15 @@ export default {
   data() {
     return {
       issueObj: null,
+      showSelect: -1,
+      question_id: -1,
     };
   },
   created() {
+    this.showSelect = this.$route.query.showSelect - 0;
+    this.question_id = this.$route.query.question_id;
     GET_QUESTION_INFO({
-      id: 1,
+      id: this.question_id,
     }).then((res) => {
       if (res.status == 0) {
         this.issueObj = res.data;
@@ -41,6 +45,10 @@ export default {
     start() {
       this.$router.push({
         path: "evaluationobject",
+        query: {
+          question_id: this.question_id,
+          showSelect: this.showSelect,
+        },
       });
     },
     updatePwd() {

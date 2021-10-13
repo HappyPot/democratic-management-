@@ -217,8 +217,8 @@ export default {
   },
   mounted() {
     this.showSelect = this.$route.query.showSelect - 0;
-    this.title = this.$route.query.title;
     this.question_id = this.$route.query.question_id;
+    this.title = this.$route.query.title;
     if (this.showSelect) {
       this.top_id = this.$route.query.top_id;
       this.toplist = JSON.parse(this.$route.query.toplist);

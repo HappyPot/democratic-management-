@@ -282,9 +282,9 @@ export default {
         codeHtml.innerHTML = ''
         let url = window.location.href
         let urlarr = url.split('/')
-        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/evaluationdetails?showSelect=0&question_id=${row.id}`
+        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}`
         var qrcode = new QRCode(this.$refs.qrCodeUrl, {
-          text: `${urlarr[0]}//${urlarr[2]}/mobile#/evaluationdetails?showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
+          text: `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
           width: 200,
           height: 200,
           colorDark: '#000000',

@@ -1,5 +1,6 @@
 import { LOGIN } from '../../../../api/mobile'
 import { setToken, removeToken } from "@.mobile/untils/auth"
+import { setUserInfom, removeUserInfom } from "@.mobile/untils/userinfo"
 import router from '../../../../router/index'
 
 export default {
@@ -20,6 +21,7 @@ export default {
       const res = await LOGIN({ pwd, subject_id, code })
       setToken(res.data.token)
       // 设置 vuex 用户信息
+      setUserInfom(JSON.stringify(res.data))
       dispatch('evaluationm/base/saveUserInfo', res.data, { root: true })
       dispatch('evaluationm/base/saveSubjectId', res.data.subject_id, { root: true })
     },
@@ -35,7 +37,7 @@ export default {
       // 清空 vuex 用户信息
       dispatch('evaluationm/base/saveUserInfo', {}, { root: true })
       // 跳转路由
-      router.push({ name: 'login' })
+      // router.push({ name: 'login' })
     },
 
   }
