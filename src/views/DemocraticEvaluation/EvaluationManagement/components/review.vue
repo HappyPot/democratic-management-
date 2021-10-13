@@ -398,7 +398,7 @@ export default {
         }
       })
     },
-    // //获取单位列表
+    //获取单位列表
     getUnitLIst() {
       GET_UNITTREE_LIST({
         subject_id: this.subjectId

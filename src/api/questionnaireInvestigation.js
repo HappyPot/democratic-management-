@@ -219,7 +219,7 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 
 	// 模拟数据
 	mock
-		.onAny('/admin/question/getQuestionObjectDetail?question_issue_id=4&question_id=1')
+		.onAny('/admin/question/getQuestionObjectDetail')
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
@@ -249,7 +249,7 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 						},
 						{
 							"num": 1,
-							"value": "3",
+							"value": "4",
 							// "question_top_id": '比较满意','
 							"question_name": '一般',
 							"question_id": '3',
@@ -282,7 +282,7 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 						},
 						{
 							"num": 1,
-							"value": "3",
+							"value": "4",
 							// "question_top_id": '比较满意','
 							"question_name": '一般',
 							"question_id": '3',
@@ -290,22 +290,6 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 						}
 					]
 				},
-				{
-					"id": 3,
-					"question_id": 1,
-					"title": "保密委员办公室（保密局）",
-					"sort": 1,
-					"sum": 0,
-					"value": []
-				},
-				// {
-				// 	"id": 13,
-				// 	"question_id": 10,
-				// 	"title": "测评主题2",
-				// 	"sort": 2,
-				// 	"sum": 0,
-				// 	"value": []
-				// }
 			]
 		}))
 	return request({
@@ -322,7 +306,7 @@ export function GET_QUESTION_UNIT_DETAIL(query) {
 
 	// 模拟数据
 	mock
-		.onAny('/admin/question/getQuestionUnitDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1')
+		.onAny('/admin/question/getQuestionUnitDetail')
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
@@ -385,10 +369,10 @@ export function GET_QUESTION_UNIT_DETAIL(query) {
 				},
 			]
 		}))
-	return requestForMock({
-		url: '/admin/question/getQuestionUnitDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1',
-		method: 'get',
-		params: query
+	return request({
+		url: '/admin/question/getQuestionUnitDetail',
+		method: 'post',
+		data: query
 	})
 }
 
@@ -400,7 +384,7 @@ export function GET_QUESTION_DEPARTMENT_DETAIL(query) {
 
 	// 模拟数据
 	mock
-		.onAny('/admin/question/getQuestionDepartmentDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1')
+		.onAny('/admin/question/getQuestionDepartmentDetail')
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
@@ -461,10 +445,10 @@ export function GET_QUESTION_DEPARTMENT_DETAIL(query) {
 				},
 			]
 		}))
-	return requestForMock({
-		url: '/admin/question/getQuestionDepartmentDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1',
-		method: 'get',
-		params: query
+	return request({
+		url: '/admin/question/getQuestionDepartmentDetail',
+		method: 'post',
+		data: query
 	})
 }
 
@@ -475,7 +459,7 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
 
 	// 模拟数据
 	mock
-		.onAny('/admin/question/getQuestionDutyDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1')
+		.onAny('/admin/question/getQuestionDutyDetail')
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
@@ -507,10 +491,10 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
 				},
 			]
 		}))
-	return requestForMock({
-		url: '/admin/question/getQuestionDutyDetail?page_size=10&question_issue_id=4&question_id=1&duty_id=2&subject_id=1',
-		method: 'get',
-		params: query
+	return request({
+		url: '/admin/question/getQuestionDutyDetail',
+		method: 'post',
+		data: query
 	})
 }
 
@@ -529,11 +513,11 @@ export function SAVE_QUESTION_CONFIG(query) {
 /**
 * @description 测评明细
 */
-export function SAVE_QUESTION_DETAIL(query) {
+export function GET_QUESTION_DETAIL(query) {
 
 	// 模拟数据
 	mock
-		.onAny('/admin/question/getQuestionDetail')
+		.onAny('/admin/question/getQuestionUserDetail')
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
@@ -617,8 +601,8 @@ export function SAVE_QUESTION_DETAIL(query) {
 		}))
 
 	return request({
-		url: '/admin/question/getQuestionDetail',
-		method: 'get',
-		params: query
+		url: '/admin/question/getQuestionUserDetail',
+		method: 'post',
+		data: query
 	})
 }

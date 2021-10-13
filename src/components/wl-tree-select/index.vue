@@ -352,7 +352,7 @@ export default {
     },
     selfProps() {
       return {
-        label: 'unit_name',
+        label: this.nodeKey,
         children: 'children',
         disabled: data => {
           return data.disabled

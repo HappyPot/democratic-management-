@@ -26,7 +26,7 @@
                 <div class="th th_1">回答本题的人数总计</div>
                 <div class="th th_2">{{group.count}}</div>
                 <div class="th showDetail"
-                     @click="viewDetails">查看明细</div>
+                     @click="viewDetails(group,group.issue+'【'+group.type+'】')">查看明细</div>
               </div>
             </div>
             <div class="result">
@@ -91,7 +91,7 @@
                 <div class="th th_1">{{group.issue}}</div>
                 <div class="th th_2">{{group.text_count}}</div>
                 <div class="th showDetail"
-                     @click="viewDetails">查看明细</div>
+                     @click="viewDetails(group,group.issue+'【'+group.type+'】')">查看明细</div>
               </div>
             </div>
           </div>
@@ -130,7 +130,6 @@ export default {
     console.log('statisticsData', this.statisticsData)
     let mapData = {}
     for (let i = 0; i < this.statisticsData.length; i++) {
-      console.log(this.statisticsData[i].type)
       if (
         this.statisticsData[i].type == 3 ||
         this.statisticsData[i].type == 1
@@ -158,7 +157,9 @@ export default {
           issue: this.statisticsData[i].issue,
           tableData: this.statisticsData[i].count[0],
           mapData: mapData,
-          chartData: arr
+          chartData: arr,
+          id: this.statisticsData[i].id,
+          question_id: this.statisticsData[i].question_id
         }
         this.list.push(obj)
         console.log('this.list', this.list)
@@ -170,7 +171,9 @@ export default {
         let obj = {
           type: this.typeMap[this.statisticsData[i].type],
           text_count: this.statisticsData[i].text_count,
-          issue: this.statisticsData[i].issue
+          issue: this.statisticsData[i].issue,
+          id: this.statisticsData[i].id,
+          question_id: this.statisticsData[i].question_id
         }
         this.list.push(obj)
       }
@@ -289,9 +292,11 @@ export default {
       mychart.setOption(option, true)
     },
     // 查看明细
-    viewDetails() {
-      this.$emit('openDetail')
-      console.log('查看明细')
+    viewDetails(group, name) {
+      this.$emit('openDetail', {
+        group,
+        name
+      })
     }
   }
 }

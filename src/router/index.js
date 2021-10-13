@@ -39,6 +39,8 @@ router.beforeEach(async (to, from, next) => {
   if (to.path == '/index' || to.path == '/login' || to.path == '/' || to.path == '') {
     if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
       window.location.href = `${url[0]}//${url[2]}/mobile`
+    }else{
+      next()
     }
   }
   // 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201

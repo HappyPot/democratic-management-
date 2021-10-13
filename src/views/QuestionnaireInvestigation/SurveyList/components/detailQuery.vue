@@ -11,51 +11,58 @@
         <div>
           <wlTreeSelect leaf
                         width="200"
-                        size="small"
+                        nodeKey="title"
                         placeholder="测评对象"
                         style="margin-right: 10px"
                         checkbox
                         :data="evaluationOptions"
-                        @change="hindleChanged"
+                        @change="getTestList"
                         v-model="evaluation"></wlTreeSelect>
         </div>
         <div>
-          <wlTreeSelect leaf
+          <wlTreeSelect checkStrictly
                         width="200"
-                        size="small"
-                        placeholder="单位"
+                        nodeKey="unit_name"
+                        placeholder="选择单位"
                         style="margin-right: 10px"
                         checkbox
-                        :data="unitOptions"
-                        @change="hindleChanged"
-                        v-model="unit"></wlTreeSelect>
+                        clearable
+                        :data="superiorUnitOptions"
+                        @change="getUnitIdList"
+                        v-model="superiorUnit">
+          </wlTreeSelect>
         </div>
         <div>
-          <wlTreeSelect leaf
+          <wlTreeSelect checkStrictly
                         width="200"
-                        size="small"
-                        placeholder="部门"
+                        nodeKey="department_name"
+                        placeholder="选择部门"
                         style="margin-right: 10px"
                         checkbox
+                        clearable
                         :data="departmentOptions"
-                        @change="hindleChanged"
-                        v-model="department"></wlTreeSelect>
+                        @change="getDepartmentIdList"
+                        v-model="department_id_list">
+          </wlTreeSelect>
         </div>
         <div>
-          <wlTreeSelect leaf
+          <wlTreeSelect checkStrictly
                         width="200"
+                        nodeKey="duty_name"
+                        placeholder="选择职务"
                         style="margin-right: 10px"
-                        size="small"
-                        placeholder="职务"
                         checkbox
+                        clearable
                         :data="jobOptions"
-                        @change="hindleChanged"
-                        v-model="job"></wlTreeSelect>
+                        @change="getDutyIdList"
+                        v-model="duty_id_list">
+          </wlTreeSelect>
         </div>
         <div class="pc_item">
           <el-button size="small"
                      type="primary"
-                     plain>搜索</el-button>
+                     plain
+                     @click="search">搜索</el-button>
         </div>
         <div class="pc_item"></div>
         <div class="pc_item"></div>
@@ -67,7 +74,7 @@
                    name="first">
         <div class="baseInfo">
           <div class="baseInfo_item">
-            <div class="bt_title">1.品德修养好，为人诚实守信【单选】</div>
+            <div class="bt_title">{{idInfo.name}}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
@@ -78,25 +85,29 @@
                       @selection-change="handleSelectionChange">
               <el-table-column type="selection"
                                width="55"> </el-table-column>
-              <el-table-column prop="id"
+              <el-table-column type="index"
                                label="序号"> </el-table-column>
-              <el-table-column prop="name"
+              <el-table-column prop="code"
                                label="人员编码"> </el-table-column>
-              <el-table-column prop="date"
+              <el-table-column prop="unit_name"
                                label="单位名称"> </el-table-column>
-              <el-table-column prop="date"
+              <el-table-column prop="department_name"
                                label="部门名称"> </el-table-column>
-              <el-table-column prop="date"
+              <el-table-column prop="duty_name"
                                label="人员类别"> </el-table-column>
-              <el-table-column prop="date"
-                               label="满意"> </el-table-column>
-              <el-table-column prop="date"
-                               label="满意"> </el-table-column>
-              <el-table-column prop="date"
-                               label="满意"> </el-table-column>
-              <el-table-column prop="date"
-                               label="满意"> </el-table-column>
-              <el-table-column prop="date"
+              <el-table-column v-for="(item,index) in valueMap"
+                               :key="index"
+                               prop="value"
+                               :label="item.value">
+                <template slot-scope="scope">
+                  <div v-show="scope.row.value == item.prop">
+                    <img style="width:16px;height:16px"
+                         src="../../../../assets/image/dui.png"
+                         alt="">
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="created_at"
                                label="提交时间"> </el-table-column>
             </el-table>
             <div class="pagination_my">
@@ -115,7 +126,7 @@
                    name="second">
         <div class="baseInfo">
           <div class="baseInfo_item">
-            <div class="bt_title">1.品德修养好，为人诚实守信【单选】</div>
+            <div class="bt_title">{{idInfo.name}}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
@@ -153,7 +164,7 @@
                    name="third">
         <div class="baseInfo">
           <div class="baseInfo_item">
-            <div class="bt_title">1.品德修养好，为人诚实守信【单选】</div>
+            <div class="bt_title">{{idInfo.name}}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
@@ -192,7 +203,7 @@
                    name="fourth">
         <div class="baseInfo">
           <div class="baseInfo_item">
-            <div class="bt_title">1.品德修养好，为人诚实守信【单选】</div>
+            <div class="bt_title">{{idInfo.name}}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
@@ -231,7 +242,7 @@
                    name="five">
         <div class="baseInfo">
           <div class="baseInfo_item">
-            <div class="bt_title">1.品德修养好，为人诚实守信【单选】</div>
+            <div class="bt_title">{{idInfo.name}}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
@@ -275,24 +286,35 @@ import {
   GET_QUESTION_UNIT_DETAIL,
   GET_QUESTION_DEPARTMENT_DETAIL,
   GET_QUESTION_DUTY_DETAIL,
-  SAVE_QUESTION_DETAIL
+  GET_QUESTION_DETAIL
 } from '@/api/questionnaireInvestigation.js'
-
+import {
+  GET_UNITTREE_LIST,
+  GET_DUTY_LIST,
+  GET_DEPARTMENT_LIST
+} from '@/api/personnelmanagement.js'
 export default {
   name: 'DetailQuery',
+  props: {
+    idInfo: {
+      require: true,
+      default: () => {}
+    }
+  },
   data() {
     return {
+      valueMap: [], //选项与value的映射
       defaultProps: {
         children: 'children',
         label: 'label'
       },
       evaluation: '', //测评对象值
       evaluationOptions: [], //测评对象列表
-      unit: '', //单位
-      unitOptions: [], //单位列表,
-      department: '', //部门
+      superiorUnit: '', //单位
+      superiorUnitOptions: [], //单位列表,
+      department_id_list: '', //部门
       departmentOptions: [], //部门列表
-      job: '', //职务
+      duty_id_list: '', //职务
       jobOptions: [], //职务列表
       isShowScreen: false,
       activeName: 'first', //默认标签框
@@ -304,18 +326,6 @@ export default {
       },
       tableData: [
         //测评明细
-        {
-          id: 1,
-          date: '2021-',
-          status: 1,
-          name: '01师'
-        },
-        {
-          id: 2,
-          date: '2021-',
-          status: 2,
-          name: '01师'
-        }
       ],
       // 部门汇总
       tableDataDep: [],
@@ -341,25 +351,103 @@ export default {
       unitMap: [], //单位汇总map
       depMap: [], //部门汇总map
       peopleMap: [], //部门汇总map
-      selected: [] // 树下拉框选中数据
+      selected: [], // 树下拉框选中数据
+      commonParam: {
+        question_issue_id: this.idInfo.group.id,
+        question_id: this.idInfo.group.question_id,
+        duty_id_list: [],
+        question_top_id_list: [],
+        unit_id_list: [],
+        department_id_list: []
+      }
     }
   },
   created() {
+    // 单位
+    this.getUnitLIst()
+    // 职务
+    this.getDutyList()
+    // 部门
+    this.getDepartmentList()
+
+    // 对象汇总
     this.getQuestionObjectDetail()
+    // 单位汇总
     this.getQuestionUnitDetail()
+    // 部门汇总
     this.getQuestionDepartmentDetail()
+    // 人员汇总
     this.getQuestionDutyDetail()
   },
   methods: {
+    // 搜索
+    search() {
+      this.getQuestionObjectDetail()
+      this.getQuestionUnitDetail()
+      this.getQuestionDepartmentDetail()
+      this.getQuestionDutyDetail()
+    },
+    // 获取职务列表
+    getDutyList() {
+      GET_DUTY_LIST({
+        subject_id: this.subjectId,
+        page: 1,
+        page_size: 9999
+      }).then(res => {
+        if (res.status === 0) {
+          console.log('获取职务列表', res.data.data)
+          this.jobOptions = res.data.data
+        }
+      })
+    },
+    // 获取部门列表
+    getDepartmentList() {
+      GET_DEPARTMENT_LIST({
+        subject_id: this.subjectId,
+        page: 1,
+        page_size: 9999
+      }).then(res => {
+        if (res.status === 0) {
+          this.departmentOptions = res.data.data
+        }
+      })
+    },
+    //获取单位列表
+    getUnitLIst() {
+      GET_UNITTREE_LIST({
+        subject_id: this.subjectId
+      }).then(res => {
+        if (res.status === 0) {
+          this.superiorUnitOptions = res.data
+        }
+      })
+    },
     // 获取测评明细
     getQuestionDetail() {
-      SAVE_QUESTION_DETAIL().then(res => {})
+      GET_QUESTION_DETAIL(this.commonParam).then(res => {
+        if (res.status === 0) {
+          this.tableData = res.data.data
+        }
+      })
     },
     // 获取对象汇总
     getQuestionObjectDetail() {
-      GET_QUESTION_OBJECT_DETAIL().then(res => {
+      GET_QUESTION_OBJECT_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
           console.log('对象汇总', res.data)
+          this.evaluationOptions = res.data
+          if (res.data.length > 0) {
+            res.data[0].value.map(item => {
+              let obj = {
+                prop: item.value,
+                value: item.question_name
+              }
+              this.valueMap.push(obj)
+            })
+            console.log(this.valueMap)
+            this.getQuestionDetail()
+          }
+
           // this.tableDataEvaluation = res.data
           for (let index = 0; index < res.data.length; index++) {
             const element = res.data[index]
@@ -396,7 +484,7 @@ export default {
     },
     // 获取单位汇总
     getQuestionUnitDetail() {
-      GET_QUESTION_UNIT_DETAIL().then(res => {
+      GET_QUESTION_UNIT_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
           for (let index = 0; index < res.data.length; index++) {
             const element = res.data[index]
@@ -433,7 +521,7 @@ export default {
     },
     // 部门汇总
     getQuestionDepartmentDetail() {
-      GET_QUESTION_DEPARTMENT_DETAIL().then(res => {
+      GET_QUESTION_DEPARTMENT_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
           console.log('部门汇总', res.data)
           for (let index = 0; index < res.data.length; index++) {
@@ -472,7 +560,7 @@ export default {
 
     // 人员汇总
     getQuestionDutyDetail() {
-      GET_QUESTION_DUTY_DETAIL().then(res => {
+      GET_QUESTION_DUTY_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
           console.log('人员汇总', res.data)
           for (let index = 0; index < res.data.length; index++) {
@@ -513,8 +601,29 @@ export default {
     showScreen() {
       this.isShowScreen = !this.isShowScreen
     },
-    hindleChanged(val) {
-      console.log(val, 2)
+    // 获取测评对象idlist
+    getTestIdList(val) {
+      val.map(item => {
+        this.commonParam.question_top_id_list.push(item.id)
+      })
+    },
+    // 获取单位idlist
+    getUnitIdList(val) {
+      val.map(item => {
+        this.commonParam.unit_id_list.push(item.id)
+      })
+    },
+    // 获取部门idlist
+    getDepartmentIdList(val) {
+      val.map(item => {
+        this.commonParam.department_id_list.push(item.id)
+      })
+    },
+    // 获取职务idlist
+    getDutyIdList(val) {
+      val.map(item => {
+        this.commonParam.duty_id_list.push(item.id)
+      })
     }
   }
 }
@@ -548,7 +657,7 @@ export default {
   position: absolute;
   width: 936px;
   background: #fff;
-  min-height: 100px;
+  min-height: 76px;
   z-index: 12;
   padding-top: 20px;
   padding-left: 12px;

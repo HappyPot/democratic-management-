@@ -225,7 +225,7 @@ export default {
         })
       })
     },
-    // //获取单位列表
+    //获取单位列表
     getUnitLIst() {
       GET_UNITTREE_LIST().then(res => {
         if (res.status === 0) {
