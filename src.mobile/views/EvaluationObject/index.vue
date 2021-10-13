@@ -33,6 +33,13 @@ export default {
     }).then((res) => {
       if (res.status == 0) {
         this.toplist = res.data.top;
+        if (this.toplist.length == 0) {
+          this.togodetail({
+            question_id: this.question_id,
+            title: res.data.title,
+            id: res.data.id,
+          });
+        }
       }
     });
   },

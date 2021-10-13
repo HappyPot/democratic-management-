@@ -410,6 +410,7 @@ export default {
     // 展示配置框
     showConfig(row, index) {
       this.dialogConfigure = true
+      this.$refs.configure.drawingList = []
       this.question_id = row.id
     },
     // 配置框数据提交 保存测评

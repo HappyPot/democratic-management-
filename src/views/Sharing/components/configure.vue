@@ -2,38 +2,43 @@
   <div id="mytest">
     <div class="frombuild">
       <div class="frombuild_left">
-        <draggable class="drawing-board"
-                   :list="drawingList"
-                   :animation="340"
-                   :scroll="true"
-                   group="componentsGroup">
-          <component v-for="item in drawingList"
-                     :key="item.id"
-                     :info="item"
-                     @getData="getData"
-                     @delCom="delCom"
-                     :is="item.type"></component>
+        <draggable
+          class="drawing-board"
+          :list="drawingList"
+          :animation="340"
+          :scroll="true"
+          group="componentsGroup"
+        >
+          <component
+            v-for="item in drawingList"
+            :key="item.id"
+            :info="item"
+            @getData="getData"
+            @delCom="delCom"
+            :is="item.type"
+          ></component>
         </draggable>
       </div>
       <div class="frombuild_right">
         <div class="fr_title">自定义表单项</div>
         <div class="fr_tip">拖拽表单到左侧区域进行配置</div>
         <div class="draggable">
-          <draggable v-model="draggableArr"
-                     :scroll="true"
-                     :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-                     draggable=".draggable_item"
-                     animation="300">
+          <draggable
+            v-model="draggableArr"
+            :scroll="true"
+            :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+            draggable=".draggable_item"
+            animation="300"
+          >
             <transition-group>
-              <div class="draggable_item"
-                   v-for="(item) in draggableArr"
-                   :key="item.id">
-                <img src="../image/dargg.png"
-                     alt="">
-                <span>{{item.des}}</span>
-                <img class="dr_img"
-                     :src="item.url"
-                     alt="">
+              <div
+                class="draggable_item"
+                v-for="item in draggableArr"
+                :key="item.id"
+              >
+                <img src="../image/dargg.png" alt="" />
+                <span>{{ item.des }}</span>
+                <img class="dr_img" :src="item.url" alt="" />
               </div>
             </transition-group>
           </draggable>
@@ -43,197 +48,197 @@
   </div>
 </template>
 <script>
-import draggable from 'vuedraggable'
+import draggable from "vuedraggable";
 export default {
-  name: 'Deltest',
+  name: "Deltest",
   components: {
-    draggable
+    draggable,
   },
   data() {
     return {
       draggableArr: [
         {
           id: 1,
-          type: 'TextCom',
+          type: "TextCom",
           typeParam: 2,
-          des: '文字',
-          value: '默认',
-          url: require('../image/text.png'),
+          des: "文字",
+          value: "默认",
+          url: require("../image/text.png"),
           config: {
-            value: '',
-            title: ''
-          }
+            value: "",
+            title: "",
+          },
         },
         {
           id: 2,
-          type: 'RadioCom',
+          type: "RadioCom",
           typeParam: 1,
-          des: '单选', //标题全称
-          url: require('../image/radio.png'),
+          des: "单选", //标题全称
+          url: require("../image/radio.png"),
           config: {
             value: 2,
-            title: '', //标题简称
+            title: "", //标题简称
             valueArr: [
               {
                 id: 1,
-                content: '默认',
-                value: 1
+                content: "默认",
+                value: 1,
               },
               {
                 id: 2,
-                content: '默认2',
-                value: 2
-              }
-            ]
-          }
+                content: "默认2",
+                value: 2,
+              },
+            ],
+          },
         },
         {
           id: 3,
-          type: 'CheckboxCom',
+          type: "CheckboxCom",
           typeParam: 3,
-          des: '多选',
-          url: require('../image/checkbox.png'),
+          des: "多选",
+          url: require("../image/checkbox.png"),
           config: {
             value: [2],
-            title: '', //标题简称
+            title: "", //标题简称
             valueArr: [
               {
                 id: 1,
-                content: '默认',
-                value: 1
+                content: "默认",
+                value: 1,
               },
               {
                 id: 2,
-                content: '默认2',
-                value: 2
-              }
-            ]
-          }
+                content: "默认2",
+                value: 2,
+              },
+            ],
+          },
         },
         {
           id: 4,
-          type: 'SingleText',
+          type: "SingleText",
           typeParam: 4,
-          des: '单行文本',
-          value: '默认单行文本',
-          url: require('../image/linetext.png'),
+          des: "单行文本",
+          value: "默认单行文本",
+          url: require("../image/linetext.png"),
           config: {
-            value: '默认提示文字',
-            title: '' //标题简称
-          }
+            value: "默认提示文字",
+            title: "", //标题简称
+          },
         },
         {
           id: 5,
-          type: 'MultilineText',
+          type: "MultilineText",
           typeParam: 5,
-          des: '多行文本',
-          value: '默认单行文本',
-          url: require('../image/multiline.png'),
+          des: "多行文本",
+          value: "默认单行文本",
+          url: require("../image/multiline.png"),
           config: {
-            value: '默认提示文字',
-            title: '' //标题简称
-          }
-        }
+            value: "默认提示文字",
+            title: "", //标题简称
+          },
+        },
       ],
       drawingList: [], //左侧
       componentDataList: [],
-      issue_list: []
-    }
+      issue_list: [],
+    };
   },
   watch: {
     componentDataList: {
       handler(val) {
-        this.$emit('getComponentParam', val)
+        this.$emit("getComponentParam", val);
       },
-      deep: true
+      deep: true,
     },
     drawingList(val) {
-      console.log('drawingListdrawingListdrawingList', val)
-      this.issue_list = []
+      console.log("drawingListdrawingListdrawingList", val);
+      this.issue_list = [];
       val.map((item, index) => {
         if (!item.uuid) {
-          item.uuid = this.uuid.v1()
+          item.uuid = this.uuid.v1();
         }
         if (item.typeParam == 1 || item.typeParam == 3) {
           let obj = {
             issue: item.des,
             type: item.typeParam,
             sort: index,
-            config: item.config.valueArr
-          }
-          this.issue_list.push(obj)
+            config: item.config.valueArr,
+          };
+          this.issue_list.push(obj);
         } else {
           let obj = {
             issue: item.des,
             type: item.typeParam,
-            sort: index
-          }
-          this.issue_list.push(obj)
+            sort: index,
+          };
+          this.issue_list.push(obj);
         }
-      })
-      console.log(this.issue_list)
-    }
+      });
+      console.log(this.issue_list);
+    },
   },
   methods: {
     // 删除组件
     delCom(val) {
-      let index = this.drawingList.findIndex(item => {
-        return item.uuid == val
-      })
-      this.drawingList.splice(index, 1)
+      let index = this.drawingList.findIndex((item) => {
+        return item.uuid == val;
+      });
+      this.drawingList.splice(index, 1);
     },
     // 获取组件中的数据
     getData(val) {
       if (this.componentDataList.length == 0) {
-        this.componentDataList.push(val)
+        this.componentDataList.push(val);
       } else {
-        let arr = this.$deepClone(this.componentDataList)
-        let flag = arr.findIndex(item => {
-          return item.uuid == val.uuid
-        })
+        let arr = this.$deepClone(this.componentDataList);
+        let flag = arr.findIndex((item) => {
+          return item.uuid == val.uuid;
+        });
         if (flag == -1) {
-          this.componentDataList.push(val)
+          this.componentDataList.push(val);
         }
-        console.log('获取组件中的数据LIST', this.componentDataList)
-        this.issue_list = []
+        console.log("获取组件中的数据LIST", this.componentDataList);
+        this.issue_list = [];
         this.componentDataList.map((item, index) => {
           if (item.typeParam == 1 || item.typeParam == 3) {
             let obj = {
               issue: item.des,
               type: item.typeParam,
               sort: index,
-              config: item.config.valueArr
-            }
-            this.issue_list.push(obj)
+              config: item.config.valueArr,
+            };
+            this.issue_list.push(obj);
           } else {
             let obj = {
               issue: item.des,
               type: item.typeParam,
-              sort: index
-            }
-            this.issue_list.push(obj)
+              sort: index,
+            };
+            this.issue_list.push(obj);
           }
-        })
-        console.log(this.issue_list)
+        });
+        console.log(this.issue_list);
       }
     },
     // 开始拖动
     start(e) {
-      console.log('开始', e)
+      console.log("开始", e);
     },
     // 拖动结束
     end(e) {
-      console.log('结束', e)
+      console.log("结束", e);
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
         })
-        .catch(_ => {})
-    }
-  }
-}
+        .catch((_) => {});
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .frombuild {

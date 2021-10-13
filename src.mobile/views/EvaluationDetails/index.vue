@@ -108,10 +108,10 @@ direction="horizontal">
 </div> -->
     </div>
     <div class="submit">
-      <div class="s_1" @click="pre" v-if="showSelect">上一个</div>
+      <div class="s_1" @click="pre" v-if="toplist.length != 0">上一个</div>
       <div class="s_2" @click="submit(2)">提交</div>
       <div class="s_3" @click="submit(1)">暂存</div>
-      <div class="s_1" @click="next" v-if="showSelect">下一个</div>
+      <div class="s_1" @click="next" v-if="toplist.length != 0">下一个</div>
     </div>
   </div>
 </template>
@@ -212,19 +212,13 @@ export default {
       toplist: [],
       min: 0,
       max: 0,
-      showSelect: true,
+      showSelect: -1,
     };
   },
   mounted() {
     this.showSelect = this.$route.query.showSelect - 0;
     this.question_id = this.$route.query.question_id;
     this.title = this.$route.query.title;
-    if (this.showSelect) {
-      this.top_id = this.$route.query.top_id;
-      this.toplist = JSON.parse(this.$route.query.toplist);
-      this.min = this.toplist[0].id;
-      this.max = this.toplist[this.toplist.length - 1].id;
-    }
     GET_QUESTION_INFO({
       id: this.$route.query.question_id,
     }).then((res) => {
@@ -232,6 +226,12 @@ export default {
         this.issue = res.data.issue;
         console.log("this.issue", this.issue);
         this.originData = res.data;
+        this.toplist = res.data.top;
+        if (this.toplist.length != 0) {
+          this.top_id = this.$route.query.top_id;
+          this.min = this.toplist[0].id;
+          this.max = this.toplist[this.toplist.length - 1].id;
+        }
       }
     });
   },

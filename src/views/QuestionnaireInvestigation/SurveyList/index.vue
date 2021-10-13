@@ -497,6 +497,7 @@ export default {
     showConfig(row, index) {
       this.dialogConfigure = true;
       this.question_id = row.id;
+      this.$refs.configure.drawingList = [];
     },
     // 配置框数据提交
     configData() {
