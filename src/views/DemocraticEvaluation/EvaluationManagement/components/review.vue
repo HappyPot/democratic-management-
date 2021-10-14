@@ -90,7 +90,7 @@
                 placeholder="请选择参评人员"
                 @focus="selectPeopleHandle"
               />
-              <span class="errorTip" data-name="people">
+              <span class="errorTip" data-name="people" v-if="review.type == 1">
                 <i class="el-icon-circle-close"></i>
                 请选择参评人员，在提交</span
               >
@@ -112,7 +112,7 @@
             </div>
             <div class="baseInfo_item">
               <div class="bt_title">评议状态</div>
-              <div class="bt_input" style="width: 200px">
+              <div class="bt_input" style="width: 205px">
                 <el-radio-group v-model="review.status">
                   <div class="radio_item">
                     <el-radio :label="1">正常</el-radio>
@@ -337,11 +337,9 @@ export default {
   },
 
   methods: {
-    // 测试
-    test(rows) {
-      rows.forEach((row) => {
-        this.$refs.multipleTable.toggleRowSelection(row, true);
-      });
+    // 清空选项
+    clearUserList() {
+      this.$refs.multipleTable.clearSelection();
     },
     // 获取员工列表
     getUserList() {
@@ -372,12 +370,11 @@ export default {
           this.$nextTick(() => {
             if (this.selectPeople.length > 0) {
               this.selectPeople.forEach((row) => {
-                this.$refs.multipleTable.toggleRowSelection(
-                  this.peopleTableData.find((item) => {
-                    return row.id == item.id;
-                  }),
-                  true
-                );
+                let val = this.peopleTableData.find((item) => {
+                  console.log("来了来啦");
+                  return row.id == item.id;
+                });
+                this.$refs.multipleTable.toggleRowSelection(val, true);
               });
             }
           });

@@ -149,7 +149,11 @@
       :close-on-click-modal="false"
       width="700px"
     >
-      <Review ref="review" :parentData="parentData"></Review>
+      <Review
+        v-if="dialogReview"
+        ref="review"
+        :parentData="parentData"
+      ></Review>
       <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
@@ -200,6 +204,7 @@
     >
       <Configure
         ref="configure"
+        v-if="dialogConfigure"
         @getComponentParam="getComponentParam"
       ></Configure>
       <span slot="footer" class="dialog-footer">
@@ -399,7 +404,11 @@ export default {
             this.$refs["review"].review.isWaiver = data.is_waiver;
             this.$refs["review"].review.isIp = data.is_ip;
             this.$refs["review"].review.accessIp = data.ip_value;
-            this.$refs["review"].review.question_top_list = data.top;
+            this.$refs["review"].review.appraisalSubject = [];
+            data.top.map((item) => {
+              this.$refs["review"].review.appraisalSubject.push(item.title);
+            });
+            // this.$refs["review"].review.appraisalSubject = data.top;
             let arr = [];
             data.user_list.map((item) => {
               arr.push(item.id);
@@ -461,13 +470,13 @@ export default {
     showPapers() {},
     handleSelectionChange(selection, row) {
       this.selection = selection;
-      console.log(selection);
     },
     // 展示新增框
     addNew() {
       this.dialogReview = true;
       this.typeTitle = "评议添加";
       this.initParam();
+      this.$refs["review"].clearUserList();
     },
     initParam() {
       this.$refs["review"].review = {
@@ -502,7 +511,7 @@ export default {
         });
         let param = {
           title: review.title,
-          type: review.type,
+          type: 1,
           form_type: review.type,
           desc: review.mark,
           index_desc: review.textarea,

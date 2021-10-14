@@ -10,16 +10,18 @@
             <img src="../../../assets/image/userinfo.jpeg" alt="头像" />
           </div>
           <div class="si_user_info">
-            <div class="sui_name">{{ userInfo.account }}，欢迎您！</div>
+            <div class="sui_name">
+              {{ system_info.account_title }}，欢迎您！
+            </div>
             <div class="sui_time">
-              最后更新时间：{{ updated_at | formatUpdateTime }}
+              当前主体：{{ system_info.subject_title }}
             </div>
           </div>
         </div>
         <div class="other_info">
-          <div>上次登录时间：{{ created_at }}</div>
-          <div>技术服务电话：029-55667788</div>
-          <div>版本号：V1.0.0pro</div>
+          <div>上次登录时间：{{ system_info.last_login_at }}</div>
+          <div>技术服务电话：{{ system_info.tel }}</div>
+          <div>版本号：{{ system_info.version }}</div>
         </div>
       </div>
       <!-- 数组总览 -->
@@ -145,38 +147,38 @@ export default {
       updated_at: "", // 更新时间
       created_at: "", //上次登录时间
       userInfo: {},
-      test: "", //民主测评项目
-      investigation: "", //问卷调查项目
+      test: 0, //民主测评项目
+      investigation: 0, //问卷调查项目
+      system_info: {},
     };
   },
-  created() {
+  created() {},
+  mounted() {
     this.userInfo = JSON.parse(localStorage.getItem("evaluation"));
     this.account = this.userInfo.account;
-    this.updated_at = this.userInfo.updated_at;
-    this.created_at = this.dayjs(this.userInfo.created_at).format(
-      "YYYY-MM-DD HH:mm:ss"
-    );
     GET_INDEX().then((res) => {
       if (res.status == 0) {
-        res.data.question_count.map((item) => {
-          if (item.type == 1) {
-            this.test = item.count;
+        let array = res.data.question_count;
+        for (let i = 0; i < array.length; i++) {
+          const element = array[i];
+          if (element.type == 1) {
+            this.test = element.count;
           }
-          if (item.type == 2) {
-            this.investigation = item.count;
+          if (element.type == 2) {
+            this.investigation = element.count;
           }
-        });
+        }
+        this.system_info = res.data.system_info;
       }
     });
   },
-  filters: {
-    formatUpdateTime(val) {
-      if (val) {
-        return val.split("T")[0];
-      }
-    },
-  },
-  mounted() {},
+  // filters: {
+  //   formatUpdateTime(val) {
+  //     if (val) {
+  //       return val.split("T")[0];
+  //     }
+  //   },
+  // },
   methods: {
     // 进入民主测评
     toEvaluation() {

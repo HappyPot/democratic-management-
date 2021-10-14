@@ -179,6 +179,7 @@
     >
       <Configure
         ref="configure"
+        v-if="dialogConfigure"
         @getComponentParam="getComponentParam"
       ></Configure>
       <span slot="footer" class="dialog-footer">
@@ -195,7 +196,7 @@
       width="700px"
       :close-on-click-modal="false"
     >
-      <AddAndEdit ref="addAndEdit"></AddAndEdit>
+      <AddAndEdit v-if="dialogEdit" ref="addAndEdit"></AddAndEdit>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addNewDate">确 定</el-button>
         <el-button @click="dialogEdit = false">取 消</el-button>
@@ -380,6 +381,7 @@ export default {
       this.typeTitle = "新增";
       this.updateId = undefined;
       this.initParam();
+      this.$refs["addAndEdit"].clearUserList();
     },
     initParam() {
       this.$refs["addAndEdit"].review = {
@@ -412,7 +414,7 @@ export default {
         // });
         let param = {
           title: review.title,
-          type: review.type,
+          type: 2,
           form_type: review.type,
           desc: review.mark,
           index_desc: review.textarea,
@@ -470,7 +472,6 @@ export default {
             this.$refs["addAndEdit"].review.peopleList = data.user_list; //用于参评人员的table的展示
             this.$refs["addAndEdit"].review.showPeopleConut =
               data.user_list.length + "人";
-            debugger;
           });
         }
       });

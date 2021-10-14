@@ -58,6 +58,28 @@ export function LOGOUT(query) {
   * @description 首页数据
   */
 export function GET_INDEX(query) {
+  // 模拟数据
+  mock
+    .onAny('/admin/index')
+    .reply(config => tools.responseSuccess({
+      "status": 0,
+      "msg": "OK",
+      "data": {
+        "question_count": [
+          {
+            "count": 27,
+            "type": 1
+          }
+        ],
+        "system_info": {
+          "account_title": "liuxi",
+          "subject_title": "兵团本级",
+          "last_login_at": "2021-10-14 10:58:27",
+          "tel": "029 8112 9365",
+          "version": "V1.0.1"
+        }
+      }
+    }))
   return request({
     url: '/admin/index',
     method: 'GET',
@@ -68,6 +90,7 @@ export function GET_INDEX(query) {
   * @description 管理员修改密码
   */
 export function SAVE_PWD(query) {
+
   return request({
     url: '/admin/saveAdminPassword',
     method: 'post',

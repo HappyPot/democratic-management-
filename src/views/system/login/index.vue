@@ -71,7 +71,7 @@ export default {
       usinessEntityOptions: [], //业务主体列表
       // 表单
       formLogin: {
-        usinessEntity: 1, //业务主体
+        usinessEntity: undefined, //业务主体
         username: "",
         password: "",
       },
@@ -87,6 +87,7 @@ export default {
       GET_SUBJECT_LIST().then((res) => {
         if (res.status == 0) {
           this.usinessEntityOptions = res.data;
+          this.formLogin.usinessEntity = 1
         }
       });
     },
@@ -115,7 +116,6 @@ export default {
         pwd: this.formLogin.password,
         subject_id: this.formLogin.usinessEntity,
       };
-      debugger
       this.login(param).then(() => {
         // 重定向对象不存在则返回顶层路径
         this.$router.replace(this.$route.query.redirect || "/index");
