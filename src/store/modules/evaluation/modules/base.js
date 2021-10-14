@@ -4,7 +4,7 @@ const state = {
   unitList: [],//单位列表
   jobList: [],//单位列表
   departmentList: [],//单位列表
-  userInfo:{},//用户基本信息
+  userInfo: {},//用户基本信息
 }
 
 const mutations = {
@@ -41,7 +41,7 @@ const actions = {
     commit('SAVE_DEPARTMENT_LIST', list)
   },
   saveUserInfo({ commit }, info) {
-      commit('SAVE_USER_INFO', info)
+    commit('SAVE_USER_INFO', info)
   },
 }
 

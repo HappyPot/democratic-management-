@@ -91,7 +91,7 @@
         </div>
       </el-table>
     </div>
-    <el-dialog title="批量导入" center :visible.sync="dialogImport" width="30%">
+    <el-dialog :close-on-click-modal="false" title="批量导入" center :visible.sync="dialogImport" width="30%">
       <div class="dialogImport_content">
         <div class="dc_item">
           <div class="dc_text">选择文件</div>
@@ -121,6 +121,7 @@
     <!--新增 -->
     <el-dialog
       :title="typeDialog"
+      :close-on-click-modal="false"
       center
       :visible.sync="dialogAdd"
       width="700px"
@@ -331,13 +332,13 @@ export default {
       this.resetErrorTip();
       this.dialogAdd = true;
       this.typeDialog = "新增";
+      this.initParam();
     },
     // 新增数据
     addNewData() {
       // 新增数据接口
       // 表单校验
       this.fromValidate(this.from);
-      debugger;
       if (this.accessSubmit) {
         let obj = {
           subject_id: this.subjectId,

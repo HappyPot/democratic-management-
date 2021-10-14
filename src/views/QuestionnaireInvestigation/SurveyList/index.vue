@@ -151,6 +151,7 @@
     <!-- 统计 -->
     <el-dialog
       title="统计结果"
+      :close-on-click-modal="false"
       center
       class="dialogSelf"
       top="7vh"
@@ -170,6 +171,7 @@
     <!-- 配置 -->
     <el-dialog
       title="事项配置"
+      :close-on-click-modal="false"
       center
       class="dialogSelf"
       :visible.sync="dialogConfigure"
@@ -191,6 +193,7 @@
       class="dialogSelf"
       :visible.sync="dialogEdit"
       width="700px"
+      :close-on-click-modal="false"
     >
       <AddAndEdit ref="addAndEdit"></AddAndEdit>
       <span slot="footer" class="dialog-footer">
@@ -204,6 +207,7 @@
       center
       class="dialogSelf"
       :visible.sync="dialogDetail"
+      :close-on-click-modal="false"
       width="1000px"
     >
       <DetailQuery v-if="dialogDetail" :idInfo="idInfo"></DetailQuery>
@@ -216,6 +220,7 @@
       :title="testTitle"
       center
       :visible.sync="dialogTest"
+      :close-on-click-modal="false"
       width="400px"
     >
       <div ref="qrCodeUrl" id="qrcode" class="qrCodeUrl"></div>
@@ -495,9 +500,11 @@ export default {
     statisticalData() {},
     // 展示配置框
     showConfig(row, index) {
+      setTimeout(() => {
+        this.question_id = row.id;
+        this.$refs.configure.drawingList = [];
+      }, 500);
       this.dialogConfigure = true;
-      this.question_id = row.id;
-      this.$refs.configure.drawingList = [];
     },
     // 配置框数据提交
     configData() {

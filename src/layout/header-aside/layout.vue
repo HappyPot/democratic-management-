@@ -132,6 +132,7 @@
     </div>
     <el-dialog title="修改密码"
                :visible.sync="dialogVisible"
+               :close-on-click-modal="false"
                width="30%">
       <div class="pwd_box">
         <el-input v-model='from.pwd'

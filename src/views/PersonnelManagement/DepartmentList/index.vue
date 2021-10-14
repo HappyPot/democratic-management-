@@ -100,7 +100,7 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog title="批量导入" center :visible.sync="dialogImport" width="30%">
+    <el-dialog :close-on-click-modal="false" title="批量导入" center :visible.sync="dialogImport" width="30%">
       <div class="dialogImport_content">
         <div class="dc_item">
           <div class="dc_text">选择文件</div>
@@ -128,7 +128,7 @@
       </span>
     </el-dialog>
     <!--新增 -->
-    <el-dialog title="新增部门" center :visible.sync="dialogAdd" width="700px">
+    <el-dialog :close-on-click-modal="false" title="新增部门" center :visible.sync="dialogAdd" width="700px">
       <div class="addNew">
         <div class="dc_item">
           <div class="dc_text"><i class="redTip">*</i>部门编号</div>
@@ -297,6 +297,7 @@ export default {
       this.resetErrorTip();
       this.dialogAdd = true;
       this.typeDialog = "新增";
+      this.initParam();
     },
     // 新增数据
     addNewData() {

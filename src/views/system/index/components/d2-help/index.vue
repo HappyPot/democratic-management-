@@ -7,6 +7,7 @@
     <el-dialog
       title="帮助"
       width="600px"
+      :close-on-click-modal="false"
       :visible.sync="dialogVisible"
       :append-to-body="true">
       <div style="margin-top: -25px;">

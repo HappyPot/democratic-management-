@@ -19,6 +19,7 @@
                append-to-body
                center
                :visible.sync="dialogConfigure"
+               :close-on-click-modal="false"
                width="700px">
       <div class="config_box">
         <div class="config_item">

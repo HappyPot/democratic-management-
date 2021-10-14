@@ -17,6 +17,7 @@
       title="主题"
       width="600px"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
       :append-to-body="true">
       <d2-theme-list style="margin-top: -25px;"/>
     </el-dialog>

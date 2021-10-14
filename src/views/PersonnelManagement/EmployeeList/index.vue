@@ -162,7 +162,7 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog title="批量导入" center :visible.sync="dialogImport" width="30%">
+    <el-dialog :close-on-click-modal="false" title="批量导入" center :visible.sync="dialogImport" width="30%">
       <div class="dialogImport_content">
         <div class="dc_item">
           <div class="dc_text">选择文件</div>
@@ -192,6 +192,7 @@
     <!--新增 -->
     <el-dialog
       :title="typeDialog"
+      :close-on-click-modal="false"
       center
       :visible.sync="dialogAdd"
       width="700px"
@@ -523,6 +524,7 @@ export default {
     },
     // 展示编辑弹框
     showEdit(index, row) {
+      this.from.unitName = "";
       this.resetErrorTip();
       this.typeDialog = "编辑员工";
       this.dialogAdd = true;
@@ -534,6 +536,7 @@ export default {
           let unit = this.findUnit(this.superiorUnitOptions, {
             unit_id: res.data.unit_id,
           });
+          debugger;
           this.from.unitName = [unit];
           this.from.department = res.data.department_id;
           this.from.job = res.data.duty_id;
@@ -555,6 +558,7 @@ export default {
       this.resetErrorTip();
       this.dialogAdd = true;
       this.typeDialog = "新增员工";
+      this.initParam();
     },
     // 新增数据
     addNewData() {

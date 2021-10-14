@@ -91,6 +91,7 @@
                center
                class="dialogSelf"
                :visible.sync="dialogAccount"
+               :close-on-click-modal="false"
                width="700px">
       <div class="addNew">
         <div class="dc_item">

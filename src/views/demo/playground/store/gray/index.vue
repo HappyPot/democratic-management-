@@ -12,6 +12,7 @@
     <el-dialog
       title="错误"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
       :append-to-body="true"
       width="30%"
       @open="handleDialogOpen"

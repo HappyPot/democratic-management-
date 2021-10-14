@@ -9,25 +9,25 @@ import * as tools from '@/api/_tools.js'
   */
 export function GET_SUBJECT_LIST(query) {
 
-// 模拟数据
-mock
-.onAny('/getSubjectList')
-.reply(config => tools.responseSuccess({
-	"status": 0,
-	"msg": "OK",
-	"data": [
-		{
-			"id": 1,
-			"subject_name": "主体1"
-		},
-		{
-			"id": 2,
-			"subject_name": "主体2"
-		}
-	]
-}))
+  // 模拟数据
+  mock
+    .onAny('/getSubjectList')
+    .reply(config => tools.responseSuccess({
+      "status": 0,
+      "msg": "OK",
+      "data": [
+        {
+          "id": 1,
+          "subject_name": "主体1"
+        },
+        {
+          "id": 2,
+          "subject_name": "主体2"
+        }
+      ]
+    }))
 
-  return requestForMock({
+  return request({
     url: '/getSubjectList',
     method: 'get',
   })
@@ -36,18 +36,18 @@ mock
 /**
   * @description 登录
   */
- export function LOGIN(query) {
+export function LOGIN(query) {
   return request({
     url: '/admin/login',
     method: 'POST',
-    data:query
+    data: query
   })
 }
 
 /**
   * @description 退出登录
   */
- export function LOGOUT(query) {
+export function LOGOUT(query) {
   return request({
     url: '/admin/logout',
     method: 'POST',
@@ -57,7 +57,7 @@ mock
 /**
   * @description 首页数据
   */
- export function GET_INDEX(query) {
+export function GET_INDEX(query) {
   return request({
     url: '/admin/index',
     method: 'GET',
@@ -67,10 +67,10 @@ mock
 /**
   * @description 管理员修改密码
   */
- export function SAVE_PWD(query) {
+export function SAVE_PWD(query) {
   return request({
     url: '/admin/saveAdminPassword',
     method: 'post',
-    data:query
+    data: query
   })
 }
