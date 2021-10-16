@@ -14,6 +14,7 @@ import { frameInRoutes } from '@/router/routes'
 import draggableComponents from "@/views/Sharing/draggableComponents/index.js";
 import './assets/icon/iconfont.css';
 import '@/views/common/index.scss'
+import preventReClick from './untils/preventReClick' //防多次点击，重复提交
 import MixinValidate from '@/views/mixin/validate.js';
 Vue.mixin(MixinValidate);
 import dayjs from "dayjs"

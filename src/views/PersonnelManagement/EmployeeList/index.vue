@@ -136,9 +136,10 @@
           <div
             style="
               position: absolute;
-              top: 35%;
+              top: 88%;
               left: 50%;
               transform: translate(-50%, -50%);
+               font-size: 17px;
             "
           >
             数据为空
@@ -265,9 +266,9 @@
             size="medium"
             class="dc_select"
           ></el-input>
-          <span class="errorTip" data-name="number">
+          <!-- <span class="errorTip" data-name="number">
             <i class="el-icon-circle-close"></i> 请输入编号，在提交</span
-          >
+          > -->
         </div>
         <div class="dc_item">
           <div class="dc_text">密码</div>
@@ -299,7 +300,7 @@
           size="medium"
           v-show="typeDialog == '编辑员工'"
           @click="editData"
-          >更 新</el-button
+          >确 定</el-button
         >
         <el-button size="medium" @click="dialogAdd = false">取 消</el-button>
       </span>

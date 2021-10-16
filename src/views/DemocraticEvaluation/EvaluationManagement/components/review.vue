@@ -65,10 +65,10 @@
                 :rows="2"
                 v-model="review.accessIp"
               ></el-input>
-              <span class="errorTip" data-name="accessIp">
+              <!-- <span class="errorTip" data-name="accessIp">
                 <i class="el-icon-circle-close"></i>
                 请输入允许IP段，在提交</span
-              >
+              > -->
             </div>
           </div>
           <div class="baseInfo_item">

@@ -76,9 +76,10 @@
           <div
             style="
               position: absolute;
-              top: 35%;
+              top: 88%;
               left: 50%;
               transform: translate(-50%, -50%);
+               font-size: 17px;
             "
           >
             数据为空
@@ -193,7 +194,7 @@
           size="medium"
           v-show="typeDialog == '编辑'"
           @click="editData"
-          >更 新</el-button
+          >确 定</el-button
         >
         <el-button size="medium" @click="dialogAdd = false">取 消</el-button>
       </span>
@@ -429,7 +430,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../common/index.scss";
 .unit_list_search {
   width: 100%;

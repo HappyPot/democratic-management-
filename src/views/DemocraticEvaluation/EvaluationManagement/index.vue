@@ -43,7 +43,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="id" label="序号"> </el-table-column>
+        <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column prop="title" label="标题名称">
           <template slot-scope="scope">
             <el-button type="text" @click="showUrl(scope.row)">
@@ -54,6 +54,11 @@
         <el-table-column prop="start_time" label="测评时间" width="300">
           <template slot-scope="scope">
             {{ scope.row.start_time }}至{{ scope.row.end_time }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="form_type" label="评议类型" width="300">
+          <template slot-scope="scope">
+            {{ scope.row.form_type == 1 ? "定向评议" : "社会评议" }}
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态" show-overflow-tooltip>
@@ -113,9 +118,10 @@
           <div
             style="
               position: absolute;
-              top: 35%;
+              top: 88%;
               left: 50%;
               transform: translate(-50%, -50%);
+              font-size: 17px;
             "
           >
             数据为空
@@ -158,6 +164,7 @@
         <el-button
           type="primary"
           v-show="typeTitle == '评议添加'"
+          v-preventReClick
           @click="addNewDate"
           >确 定</el-button
         >
@@ -165,7 +172,7 @@
           type="primary"
           v-show="typeTitle == '评议编辑'"
           @click="editData"
-          >更 新</el-button
+          >确 定</el-button
         >
         <el-button @click="dialogReview = false">取 消</el-button>
       </span>
@@ -202,11 +209,7 @@
       :close-on-click-modal="false"
       width="1000px"
     >
-      <Configure
-        ref="configure"
-        v-if="dialogConfigure"
-        @getComponentParam="getComponentParam"
-      ></Configure>
+      <Configure ref="configure" v-if="dialogConfigure"></Configure>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="configData">确 定</el-button>
         <el-button @click="dialogConfigure = false">取 消</el-button>
@@ -372,14 +375,12 @@ export default {
       this.dialogDetail = true;
       this.idInfo = group;
     },
-    getComponentParam(val) {
-      console.log("组价中传输来的数据", val);
-    },
     // 获取测评列表
     getQuestionList() {
       GET_QUESTION_LIST(this.queryParams).then((res) => {
         if (res.status === 0) {
           this.tableData = res.data.data;
+          // this.tableData = [];
           this.total = res.data.total;
         }
       });
@@ -459,6 +460,7 @@ export default {
         question_id: this.question_id,
         issue_list: this.$refs["configure"].issue_list,
       };
+      console.log("obj==========", obj);
       SAVE_QUESTION_CONFIG(obj).then((res) => {
         if (res.status == 0) {
           this.dialogConfigure = false;
@@ -473,6 +475,7 @@ export default {
     },
     // 展示新增框
     addNew() {
+      this.updateId = undefined;
       this.dialogReview = true;
       this.typeTitle = "评议添加";
       this.initParam();

@@ -4,15 +4,14 @@
       <div class="frombuild_left">
         <draggable
           class="drawing-board"
-          v-model="drawingList"
+          :list="drawingList"
           :animation="340"
           :scroll="true"
           group="componentsGroup"
         >
           <component
-            v-if="isYes"
-            v-for="(item, index) in drawingList"
-            :key="index.id"
+            v-for="item in drawingList"
+            :key="item.id"
             :info="item"
             @getData="getData"
             @delCom="delCom"
@@ -27,7 +26,6 @@
           <draggable
             v-model="draggableArr"
             :scroll="true"
-            :clone="clone"
             :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
             draggable=".draggable_item"
             animation="300"
@@ -35,8 +33,8 @@
             <transition-group>
               <div
                 class="draggable_item"
-                v-for="(item, index) in draggableArr"
-                :key="index + '1'"
+                v-for="item in draggableArr"
+                :key="item.id"
               >
                 <img src="../image/dargg.png" alt="" />
                 <span>{{ item.des }}</span>
@@ -145,41 +143,21 @@ export default {
       drawingList: [], //左侧
       componentDataList: [],
       issue_list: [],
-      isYes: true,
     };
   },
-  methods: {
-    clone(origin) {
-      const data = JSON.parse(JSON.stringify(origin));
-      data.uuid = this.uuid.v1();
-      this.getData(data);
-      return data;
+  watch: {
+    componentDataList: {
+      handler(val) {
+        this.$emit("getComponentParam", val);
+      },
+      deep: true,
     },
-    // 删除组件
-    delCom(val) {
-      this.isYes = false;
-      let index = undefined;
-      let arr = JSON.parse(JSON.stringify(this.drawingList));
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].uuid == val) {
-          index = i;
-        }
-      }
-      arr.splice(index, 1);
-      this.drawingList = arr;
-      setTimeout(() => {
-        this.isYes = true;
-      }, 0);
-    },
-    // 获取组件中的数据
-    getData(val) {
-      for (let i = 0; i < this.drawingList.length; i++) {
-        if (this.drawingList[i].uuid == val.uuid) {
-          this.drawingList[i] = val;
-        }
-      }
+    drawingList(val) {
       this.issue_list = [];
-      this.drawingList.map((item, index) => {
+      val.map((item, index) => {
+        if (!item.uuid) {
+          item.uuid = this.uuid.v1();
+        }
         if (item.typeParam == 1 || item.typeParam == 3) {
           let obj = {
             issue: item.des,
@@ -197,6 +175,61 @@ export default {
           this.issue_list.push(obj);
         }
       });
+      console.log("drawingListdrawingListdrawingList", val);
+
+      // console.log(this.issue_list);
+    },
+  },
+  methods: {
+    // 删除组件
+    delCom(val) {
+      let index = this.componentDataList.findIndex((item) => {
+        return item.uuid == val;
+      });
+      this.drawingList.splice(index, 1);
+    },
+    // 获取组件中的数据
+    getData(val) {
+      if (this.componentDataList.length == 0) {
+        this.componentDataList.push(val);
+      } else {
+        let arr = this.$deepClone(this.componentDataList);
+        let flag = arr.findIndex((item) => {
+          return item.uuid == val.uuid;
+        });
+        if (flag == -1) {
+          this.componentDataList.push(val);
+        }
+      }
+      console.log("获取组件中的数据LIST", this.componentDataList);
+      this.issue_list = [];
+      this.componentDataList.map((item, index) => {
+        if (item.typeParam == 1 || item.typeParam == 3) {
+          let obj = {
+            issue: item.des,
+            type: item.typeParam,
+            sort: index,
+            config: item.config.valueArr,
+          };
+          this.issue_list.push(obj);
+        } else {
+          let obj = {
+            issue: item.des,
+            type: item.typeParam,
+            sort: index,
+          };
+          this.issue_list.push(obj);
+        }
+      });
+      console.log(this.issue_list);
+    },
+    // 开始拖动
+    start(e) {
+      console.log("开始", e);
+    },
+    // 拖动结束
+    end(e) {
+      console.log("结束", e);
     },
     handleClose(done) {
       this.$confirm("确认关闭？")

@@ -40,7 +40,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="id" label="序号"> </el-table-column>
+        <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column prop="title" label="问卷标题">
           <template slot-scope="scope">
             <el-button type="text" @click="showUrl(scope.row)">
@@ -122,9 +122,10 @@
           <div
             style="
               position: absolute;
-              top: 35%;
+              top: 88%;
               left: 50%;
               transform: translate(-50%, -50%);
+               font-size: 17px;
             "
           >
             数据为空
@@ -198,7 +199,7 @@
     >
       <AddAndEdit v-if="dialogEdit" ref="addAndEdit"></AddAndEdit>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addNewDate">确 定</el-button>
+        <el-button type="primary" @click="addNewDate" v-preventReClick>确 定</el-button>
         <el-button @click="dialogEdit = false">取 消</el-button>
       </span>
     </el-dialog>

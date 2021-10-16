@@ -35,7 +35,9 @@
           @node-click="treeItemClick"
         >
           <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span v-if="nodeKey == 'unit_name'">{{ data.unit_code }} {{ node.label }}</span>
+            <span v-if="nodeKey == 'unit_name'"
+              >{{ data.unit_code }} {{ node.label }}</span
+            >
             <span v-else>{{ node.label }}</span>
           </span>
         </el-tree>
@@ -47,7 +49,7 @@
         :class="[{ 'wl-disabled': disabled, 'no-wrap': nowrap }, sizeClass]"
       >
         <div class="tag-box">
-          <div v-show="selecteds.length > 0">
+          <div v-show="selecteds.length > 1">
             <template v-if="!collapseTags">
               <el-tag
                 closable
@@ -79,6 +81,21 @@
           </div>
           <p class="wl-placeholder-box" v-show="selecteds.length == 0">
             {{ placeholder }}
+          </p>
+          <p class="wl-placeholder-box" v-show="selecteds.length == 1">
+            <template v-if="!collapseTags">
+              <span
+                class="wl-select-tag"
+                v-for="item in selecteds"
+                :key="item[nodeKey]"
+                >{{ item[selfProps.label] }}</span
+              >
+            </template>
+            <template v-else>
+              <span class="wl-select-tag">{{
+                collapseTagsItem[selfProps.label]
+              }}</span>
+            </template>
           </p>
         </div>
         <div class="icon-box">
