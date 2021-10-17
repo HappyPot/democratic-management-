@@ -151,7 +151,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :total="total"
-          @pagination="getDutyList"
+          @pagination="getQuestionList"
           :page-sizes="[10, 20, 30, 40]"
           layout="total, prev, pager, next, sizes,jumper"
         >
@@ -490,8 +490,10 @@ export default {
       this.updateId = undefined;
       this.dialogReview = true;
       this.typeTitle = "评议添加";
-      this.initParam();
-      this.$refs["review"].clearUserList();
+      this.$nextTick(() => {
+        this.initParam();
+        this.$refs["review"].clearUserList();
+      });
     },
     initParam() {
       this.$refs["review"].review = {

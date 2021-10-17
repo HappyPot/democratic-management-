@@ -125,7 +125,7 @@
               top: 88%;
               left: 50%;
               transform: translate(-50%, -50%);
-               font-size: 17px;
+              font-size: 17px;
             "
           >
             数据为空
@@ -142,7 +142,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :total="total"
-          @pagination="getDutyList"
+          @pagination="getQuestionList"
           :page-sizes="[10, 20, 30, 40]"
           layout="total, prev, pager, next, sizes,jumper"
         >
@@ -199,7 +199,9 @@
     >
       <AddAndEdit v-if="dialogEdit" ref="addAndEdit"></AddAndEdit>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addNewDate" v-preventReClick>确 定</el-button>
+        <el-button type="primary" @click="addNewDate" v-preventReClick
+          >确 定</el-button
+        >
         <el-button @click="dialogEdit = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -381,8 +383,10 @@ export default {
       this.dialogEdit = true;
       this.typeTitle = "新增";
       this.updateId = undefined;
-      this.initParam();
-      this.$refs["addAndEdit"].clearUserList();
+      this.$nextTick(() => {
+        this.initParam();
+        this.$refs["addAndEdit"].clearUserList();
+      });
     },
     initParam() {
       this.$refs["addAndEdit"].review = {

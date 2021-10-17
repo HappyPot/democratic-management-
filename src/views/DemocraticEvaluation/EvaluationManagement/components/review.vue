@@ -1,5 +1,5 @@
 <template>
-  <div class="review">
+  <div class="review" id="myreview">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="first">
         <div class="baseInfo">
@@ -18,10 +18,12 @@
             <div class="bt_input">
               <el-date-picker
                 v-model="review.date"
-                type="daterange"
+                type="datetimerange"
                 style="width: 500px"
-                value-format="yyyy-MM-dd"
+                format="yyyy-MM-dd HH"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
+                popper-class="noneMinute"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
               >
@@ -155,7 +157,6 @@
                 checkbox
                 clearable
                 :data="superiorUnitOptions"
-                @change="getSuperiorUnit"
                 v-model="superiorUnit"
               >
               </wlTreeSelect>
@@ -214,8 +215,14 @@
               :data="peopleTableData"
               @selection-change="handleSelectionChange"
               style="width: 100%"
+              :row-key="getRowKey"
             >
-              <el-table-column type="selection" width="55"> </el-table-column>
+              <el-table-column
+                :reserve-selection="true"
+                type="selection"
+                width="55"
+              >
+              </el-table-column>
               <el-table-column prop="code" label="人员编号"> </el-table-column>
               <el-table-column prop="unit_name" label="单位名称">
               </el-table-column>
@@ -224,6 +231,17 @@
               <el-table-column prop="duty_name" label="人员类别">
               </el-table-column>
             </el-table>
+            <div class="pagination_my">
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :total="total"
+                @pagination="getUserList"
+                :page-sizes="[10, 20, 30, 40]"
+                layout="total, prev, pager, next"
+              >
+              </el-pagination>
+            </div>
           </div>
         </div>
       </el-tab-pane>
@@ -278,6 +296,7 @@ export default {
   name: "Review",
   data() {
     return {
+      total: 0,
       superiorUnit: [], //搜索条件的单位名称
       activeName: "first",
       peopleOptions: [], //参评人员列表
@@ -337,6 +356,20 @@ export default {
   },
 
   methods: {
+    getRowKey(row) {
+      return row.code;
+    },
+    // 设置每页条数
+    handleSizeChange(val) {
+      this.queryParams.page_size = val;
+      console.log(`每页 ${val} 条`);
+      this.getUserList();
+    },
+    // 触发分页
+    handleCurrentChange(val) {
+      this.queryParams.page = val;
+      this.getUserList();
+    },
     // 清空选项
     clearUserList() {
       this.$refs.multipleTable.clearSelection();
@@ -366,15 +399,18 @@ export default {
       GET_USER_LIST(obj).then((res) => {
         if (res.status === 0) {
           this.peopleTableData = res.data.data;
+          this.total = res.data.total;
           this.originList = res.data.data;
           this.$nextTick(() => {
             if (this.selectPeople.length > 0) {
               this.selectPeople.forEach((row) => {
                 let val = this.peopleTableData.find((item) => {
-                  console.log("来了来啦");
                   return row.id == item.id;
                 });
-                this.$refs.multipleTable.toggleRowSelection(val, true);
+                console.log("aàaaaaaa", val);
+                if (val) {
+                  this.$refs.multipleTable.toggleRowSelection(val, true);
+                }
               });
             }
           });
@@ -424,7 +460,9 @@ export default {
       this.review.people = "";
       let arr = [];
       val.map((item) => {
-        arr.push(item.id);
+        if (item) {
+          arr.push(item.id);
+        }
       });
       this.review.people = arr.join(",");
       this.review.showPeopleConut = arr.length + "人";
@@ -497,9 +535,6 @@ export default {
   margin-bottom: 16px;
 }
 
-.dialogSelf ::v-deep .el-dialog {
-  height: 875.69px;
-}
 .pc_head {
   display: flex;
   align-items: center;
@@ -509,7 +544,9 @@ export default {
   }
 }
 .people_table {
+  position: relative;
   padding-top: 12px;
+  padding-bottom: 30px;
 }
 .people_table ::v-deep .el-table th,
 .el-table tr {
@@ -519,5 +556,10 @@ export default {
   line-height: 20px;
   color: #7984a7 !important;
   opacity: 1;
+}
+.pagination_my {
+  position: absolute;
+  right: 0;
+  bottom: -7px;
 }
 </style>

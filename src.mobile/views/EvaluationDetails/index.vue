@@ -340,15 +340,21 @@ export default {
         submit_type: type,
         values: values,
       };
-      console.log('obj',obj)
+      console.log("obj", obj);
       SAVE_ANSWER(obj).then((res) => {
         if (res.status == 0) {
           this.$router.push({
             path: "successtip",
+            query: {
+              question_id: this.question_id - 0,
+            },
           });
         } else {
           this.$router.push({
             path: "errortip",
+            query: {
+              question_id: this.question_id - 0,
+            },
           });
         }
       });

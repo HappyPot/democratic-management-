@@ -95,10 +95,10 @@ module.exports = {
     // publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
     disableHostCheck: true,
     // disableHostCheck: process.env.NODE_ENV === 'development',
-    // overlay:{
-    //   warnings:false,
-    //   errors:false
-    // }
+    overlay: {
+      warnings: true,
+      errors: true
+    }
   },
   css: {
     loaderOptions: {
@@ -117,7 +117,7 @@ module.exports = {
   pages,
   configureWebpack: config => {
     const configNew = {
-      devtool:'source-map'
+      devtool: 'source-map'
     }
     if (process.env.NODE_ENV === 'production') {
       configNew.externals = externals

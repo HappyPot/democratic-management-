@@ -49,6 +49,12 @@ export default {
 
 <style lang="scss">
 @import '~@/assets/style/public-class.scss';
+.noneMinute .el-time-spinner__wrapper {
+  width: 100%;
+}
+.noneMinute .el-scrollbar:nth-of-type(2) {
+  display: none;
+}
 .search_append {
   width: 71px;
   height: 36px;

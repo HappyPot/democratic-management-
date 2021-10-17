@@ -21,6 +21,7 @@ function handleError (error) {
   })
   // 打印到控制台
   if (process.env.NODE_ENV === 'development') {
+    debugger
     util.log.danger('>>>>>> Error >>>>>>')
     console.log(error)
   }
