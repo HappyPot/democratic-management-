@@ -46,9 +46,22 @@
         <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column prop="title" label="标题名称">
           <template slot-scope="scope">
-            <el-button type="text" @click="showUrl(scope.row)">
-              {{ scope.row.title }}</el-button
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              @show="showUrl(scope.row)"
             >
+              <div
+                ref="qrCodeUrl"
+                :id="'qrcode' + scope.row.id"
+                class="qrCodeUrl"
+              ></div>
+              <div class="qrCodeUrl_text">地址：{{ urlText }}</div>
+              <el-button type="text" slot="reference">
+                {{ scope.row.title }}</el-button
+              >
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column prop="start_time" label="测评时间" width="300">
@@ -311,16 +324,15 @@ export default {
   },
   methods: {
     showUrl(row) {
-      this.dialogTest = true;
       this.urlParam = row.id;
       this.testTitle = row.title;
       this.$nextTick(() => {
-        const codeHtml = document.getElementById("qrcode");
+        const codeHtml = document.getElementById("qrcode" + row.id);
         codeHtml.innerHTML = "";
         let url = window.location.href;
         let urlarr = url.split("/");
         this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}`;
-        var qrcode = new QRCode(this.$refs.qrCodeUrl, {
+        var qrcode = new QRCode(codeHtml, {
           text: `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
           width: 200,
           height: 200,
