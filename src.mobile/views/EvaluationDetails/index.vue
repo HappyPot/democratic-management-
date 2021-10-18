@@ -1,5 +1,8 @@
 <template >
   <div class="EvaluationDetails" ref="EvaluationDetails">
+    <div class="user" @click="updatePwd">
+      <img src="../../assets/image/个人中心.svg" alt="" />
+    </div>
     <div class="m_container">
       <div class="m_title">测评详情</div>
       <div class="m_stitle">{{ originData.title }}</div>
@@ -109,8 +112,8 @@ direction="horizontal">
     </div>
     <div class="submit">
       <div class="s_1" @click="pre" v-if="toplist.length != 0">上一个</div>
-      <div class="s_2" @click="submit(2)">提交</div>
-      <div class="s_3" @click="submit(1)">暂存</div>
+      <div class="s_2" @click="submit(1)">提交</div>
+      <div class="s_3" @click="submit(0)">暂存</div>
       <div class="s_1" @click="next" v-if="toplist.length != 0">下一个</div>
     </div>
   </div>
@@ -236,9 +239,19 @@ export default {
     });
   },
   methods: {
+    updatePwd() {
+      this.$router.push({
+        path: "personalcenter",
+      });
+    },
     // 上一个
     pre() {
-      console.log("上一个this.top_id", this.top_id);
+      this.$dialog.alert({
+        title: "提示",
+        message: "为了防止数据丢失，请及时暂存数据",
+        confirmButtonColor: "#1497fe",
+        confirmButtonText: "知道了",
+      });
       this.top_id = this.top_id - 0 - 1;
       if (this.top_id < this.min) {
         this.top_id = this.min;
@@ -282,6 +295,12 @@ export default {
     },
     // 下一个
     next() {
+      this.$dialog.alert({
+        title: "提示",
+        message: "为了防止数据丢失，请及时暂存数据",
+        confirmButtonColor: "#1497fe",
+        confirmButtonText: "知道了",
+      });
       console.log("下一个this.top_id", this.top_id);
       this.top_id = this.top_id - 0 + 1;
       if (this.top_id > this.max) {
@@ -331,10 +350,15 @@ export default {
       });
       console.log("len", len);
       console.log("values.lenght", values.length);
-      // if (len != values.length) {
-      // this.$notify({ type: "danger", message: "有未填项" });
-      // return;
-      // }
+      if (len != values.length) {
+        this.$dialog.alert({
+          title: "提示",
+          message: "当前测评内容未完成，请完成后再进行提交",
+          confirmButtonColor: "#1497fe",
+          confirmButtonText: "知道了",
+        });
+        return;
+      }
       let obj = {
         question_id: this.question_id - 0,
         submit_type: type,
@@ -367,6 +391,7 @@ export default {
 .EvaluationDetails {
   padding: 0.2rem;
   padding-top: 0;
+  position: relative;
   box-sizing: border-box;
 }
 .m_stitle {
@@ -378,7 +403,7 @@ export default {
   opacity: 1;
 }
 .subject {
-  font-size: 0.14rem;
+  font-size: 0.16rem;
   font-family: PingFang SC;
   font-weight: 400;
   line-height: 0.2rem;
@@ -490,5 +515,17 @@ export default {
 }
 .m_container {
   padding-bottom: 0.7rem;
+}
+.user {
+  position: absolute;
+  bottom: 0.15rem;
+  right: 0.12rem;
+  border-radius: 100%;
+  // background: blue;
+  img {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+  }
 }
 </style>

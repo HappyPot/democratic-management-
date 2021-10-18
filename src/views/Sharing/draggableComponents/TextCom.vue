@@ -52,7 +52,6 @@ export default {
   },
   created() {
     this.comInfo = this.$deepClone(this.info);
-    console.log(11111111);
   },
   methods: {
     // 保存数据

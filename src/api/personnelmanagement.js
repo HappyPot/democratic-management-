@@ -63,7 +63,7 @@ export function GET_UNITTREE_LIST(query) {
     }))
 
   return request({
-    url: '/admin/unit/getUnitTreeList?is_enable=1',
+    url: '/admin/unit/getUnitTreeList',
     method: 'get',
   })
 }

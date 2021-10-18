@@ -1,12 +1,16 @@
 <template >
   <div class="EvaluationObject">
+    <div class="user" @click="updatePwd">
+      <img src="../../assets/image/个人中心.svg" alt="" />
+    </div>
     <div class="m_title">测评对象</div>
     <div class="m_stitle">测评对象</div>
     <div
       class="eo_item"
+      :style="{ color: item.is_fill - 0 == 2 ? '#7984A7' : '' }"
       v-for="(item, index) in toplist"
       :key="index"
-      @click="togodetail(item)"
+      @click="togodetail(item, item.is_fill - 0)"
     >
       {{ index + 1 }}.{{ item.title }}
       <img src="../../assets/image/下一级.svg" alt="" />
@@ -44,17 +48,26 @@ export default {
     });
   },
   methods: {
-    togodetail(item) {
+    updatePwd() {
       this.$router.push({
-        path: "evaluationdetails",
-        query: {
-          showSelect: 1,
-          question_id: item.question_id,
-          title: item.title,
-          top_id: item.id,
-          toplist: JSON.stringify(this.toplist),
-        },
+        path: "personalcenter",
       });
+    },
+    togodetail(item, flag) {
+      if (flag == 2) {
+        this.$toast.fail("已经填写过了");
+      } else {
+        this.$router.push({
+          path: "evaluationdetails",
+          query: {
+            showSelect: 1,
+            question_id: item.question_id,
+            title: item.title,
+            top_id: item.id,
+            toplist: JSON.stringify(this.toplist),
+          },
+        });
+      }
     },
   },
 };
@@ -64,6 +77,7 @@ export default {
 .EvaluationObject {
   padding: 0.2rem;
   box-sizing: border-box;
+  position: relative;
 }
 .m_stitle {
   font-size: 0.16rem;
@@ -86,5 +100,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.user {
+  position: absolute;
+  bottom: 0.15rem;
+  right: 0.12rem;
+  border-radius: 100%;
+  // background: blue;
+  img {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+  }
 }
 </style>

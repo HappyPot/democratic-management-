@@ -56,6 +56,11 @@ export default {
   components: {
     draggable,
   },
+  mounted() {
+    setTimeout(() => {
+      console.log("aaa", this.drawingList);
+    }, 1000);
+  },
   data() {
     return {
       draggableArr: [

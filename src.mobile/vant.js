@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import {
-  Button, Field, RadioGroup, Radio, Tab, Tabs,Checkbox, CheckboxGroup,Toast
+  Button, Field, RadioGroup, Radio, Tab, Tabs, Checkbox, CheckboxGroup, Toast
 } from 'vant'
 
 Vue.use(Button)

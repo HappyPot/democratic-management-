@@ -96,14 +96,16 @@
               </el-table-column>
               <el-table-column prop="duty_name" label="人员类别">
               </el-table-column>
+              <el-table-column prop="subject_title" label="测评主体">
+              </el-table-column>
               <el-table-column
                 v-for="(item, index) in valueMap"
                 :key="index"
-                prop="value"
+                :prop="item.title"
                 :label="item.value"
               >
                 <template slot-scope="scope">
-                  <div v-show="scope.row.value == item.prop">
+                  <div v-show="scope.row[item.title] == item.prop">
                     <img
                       style="width: 16px; height: 16px"
                       src="../../../../assets/image/dui.png"
@@ -431,26 +433,37 @@ export default {
       GET_QUESTION_DETAIL(this.commonParam).then((res) => {
         if (res.status === 0) {
           this.tableData = res.data.data;
-          debugger;
+          let configarr = res.data.config.config;
+
+          if (configarr.length > 0) {
+            configarr.map((item, index) => {
+              let obj = {
+                prop: item.value,
+                value: item.content,
+                title: "value" + index,
+              };
+              this.valueMap.push(obj);
+            });
+          }
+          this.tableData.map((item) => {
+            for (let j = 0; j < item.value.length; j++) {
+              for (let i = 0; i < this.valueMap.length; i++) {
+                if (item.value[j] == this.valueMap[i].prop) {
+                  item[`${this.valueMap[i].title}`] = item.value[j];
+                }
+              }
+            }
+          });
         }
       });
     },
     // 获取对象汇总
     getQuestionObjectDetail() {
+      this.tableDataEvaluation = [];
       GET_QUESTION_OBJECT_DETAIL(this.commonParam).then((res) => {
         if (res.status === 0) {
           console.log("对象汇总", res.data);
           this.evaluationOptions = res.data;
-          if (res.data.length > 0) {
-            res.data[0].value.map((item) => {
-              let obj = {
-                prop: item.value,
-                value: item.question_name,
-              };
-              this.valueMap.push(obj);
-            });
-            console.log(this.valueMap);
-          }
 
           // this.tableDataEvaluation = res.data
           for (let index = 0; index < res.data.length; index++) {
@@ -561,7 +574,6 @@ export default {
         }
       });
     },
-
     // 人员汇总
     getQuestionDutyDetail() {
       GET_QUESTION_DUTY_DETAIL(this.commonParam).then((res) => {

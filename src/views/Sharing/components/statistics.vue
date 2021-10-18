@@ -1,7 +1,7 @@
 <template>
   <div class="statistics">
     <div class="subject_group">
-      <el-collapse v-model="activeNames">
+      <el-collapse v-model="activeNames" @change="changeQuestion" accordion>
         <el-collapse-item
           :title="group.issue + '【' + group.type + '】'"
           v-for="(group, i) in list"
@@ -184,9 +184,9 @@ export default {
           chartData: arr,
           id: this.statisticsData[i].id,
           question_id: this.statisticsData[i].question_id,
+          btnType: -1,
         };
         this.list.push(obj);
-        console.log("this.list", this.list);
       } else if (
         this.statisticsData[i].type == 2 ||
         this.statisticsData[i].type == 4 ||
@@ -198,12 +198,17 @@ export default {
           issue: this.statisticsData[i].issue,
           id: this.statisticsData[i].id,
           question_id: this.statisticsData[i].question_id,
+          btnType: -1,
         };
         this.list.push(obj);
       }
     }
   },
   methods: {
+    // 切换coll
+    changeQuestion() {
+      this.btnType = -1;
+    },
     // 切换图表
     changeChart(type, data, i) {
       this.btnType = type;

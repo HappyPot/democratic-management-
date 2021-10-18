@@ -523,80 +523,79 @@ export function GET_QUESTION_DETAIL(query) {
 			"msg": "OK",
 			"data": {
 				"data": [
+					// {
+					// 	"question_top_id": 3,
+					// 	"question_issue_id": 7,
+					// 	"user_id": 2,
+					// 	"value": [1,2],
+					// 	"created_at": null,
+					// 	"code": "10102930100002",
+					// 	"department_id": 293,
+					// 	"unit_id": 2,
+					// 	"duty_id": 1,
+					// 	"subject_title": "一师",
+					// 	"duty_name": "师领导班子成员",
+					// 	"unit_name": "一师",
+					// 	"department_name": "一师领导班子"
+					// },
 					{
-						"question_top_id": 1,
-						"question_issue_id": 4,
-						"user_id": 1,
-						"value": "1",
-						"created_at": null,
-						"code": "100",
-						"department_id": 1,
-						"unit_id": 1,
-						"duty_id": 1,
-						"duty_name": "师领导班子成员",
-						"unit_name": "西安凡数",
-						"department_name": "技术部"
-					},
-					{
-						"question_top_id": 2,
-						"question_issue_id": 4,
-						"user_id": 1,
-						"value": "1",
-						"created_at": null,
-						"code": "100",
-						"department_id": 1,
-						"unit_id": 1,
-						"duty_id": 1,
-						"duty_name": "师领导班子成员",
-						"unit_name": "西安凡数",
-						"department_name": "技术部"
-					},
-					{
-						"question_top_id": 1,
-						"question_issue_id": 4,
-						"user_id": 1,
-						"value": "3",
-						"created_at": null,
-						"code": "100",
-						"department_id": 1,
-						"unit_id": 1,
-						"duty_id": 1,
-						"duty_name": "师领导班子成员",
-						"unit_name": "西安凡数",
-						"department_name": "技术部"
-					},
-					{
-						"question_top_id": 2,
-						"question_issue_id": 4,
-						"user_id": 1,
-						"value": "4",
-						"created_at": null,
-						"code": "100",
-						"department_id": 1,
-						"unit_id": 1,
-						"duty_id": 1,
-						"duty_name": "师领导班子成员",
-						"unit_name": "西安凡数",
-						"department_name": "技术部"
-					},
-					{
-						"question_top_id": 1,
-						"question_issue_id": 4,
+						"question_top_id": 3,
+						"question_issue_id": 7,
 						"user_id": 2,
-						"value": "1",
+						"value": [2,3],
 						"created_at": null,
-						"code": "101",
-						"department_id": 2,
+						"code": "10102930100002",
+						"department_id": 293,
 						"unit_id": 2,
-						"duty_id": 2,
-						"duty_name": "团场领导班子成员",
-						"unit_name": "凡数分公司",
-						"department_name": "财务部"
+						"duty_id": 1,
+						"subject_title": "一师",
+						"duty_name": "师领导班子成员",
+						"unit_name": "一师",
+						"department_name": "一师领导班子"
+					}, {
+						"question_top_id": 3,
+						"question_issue_id": 7,
+						"user_id": 2,
+						"value": [1,3],
+						"created_at": null,
+						"code": "10102930100002",
+						"department_id": 293,
+						"unit_id": 2,
+						"duty_id": 1,
+						"subject_title": "一师",
+						"duty_name": "师领导班子成员",
+						"unit_name": "一师",
+						"department_name": "一师领导班子"
 					}
 				],
-				"total": 5,
+				"total": 3,
 				"last_page": 1,
-				"current_page": 1
+				"current_page": 1,
+				"config": {
+					"id": 7,
+					"question_id": 1,
+					"alias": null,
+					"issue": "多选测试1",
+					"type": 3,
+					"sort": 6,
+					"config": [
+						{
+							"id": 1,
+							"content": "a",
+							"value": 1
+						},
+						{
+							"id": 1,
+							"content": "b",
+							"value": 2
+						},
+						{
+							"id": 1,
+							"content": "c",
+							"value": 3
+						}
+					]
+				}
 			}
 		}))
 
@@ -604,5 +603,49 @@ export function GET_QUESTION_DETAIL(query) {
 		url: '/admin/question/getQuestionUserDetail',
 		method: 'post',
 		data: query
+	})
+}
+
+/**
+* @description 测评配置结果
+*/
+export function BACK_QUESTION_CONFIG(query) {
+
+	// 模拟数据
+	mock
+		.onAny('/admin/question/backQuestionConfig')
+		.reply(config => tools.responseSuccess(
+			{
+				"status": 0,
+				"msg": "OK", //返回文字描述
+				"data": [
+					{
+						"id": 1, //配置项id
+						"question_id": 1, //问题id
+						"alias": null, //别名
+						"issue": "单选1", //问题
+						"type": 1, //问题类型
+						"sort": 0, //问题排序
+						"config": [
+							{
+								"id": 1, //配置项id
+								"content": "1",
+								"value": 1
+							}
+						] //问题答案配置项
+					}
+				] //返回数据
+			}
+		))
+
+	// return requestForMock({
+	// 	url: '/admin/question/backQuestionConfig',
+	// 	method: 'get',
+	// 	// params: query
+	// })
+	return request({
+		url: '/admin/question/backQuestionConfig',
+		method: 'get',
+		params: query
 	})
 }

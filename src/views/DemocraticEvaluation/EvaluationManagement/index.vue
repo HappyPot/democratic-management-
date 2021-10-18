@@ -271,6 +271,7 @@ import DetailQuery from "../../QuestionnaireInvestigation/SurveyList/components/
 import {
   GET_QUESTION_LIST,
   GET_COUNT_QUESTION,
+  BACK_QUESTION_CONFIG,
 } from "@/api/questionnaireInvestigation.js";
 import {
   SAVE_QUESTION,
@@ -460,11 +461,45 @@ export default {
     statisticalData() {},
     // 展示配置框
     showConfig(row, index) {
-      setTimeout(() => {
-        this.$refs.configure.drawingList = [];
-        this.question_id = row.id;
-      }, 500);
-      this.dialogConfigure = true;
+      BACK_QUESTION_CONFIG({
+        question_id: row.id,
+      }).then((res) => {
+        if (res.status == 0) {
+          this.dialogConfigure = true;
+          setTimeout(() => {
+            if (res.data.length > 0) {
+              let map = {
+                2: "TextCom",
+                1: "RadioCom",
+                3: "CheckboxCom",
+                4: "SingleText",
+                5: "MultilineText",
+              };
+              let arr = [];
+              res.data.map((item) => {
+                let obj = {
+                  id: item.id,
+                  type: map[item.type],
+                  typeParam: item.type,
+                  des: item.issue,
+                  value: item.issue,
+                  uuid: this.uuid.v1(),
+                  config: {
+                    value: item.issue,
+                    title: item.issue,
+                    valueArr: item.config,
+                  },
+                };
+                arr.push(obj);
+              });
+              this.$refs.configure.drawingList = arr;
+            } else {
+              this.$refs.configure.drawingList = [];
+            }
+            this.question_id = row.id;
+          }, 500);
+        }
+      });
     },
     // 配置框数据提交 保存测评
     configData() {

@@ -79,7 +79,7 @@
               top: 88%;
               left: 50%;
               transform: translate(-50%, -50%);
-               font-size: 17px;
+              font-size: 17px;
             "
           >
             数据为空
@@ -92,7 +92,13 @@
         </div>
       </el-table>
     </div>
-    <el-dialog :close-on-click-modal="false" title="批量导入" center :visible.sync="dialogImport" width="30%">
+    <el-dialog
+      :close-on-click-modal="false"
+      title="批量导入"
+      center
+      :visible.sync="dialogImport"
+      width="30%"
+    >
       <div class="dialogImport_content">
         <div class="dc_item">
           <div class="dc_text">选择文件</div>
@@ -350,7 +356,7 @@ export default {
           parent_id: null,
         };
         if (this.from.superiorUnit.length > 0) {
-          obj["parent_id"] = this.from.superiorUnit[0].id;
+          obj["parent_id"] = this.from.superiorUnit[0].parent_id;
         }
         obj.id = this.from.id || undefined;
         console.log("SAVE_UNIT", obj);
