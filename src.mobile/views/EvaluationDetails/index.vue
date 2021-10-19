@@ -112,8 +112,8 @@ direction="horizontal">
     </div>
     <div class="submit">
       <div class="s_1" @click="pre" v-if="toplist.length != 0">上一个</div>
-      <div class="s_2" @click="submit(1)">提交</div>
-      <div class="s_3" @click="submit(0)">暂存</div>
+      <div class="s_2" @click="submit(2)">提交</div>
+      <div class="s_3" @click="submit(1)">暂存</div>
       <div class="s_1" @click="next" v-if="toplist.length != 0">下一个</div>
     </div>
   </div>
@@ -350,7 +350,7 @@ export default {
       });
       console.log("len", len);
       console.log("values.lenght", values.length);
-      if (len != values.length) {
+      if (len != values.length && type != 1) {
         this.$dialog.alert({
           title: "提示",
           message: "当前测评内容未完成，请完成后再进行提交",

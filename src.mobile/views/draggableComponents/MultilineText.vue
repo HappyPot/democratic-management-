@@ -7,6 +7,7 @@
         rows="2"
         autosize
         type="textarea"
+        :disabled="disabled"
         maxlength="50"
         placeholder="请输入留言"
         show-word-limit
@@ -23,6 +24,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    answer: {
+      type: String,
+      default: "",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -32,6 +41,9 @@ export default {
   },
   created() {
     this.comInfo = this.$deepClone(this.info);
+  },
+  mounted() {
+    this.message = this.answer;
   },
   methods: {
     setValue() {

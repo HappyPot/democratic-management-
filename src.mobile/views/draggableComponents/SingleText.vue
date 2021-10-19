@@ -2,7 +2,12 @@
   <div class="ed_item">
     <div class="ed_title">{{ comInfo.issue }}</div>
     <div class="text_item">
-      <van-field v-model="value" placeholder="" @input="getValue" />
+      <van-field
+        v-model="value"
+        :disabled="disabled"
+        placeholder=""
+        @input="getValue"
+      />
     </div>
   </div>
 </template>
@@ -14,6 +19,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    answer: {
+      type: String,
+      default: "",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -24,6 +37,9 @@ export default {
   created() {
     this.comInfo = this.$deepClone(this.info);
     console.log("this.comInfo", this.comInfo);
+  },
+  mounted() {
+    this.value = this.answer;
   },
   methods: {
     setValue() {

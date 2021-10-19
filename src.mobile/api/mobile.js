@@ -56,15 +56,29 @@ export function SAVE_ANSWER(query) {
 }
 
 /**
-  * @description 获取用户答案
+  * @description 获取用户答案 作废
   */
-export function GET_ANSWER(query) {
+export function GET_ANSWERFFF(query) {
   return request({
     url: '/web/getUserQuestionIssue',
     method: 'get',
     params: query
   })
 }
+
+/**
+  * @description 获取用户答案
+  */
+export function GET_ANSWER(query) {
+  return request({
+    url: '/web/getShowQuestionAndAnswer',
+    method: 'get',
+    params: query
+  })
+}
+
+
+
 /**
   * @description 退出登录
   */

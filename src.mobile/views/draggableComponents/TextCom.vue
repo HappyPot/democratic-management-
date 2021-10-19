@@ -1,33 +1,38 @@
 <template>
   <div class="ed_item">
-    <div class="ed_title">{{comInfo.issue}}</div>
+    <div class="ed_title">{{ comInfo.issue }}</div>
   </div>
 </template>
 <script>
 export default {
-  name: 'TextCom',
+  name: "TextCom",
   props: {
     info: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
+    answer: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
-      radio: '',
-      comInfo: null
-    }
+      radio: "",
+      comInfo: null,
+    };
   },
   created() {
-    this.comInfo = this.$deepClone(this.info)
+    this.comInfo = this.$deepClone(this.info);
   },
-  methods: {
-    
-  }
-}
+  mounted() {
+    this.radio = this.answer;
+  },
+  methods: {},
+};
 </script>
 <style lang="less" scoped>
-@import './index.less';
+@import "./index.less";
 
 .ed_item {
   margin-bottom: 0.24rem;

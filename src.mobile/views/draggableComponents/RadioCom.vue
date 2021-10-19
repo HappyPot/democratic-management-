@@ -4,6 +4,7 @@
     <div class="ed_select">
       <van-radio-group
         v-model="radio"
+        :disabled="disabled"
         direction="horizontal"
         @change="getValue"
       >
@@ -26,9 +27,13 @@ export default {
       type: Object,
       default: () => {},
     },
-    valueList: {
+    answer: {
       type: Array,
       default: () => [],
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -40,7 +45,9 @@ export default {
   },
   created() {
     this.comInfo = this.$deepClone(this.info);
-    this.comanserObject = this.$deepClone(this.valueList);
+  },
+  mounted() {
+    this.radio = this.answer[0] - 0;
   },
   methods: {
     setValue() {
