@@ -20,6 +20,7 @@
 </template>
 <script>
 import { GET_QUESTION_INFO } from "../../api/mobile";
+import { mapState } from "vuex";
 
 export default {
   name: "MyAssessment",
@@ -31,13 +32,27 @@ export default {
       form_type: 1, //1为定向评仪 2为社会评仪
     };
   },
+  computed: {
+    ...mapState("evaluationm/base", ["urlParams"]),
+  },
   created() {
     this.showSelect = this.$route.query.showSelect - 0;
     this.question_id = this.$route.query.question_id;
-    this.form_type = this.$route.query.form_type
+    this.form_type = this.$route.query.form_type;
+    if (this.question_id) {
+      this.$store.dispatch("evaluationm/base/saveUrlParams", {
+        question_id: this.question_id,
+        form_type: this.form_type,
+        showSelect: this.showSelect,
+      });
+    } else {
+      this.showSelect = this.urlParams.showSelect - 0;
+      this.question_id = this.urlParams.question_id;
+      this.form_type = this.urlParams.form_type;
+    }
     GET_QUESTION_INFO({
       id: this.question_id,
-      form_type:this.form_type
+      form_type: this.form_type,
     }).then((res) => {
       if (res.status == 0) {
         this.issueObj = res.data;
@@ -57,6 +72,10 @@ export default {
     updatePwd() {
       this.$router.push({
         path: "personalcenter",
+        query: {
+          question_id: this.question_id,
+          showSelect: this.showSelect,
+        },
       });
     },
   },

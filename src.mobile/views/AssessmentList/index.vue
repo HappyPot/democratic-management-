@@ -2,16 +2,16 @@
   <div class="AssessmentList">
     <div class="m_title">我的测评</div>
     <div class="content">
-      <van-tabs v-model="active">
-        <van-tab title="未提交">
-          <div class="eo_item" v-for="(item, index) in list" :key="index">
+      <van-tabs v-model="active" @change="tabsChange">
+        <van-tab name="1" title="未提交">
+          <div class="eo_item" v-for="(item, index) in list" :key="index" @click="showDetail">
             {{ index + 1 }}.{{ item.title }}
             <img src="../../assets/image/下一级.svg" alt="" />
           </div>
         </van-tab>
-        <van-tab title="已提交">
-          <div class="eo_item" v-for="(item, index) in listNo" :key="index">
-            {{ index }}.{{ item.title }}
+        <van-tab name="2" title="已提交">
+          <div class="eo_item" v-for="(item, index) in listNo" :key="index" @click="showDetail">
+            {{ index+1 }}.{{ item.title }}
             <img src="../../assets/image/下一级.svg" alt="" />
           </div>
         </van-tab>
@@ -24,35 +24,56 @@
   </div>
 </template>
 <script>
-import { GET_QUESTION } from "../../api/mobile";
+import { GET_QUESTION } from '../../api/mobile'
 
 export default {
-  name: "AssessmentList",
-  data() {
+  name: 'AssessmentList',
+  data () {
     return {
-      active: "2",
+      active: '1',
       list: [],
       listNo: [],
-    };
+      showSelect: -1,
+      question_id: -1
+    }
   },
-  created() {
-    this.type = this.$route.query.type;
-    GET_QUESTION({
-      type: this.type,
-    }).then((res) => {
-      if (res.status == 0) {
-        res.data.map((item) => {
-          // 未提交
-          if (item.status == 1) {
-            this.listNo.push(item);
+  created () {
+    this.getList()
+  },
+  methods: {
+    getList (status = '1') {
+      this.type = this.$route.query.type
+      GET_QUESTION({
+        type: this.type,
+        status: status
+      }).then((res) => {
+        if (res.status == 0) {
+        // 未提交
+          const { data } = res
+          if (this.active == 1) {
+            this.list = data
           } else {
-            this.list.push(item);
+            this.listNo = data
           }
-        });
-      }
-    });
-  },
-};
+        }
+      })
+    },
+    tabsChange (data) {
+      this.getList(this.active)
+    },
+    showDetail () {
+      this.showSelect = this.$route.query.showSelect - 0
+      this.question_id = this.$route.query.question_id
+      this.$router.push({
+        path: 'evaluationobject',
+        query: {
+          question_id: this.question_id,
+          showSelect: this.showSelect
+        }
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "../../assets/style/index.less";

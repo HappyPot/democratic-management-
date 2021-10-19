@@ -424,14 +424,16 @@ export default {
             });
             // this.$refs["review"].review.appraisalSubject = data.top;
             let arr = [];
-            data.user_list.map((item) => {
-              arr.push(item.id);
-            });
+            if (data.user_list && data.user_list.length > 0) {
+              data.user_list.map((item) => {
+                arr.push(item.id);
+              });
+            }
             this.$refs["review"].review.people = arr.join(","); //用于参评人员数量的的展示
             this.$refs["review"].review.peopleList = data.user_list; //用于参评人员的table的展示
+            this.$refs["review"].review.originPeopleList = data.user_list; //用于参评人员的table的展示
             this.$refs["review"].review.showPeopleConut =
               data.user_list.length + "人";
-            console.log("啊啊啊啊啊", this.$refs["review"].review.date);
           });
         }
       });

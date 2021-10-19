@@ -35,8 +35,11 @@ export default {
   data() {
     return {
       userInfo: null,
+      showSelect: -1,
+      question_id: -1,
     };
   },
+  
   created() {
     this.userInfo = JSON.parse(localStorage.getItem("evaluationm"));
   },
@@ -44,17 +47,21 @@ export default {
     // 退出登陆
     logout() {
       LOGOUT().then((res) => {
-        // this.$router.push({
-        //   path: "/changepassword",
-        // });
+        this.$router.push({
+          path: "/",
+        });
       });
     },
     // 我的测评
     togoMyTest(type) {
+      this.showSelect = this.$route.query.showSelect - 0;
+      this.question_id = this.$route.query.question_id;
       this.$router.push({
         path: "/assessmentList",
         query: {
           type: type,
+          question_id: this.question_id,
+          showSelect: this.showSelect,
         },
       });
     },
