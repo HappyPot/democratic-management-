@@ -2,7 +2,7 @@
   <div class="mhome_page">
     <div class="m_title">登陆</div>
     <div class="profile">
-      <img src="../assets/image/userimg.jpeg" alt="" />
+      <img src="../assets/image/userimg.svg" alt="" />
     </div>
     <div class="tips">我的账号</div>
     <div class="filed">
@@ -17,8 +17,8 @@
           placeholder="请输入密码"
         />
       </div>
-      <div class="input_item" style="margin-top: 0.5rem">
-        <van-button type="info" @click="submit" block>确认</van-button>
+      <div class="myinput" style="margin-top: 0.5rem">
+        <div class="mybtn" @click="submit">登录</div>
       </div>
       <div class="fpwd">忘记密码？</div>
     </div>
@@ -37,6 +37,13 @@ export default {
   methods: {
     ...mapActions("evaluationm/account", ["login"]),
     submit() {
+      if (!this.account) {
+        this.$notify({ type: "danger", message: "请输入账号" });
+        return;
+      } else if (!this.password) {
+        this.$notify({ type: "danger", message: "请输入密码" });
+        return;
+      }
       this.login({
         code: this.account,
         pwd: this.password,
@@ -51,6 +58,11 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "../assets/style/index.less";
+.mhome_page {
+  background: url("../assets/image/bgm.svg") no-repeat;
+  // background-size: cover;
+  height: 100vh;
+}
 .profile {
   text-align: center;
   img {
@@ -86,4 +98,21 @@ export default {
 // .input_item /deep/ .van-field {
 //   padding: 7px 16px;
 // }
+.mybtn {
+  width: 3.11rem;
+  height: 0.44rem;
+  background: url("../assets/image/login.svg") no-repeat;
+  background-size: 3.11rem 0.44rem;
+  color: #fff;
+  text-align: center;
+  font-size: 0.16rem;
+  line-height: 0.44rem;
+}
+.myinput {
+  background: #ffffff;
+  border-radius: 4px;
+  width: 3.11rem;
+  margin: 0 auto;
+  margin-bottom: 0.16rem;
+}
 </style>

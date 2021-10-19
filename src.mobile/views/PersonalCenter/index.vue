@@ -20,10 +20,16 @@
         <span>修改密码</span>
         <span><img src="../../assets/image/下一级.svg" alt="" /></span>
       </div>
+      <div class="pca_item" @click="logout">
+        <span>退出登录</span>
+        <span><img src="../../assets/image/下一级.svg" alt="" /></span>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { LOGOUT } from "../../api/mobile";
+
 export default {
   name: "PersonalCenter",
   data() {
@@ -35,6 +41,14 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem("evaluationm"));
   },
   methods: {
+    // 退出登陆
+    logout() {
+      LOGOUT().then((res) => {
+        // this.$router.push({
+        //   path: "/changepassword",
+        // });
+      });
+    },
     // 我的测评
     togoMyTest(type) {
       this.$router.push({

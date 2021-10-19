@@ -332,9 +332,9 @@ export default {
         codeHtml.innerHTML = "";
         let url = window.location.href;
         let urlarr = url.split("/");
-        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}`;
+        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}&form_type=${row.form_type}`;
         var qrcode = new QRCode(codeHtml, {
-          text: `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
+          text: `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?showSelect=0&question_id=${row.id}&form_type=${row.form_type}`, // 需要转换为二维码的内容
           width: 200,
           height: 200,
           colorDark: "#000000",

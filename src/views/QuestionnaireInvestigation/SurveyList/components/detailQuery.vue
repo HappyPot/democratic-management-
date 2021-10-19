@@ -118,13 +118,15 @@
               </el-table-column>
             </el-table>
             <div class="pagination_my">
-              <!-- <pagination @current-change="handleCurrentChange"
-                          v-show="total > 0"
-                          :total="total"
-                          :page.sync="queryParams.pageNum"
-                          :limit.sync="queryParams.pageSize"
-                          @pagination="getList"
-                          layout="prev, pager, next" /> -->
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :total="total"
+                @pagination="getDutyList"
+                :page-sizes="[10, 20, 30, 40]"
+                layout="total, prev, pager, next, sizes,jumper"
+              >
+              </el-pagination>
             </div>
           </div>
         </div>
@@ -321,7 +323,6 @@ export default {
       jobOptions: [], //职务列表
       isShowScreen: false,
       activeName: "first", //默认标签框
-      total: 0, //总条数
       queryParams: {
         //分页参数
         pageNum: 1,
@@ -355,6 +356,7 @@ export default {
       depMap: [], //部门汇总map
       peopleMap: [], //部门汇总map
       selected: [], // 树下拉框选中数据
+      total: 0,
       commonParam: {
         question_issue_id: this.idInfo.group.id,
         question_id: this.idInfo.group.question_id,
@@ -362,6 +364,8 @@ export default {
         question_top_id_list: [],
         unit_id_list: [],
         department_id_list: [],
+        page: 1,
+        page_size: 10,
       },
     };
   },
@@ -385,6 +389,17 @@ export default {
     this.search();
   },
   methods: {
+    // 设置每页条数
+    handleSizeChange(val) {
+      this.queryParams.page_size = val;
+      this.getQuestionDetail();
+      console.log(`每页 ${val} 条`);
+    },
+    // 触发分页
+    handleCurrentChange(val) {
+      this.queryParams.page = val;
+      this.getQuestionDetail();
+    },
     // 搜索
     search() {
       this.getQuestionObjectDetail();
@@ -430,11 +445,13 @@ export default {
     },
     // 获取测评明细
     getQuestionDetail() {
+      this.commonParam.page_size = this.queryParams.page_size;
+      this.commonParam.page = this.queryParams.page;
       GET_QUESTION_DETAIL(this.commonParam).then((res) => {
         if (res.status === 0) {
           this.tableData = res.data.data;
           let configarr = res.data.config.config;
-
+          this.total = res.data.total;
           if (configarr.length > 0) {
             configarr.map((item, index) => {
               let obj = {
@@ -705,5 +722,14 @@ export default {
   padding: 12px;
   box-sizing: border-box;
   overflow: auto;
+}
+.pagination_my {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+}
+.base_table {
+  position: relative;
+  padding-bottom: 45px;
 }
 </style>

@@ -47,7 +47,7 @@ service.interceptors.response.use(res => {
         routes.push({
           name: "index",
           query: {
-            redirect: '/'+arr[arr.length - 1]
+            redirect: '/' + arr[arr.length - 1]
           },
         });
         // location.reload() // 为了重新实例化vue-router对象 避免bug
@@ -62,7 +62,7 @@ service.interceptors.response.use(res => {
   }
 },
   error => {
-    Message({
+    Dialog({
       message: error.message,
       type: 'error',
       duration: 5 * 1000

@@ -28,13 +28,16 @@ export default {
       issueObj: null,
       showSelect: -1,
       question_id: -1,
+      form_type: 1, //1为定向评仪 2为社会评仪
     };
   },
   created() {
     this.showSelect = this.$route.query.showSelect - 0;
     this.question_id = this.$route.query.question_id;
+    this.form_type = this.$route.query.form_type
     GET_QUESTION_INFO({
       id: this.question_id,
+      form_type:this.form_type
     }).then((res) => {
       if (res.status == 0) {
         this.issueObj = res.data;
