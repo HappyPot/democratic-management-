@@ -1,6 +1,6 @@
 <template >
   <div class="EvaluationObject">
-    <div class="user" @click="updatePwd">
+    <div class="user" @click="updatePwd" v-if="form_type != 2">
       <img src="../../assets/image/个人中心.svg" alt="" />
     </div>
     <div class="m_title">测评对象</div>
@@ -20,6 +20,7 @@
 <script>
 import { GET_QUESTION_INFO } from "../../api/mobile";
 import { getUserInfom } from "@.mobile/untils/userinfo";
+import { mapState } from "vuex";
 export default {
   name: "EvaluationObject",
   data() {
@@ -27,14 +28,50 @@ export default {
       toplist: [],
       question_id: -1,
       showSelect: 1,
+      form_type: undefined,
+      uuid: "",
     };
+  },
+  computed: {
+    ...mapState("evaluationm/base", ["urlParams"]),
   },
   created() {
     this.question_id = this.$route.query.question_id;
+    debugger;
+    if (this.urlParams.form_type) {
+      this.form_type = this.urlParams.form_type - 0;
+    } else {
+      // 以下社会评议判断 from_type：2
+      if (this.$route.query.form_type == 2) {
+        this.form_type = this.$route.query.form_type - 0;
+        if (this.urlParams && this.urlParams.uuid) {
+          this.uuid = this.urlParams.uuid;
+        } else {
+          this.uuid = this.$uuid.v1();
+        }
+        this.$store.dispatch("evaluationm/base/saveUrlParams", {
+          question_id: this.question_id,
+          form_type: this.form_type - 0,
+          showSelect: this.showSelect,
+          uuid: this.uuid,
+        });
+      }
+    }
+    // 以上社会评议判断
     this.showSelect = this.$route.query.showSelect - 0;
-    GET_QUESTION_INFO({
-      id: this.question_id,
-    }).then((res) => {
+    let obj = {};
+    if (this.form_type == 2) {
+      obj = {
+        form_type: this.form_type,
+        id: this.question_id,
+        user_uid: this.urlParams.uuid,
+      };
+    } else {
+      obj = {
+        id: this.question_id,
+      };
+    }
+    GET_QUESTION_INFO(obj).then((res) => {
       if (res.status == 0) {
         this.toplist = res.data.top;
         if (this.toplist.length == 0) {
@@ -53,21 +90,30 @@ export default {
         path: "personalcenter",
       });
     },
-    togodetail(item, flag) {
-      // if (flag == 2) {
-      //   this.$toast.fail("已经填写过了");
-      // } else {
-      this.$router.push({
-        path: "evaluationdetails",
-        query: {
-          showSelect: 1,
-          question_id: item.question_id,
-          title: item.title,
-          top_id: item.id,
-          toplist: JSON.stringify(this.toplist),
-        },
-      });
-      // }
+    togodetail(item) {
+      if (this.form_type == 2) {
+        this.$router.push({
+          path: "evaluationDetailssociology",
+          query: {
+            showSelect: 1,
+            question_id: item.question_id,
+            title: item.title,
+            top_id: item.id,
+            toplist: JSON.stringify(this.toplist),
+          },
+        });
+      } else {
+        this.$router.push({
+          path: "evaluationdetails",
+          query: {
+            showSelect: 1,
+            question_id: item.question_id,
+            title: item.title,
+            top_id: item.id,
+            toplist: JSON.stringify(this.toplist),
+          },
+        });
+      }
     },
   },
 };

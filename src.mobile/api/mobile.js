@@ -99,3 +99,23 @@ export function GET_USER_QUESTION_ISSUE(query) {
     params: query
   })
 }
+/**
+  * @description 社会评议获取用户题目以及答案
+  */
+export function GET_USER_QUESTION_ISSUE_SOCIETY(query) {
+  return request({
+    url: '/web/getUserSocietyIssue',
+    method: 'get',
+    params: query
+  })
+}
+/**
+  * @descriptio 保存社会评议答案
+  */
+export function SAVE_SOCIOLOGY_VALUE(query) {
+  return request({
+    url: '/web/saveSociologyValue',
+    method: 'post',
+    data: query
+  })
+}

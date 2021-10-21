@@ -8,7 +8,7 @@
         <div class="m_content_box">
           {{ issueObj.index_desc }}
         </div>
-        <div class="user" @click="updatePwd">
+        <div class="user" @click="updatePwd" v-if="form_type != 2">
           <img src="../../assets/image/个人中心.svg" alt="" />
         </div>
       </div>
@@ -30,6 +30,7 @@ export default {
       showSelect: -1,
       question_id: -1,
       form_type: 1, //1为定向评仪 2为社会评仪
+      uuid: undefined,
     };
   },
   computed: {
@@ -39,21 +40,42 @@ export default {
     this.showSelect = this.$route.query.showSelect - 0;
     this.question_id = this.$route.query.question_id;
     this.form_type = this.$route.query.form_type;
+    this.uuid = this.$uuid.v1();
+    if (this.form_type - 0 == 2) {
+      this.$store.dispatch("evaluationm/base/saveUrlParams", {
+        question_id: this.question_id,
+        form_type: this.form_type - 0,
+        showSelect: this.showSelect,
+        uuid: this.uuid,
+      });
+    }
+    //如果有questionid说明是从链接来的，如果没有就从vuex中取
     if (this.question_id) {
       this.$store.dispatch("evaluationm/base/saveUrlParams", {
         question_id: this.question_id,
         form_type: this.form_type,
         showSelect: this.showSelect,
+        uuid: this.uuid,
       });
     } else {
       this.showSelect = this.urlParams.showSelect - 0;
       this.question_id = this.urlParams.question_id;
       this.form_type = this.urlParams.form_type;
     }
-    GET_QUESTION_INFO({
-      id: this.question_id,
-      form_type: this.form_type,
-    }).then((res) => {
+
+    let obj = {};
+    if (this.form_type == 2) {
+      obj = {
+        form_type: this.form_type,
+        id: this.question_id,
+        user_uid: this.uuid,
+      };
+    } else {
+      obj = {
+        id: this.question_id,
+      };
+    }
+    GET_QUESTION_INFO(obj).then((res) => {
       if (res.status == 0) {
         this.issueObj = res.data;
       }
@@ -66,6 +88,7 @@ export default {
         query: {
           question_id: this.question_id,
           showSelect: this.showSelect,
+          form_type: this.form_type,
         },
       });
     },

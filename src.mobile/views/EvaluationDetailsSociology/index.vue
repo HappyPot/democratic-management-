@@ -1,8 +1,5 @@
 <template >
   <div class="EvaluationDetails" ref="EvaluationDetails">
-    <div class="user" @click="updatePwd">
-      <img src="../../assets/image/个人中心.svg" alt="" />
-    </div>
     <div class="m_container">
       <div class="m_title">测评详情</div>
       <div class="m_stitle">{{ originData.title }}</div>
@@ -17,23 +14,21 @@
         @getValue="getValue"
       ></component>
     </div>
-    <div class="submit" v-if="is_edit">
-      <!-- <div class="s_1" @click="pre" v-if="toplist.length != 0">上一个</div> -->
+    <div class="submit">
       <div class="s_2" @click="submit(2)">提交</div>
-      <div class="s_3" @click="submit(1)">暂存</div>
-      <!-- <div class="s_1" @click="next" v-if="toplist.length != 0">下一个</div> -->
     </div>
   </div>
 </template>
 <script>
 import {
-  GET_QUESTION_INFO,
-  SAVE_ANSWER,
+  SAVE_SOCIOLOGY_VALUE,
   GET_ANSWER,
-  GET_USER_QUESTION_ISSUE,
+  GET_USER_QUESTION_ISSUE_SOCIETY,
 } from "../../api/mobile";
+import { mapState } from "vuex";
+
 export default {
-  name: "EvaluationDetails",
+  name: "EvaluationDetailsSociology",
   data() {
     return {
       radio: "",
@@ -60,10 +55,18 @@ export default {
       max: 0,
       showSelect: -1,
       is_edit: true,
+      form_type: undefined,
     };
+  },
+  computed: {
+    ...mapState("evaluationm/base", ["urlParams"]),
   },
   mounted() {
     this.showSelect = this.$route.query.showSelect - 0;
+    //社会评议逻辑
+    if (this.$route.query.form_type) {
+      this.form_type = this.$route.query.form_type - 0;
+    }
     this.question_id = this.$route.query.question_id;
     this.title = this.$route.query.title;
     this.top_id = this.$route.query.top_id;
@@ -71,8 +74,10 @@ export default {
     let param = {
       question_id: this.question_id,
       question_top_id: this.top_id,
+      form_type: this.urlParams.form_type - 0,
+      user_uid: this.urlParams.uuid,
     };
-    GET_USER_QUESTION_ISSUE(param).then((res) => {
+    GET_USER_QUESTION_ISSUE_SOCIETY(param).then((res) => {
       if (res.status == 0) {
         this.issue = res.data.issue;
         res.data.issue.map((item) => {
@@ -93,7 +98,6 @@ export default {
         this.is_edit = res.data.is_edit;
         console.log("this.issue", this.issue);
         this.originData = res.data;
-        // this.toplist = res.data.top;
         if (this.toplist.length != 0) {
           this.top_id = this.$route.query.top_id;
           this.min = this.toplist[0].id;
@@ -103,88 +107,6 @@ export default {
     });
   },
   methods: {
-    updatePwd() {
-      this.$router.push({
-        path: "personalcenter",
-      });
-    },
-    // 上一个
-    pre() {
-      this.$dialog.alert({
-        title: "提示",
-        message: "为了防止数据丢失，请及时暂存数据",
-        confirmButtonColor: "#1497fe",
-        confirmButtonText: "知道了",
-      });
-      this.top_id = this.top_id - 0 - 1;
-      if (this.top_id < this.min) {
-        this.top_id = this.min;
-        this.$notify({ type: "danger", message: "第一个" });
-        return;
-      }
-      this.toplist.map((item) => {
-        if (this.top_id == item.id - 0) {
-          this.title = item.title;
-          this.top_id = item.id;
-          this.question_id = item.id;
-          this.$refs.EvaluationDetails.scrollIntoView({
-            behavior: "smooth", // 平滑过渡
-            block: "start", // 上边框与视窗顶部平齐。默认值
-          });
-        }
-      });
-      this.getanswer();
-    },
-    // 获取答案
-    getanswer() {
-      GET_ANSWER({
-        question_top_id: this.top_id,
-        question_id: this.question_id,
-      }).then((res) => {
-        this.answerList = res.data;
-        for (let i = 0; i < this.issue.length; i++) {
-          const element = this.issue[i];
-          for (let k = 0; k < this.answerList.length; k++) {
-            const element2 = this.answerList[k];
-            if (element.id == element2.question_issue_id) {
-              console.log("question_issue_id", this.$refs["type_1"]);
-              this.$refs[
-                "type_" + element2.question_issue_id
-              ][0].comanserObject = element2;
-              this.$refs["type_" + element2.question_issue_id][0].setValue();
-            }
-          }
-        }
-      });
-    },
-    // 下一个
-    next() {
-      this.$dialog.alert({
-        title: "提示",
-        message: "为了防止数据丢失，请及时暂存数据",
-        confirmButtonColor: "#1497fe",
-        confirmButtonText: "知道了",
-      });
-      console.log("下一个this.top_id", this.top_id);
-      this.top_id = this.top_id - 0 + 1;
-      if (this.top_id > this.max) {
-        this.top_id = this.max;
-        this.$notify({ type: "danger", message: "最后一个" });
-        return;
-      }
-      this.toplist.map((item) => {
-        if (this.top_id == item.id - 0) {
-          this.title = item.title;
-          this.top_id = item.id;
-          this.question_id = item.id;
-          this.$refs.EvaluationDetails.scrollIntoView({
-            behavior: "smooth", // 平滑过渡
-            block: "start", // 上边框与视窗顶部平齐。默认值
-          });
-        }
-      });
-      this.getanswer();
-    },
     // 获取数据
     getValue(val) {
       this.questionObj[val.question_issue_id] = val;
@@ -194,18 +116,17 @@ export default {
       let len = 0;
       for (let key in this.questionObj) {
         this.questionObj[key]["question_top_id"] = this.top_id - 0;
-        // if (
-        //   this.questionObj[key]["value"] &&
-        //   !Array.isArray(this.questionObj[key]["value"])
-        // ) {
-        //   values.push(this.questionObj[key]);
-        // } else if (
-        //   Array.isArray(this.questionObj[key]["value"]) &&
-        //   this.questionObj[key]["value"].length > 0
-        // ) {
-        //   values.push(this.questionObj[key]);
-        // }
-        values.push(this.questionObj[key]);
+        if (
+          this.questionObj[key]["value"] &&
+          !Array.isArray(this.questionObj[key]["value"])
+        ) {
+          values.push(this.questionObj[key]);
+        } else if (
+          Array.isArray(this.questionObj[key]["value"]) &&
+          this.questionObj[key]["value"].length > 0
+        ) {
+          values.push(this.questionObj[key]);
+        }
       }
       this.issue.map((item) => {
         if (item.type - 0 != 2) {
@@ -225,16 +146,19 @@ export default {
       }
       let obj = {
         question_id: this.question_id - 0,
-        submit_type: type,
+        question_top_id: this.top_id,
+        user_uid: this.urlParams.uuid,
+        form_type: this.urlParams.form_type,
         values: values,
       };
       console.log("obj", obj);
-      SAVE_ANSWER(obj).then((res) => {
+      SAVE_SOCIOLOGY_VALUE(obj).then((res) => {
         if (res.status == 0) {
           this.$router.push({
             path: "successtip",
             query: {
               question_id: this.question_id - 0,
+              form_type: this.form_type,
             },
           });
         } else {
@@ -242,6 +166,7 @@ export default {
             path: "errortip",
             query: {
               question_id: this.question_id - 0,
+              form_type: this.form_type,
             },
           });
         }

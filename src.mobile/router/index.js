@@ -10,19 +10,14 @@ const routes = [
     component: () => import('../views/index.vue')
   },
   {
-    path: '/evaluationobjectanswer',
-    name: 'EvaluationObjectAnswer',
-    component: () => import('../views/EvaluationObjectAnswer/index.vue')
-  },
-  {
-    path: '/evaluationanswer',
-    name: 'EvaluationAnswer',
-    component: () => import('../views/EvaluationAnswer/index.vue')
-  },
-  {
     path: '/myassessment',
     name: 'MyAssessment',
     component: () => import('../views/MyAssessment/index.vue')
+  },
+  {
+    path: '/evaluationDetailssociology',
+    name: 'EvaluationDetailsSociology',
+    component: () => import('../views/EvaluationDetailsSociology/index.vue')
   },
   {
     path: '/personalcenter',

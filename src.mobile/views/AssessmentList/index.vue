@@ -85,17 +85,6 @@ export default {
           toplist: JSON.stringify(this.toplist),
         },
       });
-      // }
-      //  else {
-      //   this.showSelect = this.$route.query.showSelect - 0;
-      //   this.question_id = this.$route.query.question_id;
-      //   this.$router.push({
-      //     path: "evaluationobjectanswer",
-      //     query: {
-      //       question_id: item.id,
-      //     },
-      //   });
-      // }
     },
   },
 };
