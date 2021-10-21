@@ -537,7 +537,6 @@ export default {
           let unit = this.findUnit(this.superiorUnitOptions, {
             unit_id: res.data.unit_id,
           });
-          debugger;
           this.from.unitName = [unit];
           this.from.department = res.data.department_id;
           this.from.job = res.data.duty_id;

@@ -88,3 +88,14 @@ export function LOGOUT(query) {
     method: 'get',
   })
 }
+
+/**
+  * @description 获取用户题目以及答案
+  */
+export function GET_USER_QUESTION_ISSUE(query) {
+  return request({
+    url: '/web/getUserQuestionIssue',
+    method: 'get',
+    params: query
+  })
+}

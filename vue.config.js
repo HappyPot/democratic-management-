@@ -83,7 +83,7 @@ module.exports = {
     open: true,
     proxy: {
       [process.env.VUE_APP_API]: {
-        target: `https://php.ceping.nuofeida.net`, // 86
+        target: `https://cepingphp.nuofeida.net`, // 86
         // secure: false,
         changeOrigin: true,
         // logLevel:'debug',

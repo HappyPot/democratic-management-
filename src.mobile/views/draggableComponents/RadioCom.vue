@@ -47,7 +47,7 @@ export default {
     this.comInfo = this.$deepClone(this.info);
   },
   mounted() {
-    this.radio = this.answer[0] - 0;
+    this.radio = this.answer[0] - 0 || "";
   },
   methods: {
     setValue() {

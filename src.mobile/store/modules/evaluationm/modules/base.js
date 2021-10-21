@@ -27,7 +27,6 @@ const actions = {
     commit('SAVE_USER_INFO', info)
   },
   saveUrlParams({ commit }, info) {
-    debugger
     commit('SAVE_URL_PARAMS', info)
   },
 }

@@ -356,7 +356,11 @@ export default {
           parent_id: null,
         };
         if (this.from.superiorUnit.length > 0) {
-          obj["parent_id"] = this.from.superiorUnit[0].parent_id;
+          if (this.typeDialog == "编辑") {
+            obj["parent_id"] = this.from.superiorUnit[0].parent_id;
+          } else {
+            obj["parent_id"] = this.from.superiorUnit[0].id;
+          }
         }
         obj.id = this.from.id || undefined;
         console.log("SAVE_UNIT", obj);

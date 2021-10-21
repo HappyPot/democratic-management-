@@ -30,7 +30,7 @@ export default {
   name: "Index",
   data() {
     return {
-      account: "100", //账号
+      account: "", //账号
       password: "", //密码
     };
   },
@@ -62,6 +62,7 @@ export default {
   background: url("../assets/image/bgm.svg") no-repeat;
   // background-size: cover;
   height: 100vh;
+  background-size: cover;
 }
 .profile {
   text-align: center;

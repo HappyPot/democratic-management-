@@ -37,22 +37,30 @@ service.interceptors.response.use(res => {
   }
   const code = res.data.status
   if (code === 1002) {
-    Dialog.alert({
-      title: '信息',
-      message: '登陆超时，请重新登陆',
-    }).then(() => {
-      store.dispatch('evaluationm/account/logout', {}, { root: true }).then(() => {
-        let arr = location.href.split('/')
-        console.log(location.href.split('/'))
-        routes.push({
-          name: "index",
-          query: {
-            redirect: '/' + arr[arr.length - 1]
-          },
-        });
-        // location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
+    let arr = location.href.split('/')
+    console.log(location.href.split('/'))
+    routes.push({
+      name: "index",
+      query: {
+        redirect: '/' + arr[arr.length - 1]
+      },
     });
+    // Dialog.alert({
+    //   title: '信息',
+    //   message: '登陆超时，请重新登陆',
+    // }).then(() => {
+    //   store.dispatch('evaluationm/account/logout', {}, { root: true }).then(() => {
+    //     let arr = location.href.split('/')
+    //     console.log(location.href.split('/'))
+    //     routes.push({
+    //       name: "index",
+    //       query: {
+    //         redirect: '/' + arr[arr.length - 1]
+    //       },
+    //     });
+    //     // location.reload() // 为了重新实例化vue-router对象 避免bug
+    //   })
+    // });
 
   } else if (code !== 0) {
     Notify({ type: 'danger', message: res.data.msg });

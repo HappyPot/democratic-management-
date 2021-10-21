@@ -23757,7 +23757,6 @@ UE.plugin.register('autoupload', function (){
         allowFiles = me.getOpt(filetype + 'AllowFiles');
         actionUrl = me.getActionUrl(me.getOpt(filetype + 'ActionName'));
         errorHandler = function(title) {
-            debugger
             var loader = me.document.getElementById(loadingId);
             loader && domUtils.remove(loader);
             me.fireEvent('showmessage', {

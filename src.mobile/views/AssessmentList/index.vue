@@ -74,27 +74,28 @@ export default {
     },
     // type:1未提交 2:已提交
     showDetail(item, type) {
-      if (type == 1) {
-        this.$router.push({
-          path: "evaluationdetails",
-          query: {
-            showSelect: 1,
-            question_id: item.id,
-            title: item.title,
-            top_id: item.id,
-            toplist: JSON.stringify(this.toplist),
-          },
-        });
-      } else {
-        this.showSelect = this.$route.query.showSelect - 0;
-        this.question_id = this.$route.query.question_id;
-        this.$router.push({
-          path: "evaluationobjectanswer",
-          query: {
-            question_id: item.id,
-          },
-        });
-      }
+      // if (type == 1) {
+      this.$router.push({
+        path: "evaluationobject",
+        query: {
+          showSelect: 1,
+          question_id: item.id,
+          title: item.title,
+          top_id: item.id,
+          toplist: JSON.stringify(this.toplist),
+        },
+      });
+      // }
+      //  else {
+      //   this.showSelect = this.$route.query.showSelect - 0;
+      //   this.question_id = this.$route.query.question_id;
+      //   this.$router.push({
+      //     path: "evaluationobjectanswer",
+      //     query: {
+      //       question_id: item.id,
+      //     },
+      //   });
+      // }
     },
   },
 };

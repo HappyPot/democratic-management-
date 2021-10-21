@@ -235,7 +235,7 @@
                 @current-change="handleCurrentChange"
                 :total="total"
                 @pagination="getUserList"
-                :page-sizes="[10, 20, 30, 40]"
+                :page-size="100"
                 layout="total, prev, pager, next"
               >
               </el-pagination>
@@ -294,7 +294,7 @@ export default {
       //分页参数
       queryParams: {
         page: 1, //当前第几页
-        page_size: 10, //每页显示的条数
+        page_size: 100, //每页显示的条数
         department_id_list: [], //搜索条件的部门名称
         duty_id_list: [], //搜索条件的职务名称
         search_name: "",

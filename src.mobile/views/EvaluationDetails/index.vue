@@ -13,6 +13,7 @@
         :info="item"
         :is="map[item.type]"
         :ref="'type_' + item.id"
+        :answer="item.value"
         @getValue="getValue"
       ></component>
       <!-- <div class="ed_item">
@@ -110,16 +111,21 @@ direction="horizontal">
 </div>
 </div> -->
     </div>
-    <div class="submit">
-      <div class="s_1" @click="pre" v-if="toplist.length != 0">上一个</div>
+    <div class="submit" v-if="is_edit">
+      <!-- <div class="s_1" @click="pre" v-if="toplist.length != 0">上一个</div> -->
       <div class="s_2" @click="submit(2)">提交</div>
       <div class="s_3" @click="submit(1)">暂存</div>
-      <div class="s_1" @click="next" v-if="toplist.length != 0">下一个</div>
+      <!-- <div class="s_1" @click="next" v-if="toplist.length != 0">下一个</div> -->
     </div>
   </div>
 </template>
 <script>
-import { GET_QUESTION_INFO, SAVE_ANSWER, GET_ANSWER } from "../../api/mobile";
+import {
+  GET_QUESTION_INFO,
+  SAVE_ANSWER,
+  GET_ANSWER,
+  GET_USER_QUESTION_ISSUE,
+} from "../../api/mobile";
 export default {
   name: "EvaluationDetails",
   data() {
@@ -135,76 +141,7 @@ export default {
         5: "MultilineText",
       },
       answerList: [],
-      issue: [
-        // {
-        // id: 31,
-        // question_id: 1,
-        // alias: null,
-        // issue: "多选",
-        // type: 3,
-        // sort: 1,
-        // config: [
-        // {
-        // id: 1,
-        // content: "默认",
-        // value: 1,
-        // },
-        // {
-        // id: 2,
-        // content: "默认2",
-        // value: 2,
-        // },
-        // ],
-        // },
-        // {
-        // id: 30,
-        // question_id: 1,
-        // alias: null,
-        // issue: "文字",
-        // type: 2,
-        // sort: 0,
-        // config: null,
-        // },
-        // {
-        // id: 37,
-        // question_id: 1,
-        // alias: null,
-        // issue: " 您对该部门作风建设情况总体评价是：",
-        // type: 1,
-        // sort: 0,
-        // config: [
-        // {
-        // id: 1,
-        // content: "满意",
-        // value: 1,
-        // },
-        // {
-        // id: 2,
-        // content: "比较满意",
-        // value: 2,
-        // },
-        // {
-        // id: 3,
-        // content: "一般",
-        // value: 3,
-        // },
-        // {
-        // id: 4,
-        // content: "不满意",
-        // value: 4,
-        // },
-        // ],
-        // },
-        // {
-        // id: 32,
-        // question_id: 1,
-        // alias: null,
-        // issue: "多行文本",
-        // type: 5,
-        // sort: 2,
-        // config: null,
-        // },
-      ],
+      issue: [],
       originData: {
         title: "",
       },
@@ -216,20 +153,41 @@ export default {
       min: 0,
       max: 0,
       showSelect: -1,
+      is_edit: true,
     };
   },
   mounted() {
     this.showSelect = this.$route.query.showSelect - 0;
     this.question_id = this.$route.query.question_id;
     this.title = this.$route.query.title;
-    GET_QUESTION_INFO({
-      id: this.$route.query.question_id,
-    }).then((res) => {
+    this.top_id = this.$route.query.top_id;
+    this.toplist = JSON.parse(this.$route.query.toplist);
+    let param = {
+      question_id: this.question_id,
+      question_top_id: this.top_id,
+    };
+    GET_USER_QUESTION_ISSUE(param).then((res) => {
       if (res.status == 0) {
         this.issue = res.data.issue;
+        res.data.issue.map((item) => {
+          if (item.type != 2) {
+            if (item.type == 1 || item.type == 3) {
+              this.questionObj[item.id] = {
+                question_issue_id: item.id,
+                value: [],
+              };
+            } else {
+              this.questionObj[item.id] = {
+                question_issue_id: item.id,
+                value: "",
+              };
+            }
+          }
+        });
+        this.is_edit = res.data.is_edit;
         console.log("this.issue", this.issue);
         this.originData = res.data;
-        this.toplist = res.data.top;
+        // this.toplist = res.data.top;
         if (this.toplist.length != 0) {
           this.top_id = this.$route.query.top_id;
           this.min = this.toplist[0].id;
@@ -324,24 +282,24 @@ export default {
     // 获取数据
     getValue(val) {
       this.questionObj[val.question_issue_id] = val;
-      console.log("this.questionObj[val.id]", this.questionObj);
     },
     submit(type) {
       let values = [];
       let len = 0;
       for (let key in this.questionObj) {
         this.questionObj[key]["question_top_id"] = this.top_id - 0;
-        if (
-          this.questionObj[key]["value"] &&
-          !Array.isArray(this.questionObj[key]["value"])
-        ) {
-          values.push(this.questionObj[key]);
-        } else if (
-          Array.isArray(this.questionObj[key]["value"]) &&
-          this.questionObj[key]["value"].length > 0
-        ) {
-          values.push(this.questionObj[key]);
-        }
+        // if (
+        //   this.questionObj[key]["value"] &&
+        //   !Array.isArray(this.questionObj[key]["value"])
+        // ) {
+        //   values.push(this.questionObj[key]);
+        // } else if (
+        //   Array.isArray(this.questionObj[key]["value"]) &&
+        //   this.questionObj[key]["value"].length > 0
+        // ) {
+        //   values.push(this.questionObj[key]);
+        // }
+        values.push(this.questionObj[key]);
       }
       this.issue.map((item) => {
         if (item.type - 0 != 2) {

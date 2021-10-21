@@ -236,8 +236,8 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :total="total"
+                :page-size="100"
                 @pagination="getUserList"
-                :page-sizes="[10, 20, 30, 40]"
                 layout="total, prev, pager, next"
               >
               </el-pagination>
