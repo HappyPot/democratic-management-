@@ -17,8 +17,10 @@ export default {
       pwd = '',
       subject_id = "",
       code = "",
+      question_id = "",
+
     } = {}) {
-      const res = await LOGIN({ pwd, subject_id, code })
+      const res = await LOGIN({ pwd, subject_id, code, question_id })
       setToken(res.data.token)
       // 设置 vuex 用户信息
       setUserInfom(JSON.stringify(res.data))

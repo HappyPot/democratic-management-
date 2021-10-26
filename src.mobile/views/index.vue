@@ -30,8 +30,8 @@ export default {
   name: "Index",
   data() {
     return {
-      account: "", //账号
-      password: "", //密码
+      account: "", // 账号
+      password: "", // 密码
     };
   },
   methods: {
@@ -44,11 +44,18 @@ export default {
         this.$notify({ type: "danger", message: "请输入密码" });
         return;
       }
-      this.login({
+      const href = this.$route.query.redirect;
+      const params = {
         code: this.account,
         pwd: this.password,
         subject_id: 1,
-      }).then(() => {
+      };
+      if (Object.keys(this.$route.query).length > 0) {
+        const fieldList = href.split("&")[1].split("=");
+        params.question_id = fieldList[1];
+      }
+      console.log(1111, params);
+      this.login(params).then(() => {
         // 重定向对象不存在则返回顶层路径
         this.$router.replace(this.$route.query.redirect || "/myassessment");
       });

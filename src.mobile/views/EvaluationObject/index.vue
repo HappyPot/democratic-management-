@@ -21,6 +21,8 @@
 import { GET_QUESTION_INFO } from "../../api/mobile";
 import { getUserInfom } from "@.mobile/untils/userinfo";
 import { mapState } from "vuex";
+import { getUuid, setUuid, removeUuid } from "../../untils/saveUid";
+
 export default {
   name: "EvaluationObject",
   data() {
@@ -37,15 +39,14 @@ export default {
   },
   created() {
     this.question_id = this.$route.query.question_id;
-    debugger;
     if (this.urlParams.form_type) {
       this.form_type = this.urlParams.form_type - 0;
     } else {
       // 以下社会评议判断 from_type：2
       if (this.$route.query.form_type == 2) {
         this.form_type = this.$route.query.form_type - 0;
-        if (this.urlParams && this.urlParams.uuid) {
-          this.uuid = this.urlParams.uuid;
+        if (getUuid()) {
+          this.uuid = getUuid();
         } else {
           this.uuid = this.$uuid.v1();
         }
@@ -100,6 +101,7 @@ export default {
             title: item.title,
             top_id: item.id,
             toplist: JSON.stringify(this.toplist),
+            form_type: this.form_type,
           },
         });
       } else {
@@ -111,6 +113,7 @@ export default {
             title: item.title,
             top_id: item.id,
             toplist: JSON.stringify(this.toplist),
+            form_type: this.form_type,
           },
         });
       }

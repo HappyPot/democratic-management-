@@ -107,6 +107,12 @@
             <el-link
               type="primary"
               style="margin-right: 12px"
+              @click="showTestRate(scope.row, scope.$index)"
+              >查看测评率</el-link
+            >
+            <el-link
+              type="primary"
+              style="margin-right: 12px"
               @click="showEdit(scope.row, scope.$index)"
               >编辑</el-link
             >
@@ -260,6 +266,35 @@
         <el-button @click="dialogTest = false">取 消</el-button>
       </span>
     </el-dialog>
+    <!--查看测评率 -->
+    <el-dialog
+      title="查看测评率"
+      center
+      :visible.sync="dialogTestRate"
+      :close-on-click-modal="false"
+      width="1000px"
+    >
+      <div class="testRate">
+        <div class="exportList" @click="exportExcel">
+          <img src="../../../assets/image/exportlist.svg" alt="" /> 批量导出
+        </div>
+        <el-table :data="tableDataTestRate" style="width: 100%">
+          <el-table-column prop="unit_name" label="单位名称"> </el-table-column>
+          <el-table-column prop="user_total" label="单位总人数">
+          </el-table-column>
+          <el-table-column prop="cyrs" label="参与测评人数"> </el-table-column>
+          <el-table-column prop="bl" label="参与率"
+            ><template slot-scope="scope"> {{ scope.row.bl }}% </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogTestRate = false"
+          >确 定</el-button
+        >
+        <el-button @click="dialogTestRate = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </d2-container>
 </template>
 <script>
@@ -278,6 +313,8 @@ import {
   SAVE_QUESTION_DETAIL,
   SAVE_QUESTION_CONFIG,
   DEL_QUESTION,
+  GET_QUESTION_UNIY_BL,
+  GET_UNIY_BL_EXPORT,
 } from "@/api/evaluationanagement.js";
 import QRCode from "qrcodejs2";
 import { mapState } from "vuex";
@@ -290,6 +327,7 @@ export default {
   },
   data() {
     return {
+      tableDataTestRate: [], //查看测评率
       idInfo: {}, //包含id和question_id
       selection: [], //表格中被选中的
       typeTitle: "评议添加", //评议添加,评议编辑
@@ -299,6 +337,7 @@ export default {
       dialogPapers: false, //控制低稿框
       dialogDetail: false, //明细查询
       dialogTest: false, //测试地址二维码
+      dialogTestRate: false, //查看测评率
       searchValue: "", //搜索值
       restaurants: [],
       tableData: [],
@@ -317,6 +356,7 @@ export default {
       urlParam: "",
       testTitle: "",
       urlText: "", //访问网址文字
+      testRateId: undefined, //查看测评旅id
     };
   },
   mounted() {
@@ -324,6 +364,37 @@ export default {
     this.getQuestionList();
   },
   methods: {
+    // 导出excel表
+    exportExcel() {
+      let obj = {
+        question_id: this.testRateId,
+      };
+      GET_UNIY_BL_EXPORT(obj).then((res) => {
+        const blob = new Blob([res]);
+        const fileName = "数据.xls";
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.style.display = "none";
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+      });
+    },
+    // 查看测评率
+    showTestRate(row) {
+      this.dialogTestRate = true;
+      this.testRateId = row.id;
+      let obj = {
+        question_id: row.id,
+      };
+      GET_QUESTION_UNIY_BL(obj).then((res) => {
+        if (res.status == 0) {
+          this.tableDataTestRate = res.data;
+        }
+      });
+    },
     showUrl(row) {
       this.urlParam = row.id;
       this.testTitle = row.title;
@@ -596,6 +667,22 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.testRate {
+  position: relative;
+  .exportList {
+    position: absolute;
+    right: 23px;
+    top: -23px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    img {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+  }
+}
 .em_search {
   width: 100%;
   display: flex;

@@ -225,6 +225,28 @@ export function SAVE_QUESTION_CONFIG(query) {
 }
 
 /**
+* @description 查看测评率
+*/
+export function GET_QUESTION_UNIY_BL(query) {
+	return request({
+		url: '/admin/question/getQuestionUnitBl',
+		method: 'get',
+		params: query
+	})
+}
+/**
+* @description 导出excel
+*/
+export function GET_UNIY_BL_EXPORT(query) {
+	return request({
+		url: '/admin/question/getUnitBlExport',
+		method: 'get',
+		params: query,
+		responseType:"blob"
+	})
+}
+
+/**
 * @description 保存测评
 */
 export function SAVE_QUESTION(query) {

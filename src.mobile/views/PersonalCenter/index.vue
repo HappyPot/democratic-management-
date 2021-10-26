@@ -39,7 +39,7 @@ export default {
       question_id: -1,
     };
   },
-  
+
   created() {
     this.userInfo = JSON.parse(localStorage.getItem("evaluationm"));
   },
@@ -49,6 +49,9 @@ export default {
       LOGOUT().then((res) => {
         this.$router.push({
           path: "/",
+          query: {
+            redirect: `myassessment?showSelect=0&question_id=${this.$route.query.question_id}&form_type=1`,
+          },
         });
       });
     },

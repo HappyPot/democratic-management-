@@ -16,6 +16,16 @@
 <script>
 export default {
   name: "ErrorTip",
+  data() {
+    return {
+      question_id: -1,
+      form_type: undefined,
+    };
+  },
+  created() {
+    this.question_id = this.$route.query.question_id;
+    this.form_type = this.$route.query.form_type - 0;
+  },
   methods: {
     toback() {
       this.$router.push({
@@ -23,6 +33,7 @@ export default {
         query: {
           showSelect: 1,
           question_id: this.question_id,
+          form_type: this.form_type,
         },
       });
     },

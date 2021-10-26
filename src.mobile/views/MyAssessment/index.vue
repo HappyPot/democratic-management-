@@ -21,7 +21,8 @@
 <script>
 import { GET_QUESTION_INFO } from "../../api/mobile";
 import { mapState } from "vuex";
-
+import { getUuid, setUuid, removeUuid } from "../../untils/saveUid";
+import { removeToken } from "../../untils/auth";
 export default {
   name: "MyAssessment",
   data() {
@@ -40,14 +41,20 @@ export default {
     this.showSelect = this.$route.query.showSelect - 0;
     this.question_id = this.$route.query.question_id;
     this.form_type = this.$route.query.form_type;
-    this.uuid = this.$uuid.v1();
     if (this.form_type - 0 == 2) {
+      removeToken();
       this.$store.dispatch("evaluationm/base/saveUrlParams", {
         question_id: this.question_id,
         form_type: this.form_type - 0,
         showSelect: this.showSelect,
         uuid: this.uuid,
       });
+      if (getUuid()) {
+        this.uuid = getUuid();
+      } else {
+        this.uuid = this.$uuid.v1();
+        setUuid(this.uuid);
+      }
     }
     //如果有questionid说明是从链接来的，如果没有就从vuex中取
     if (this.question_id) {

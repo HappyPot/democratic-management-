@@ -26,6 +26,7 @@ import {
   GET_USER_QUESTION_ISSUE_SOCIETY,
 } from "../../api/mobile";
 import { mapState } from "vuex";
+import { getUuid, setUuid, removeUuid } from "../../untils/saveUid";
 
 export default {
   name: "EvaluationDetailsSociology",
@@ -74,8 +75,8 @@ export default {
     let param = {
       question_id: this.question_id,
       question_top_id: this.top_id,
-      form_type: this.urlParams.form_type - 0,
-      user_uid: this.urlParams.uuid,
+      form_type: this.form_type - 0,
+      user_uid: getUuid(),
     };
     GET_USER_QUESTION_ISSUE_SOCIETY(param).then((res) => {
       if (res.status == 0) {
@@ -85,12 +86,12 @@ export default {
             if (item.type == 1 || item.type == 3) {
               this.questionObj[item.id] = {
                 question_issue_id: item.id,
-                value: [],
+                value: item.value,
               };
             } else {
               this.questionObj[item.id] = {
                 question_issue_id: item.id,
-                value: "",
+                value: item.value,
               };
             }
           }
@@ -147,8 +148,8 @@ export default {
       let obj = {
         question_id: this.question_id - 0,
         question_top_id: this.top_id,
-        user_uid: this.urlParams.uuid,
-        form_type: this.urlParams.form_type,
+        user_uid: getUuid(),
+        form_type: this.form_type,
         values: values,
       };
       console.log("obj", obj);
