@@ -225,7 +225,7 @@ export function SAVE_QUESTION_CONFIG(query) {
 }
 
 /**
-* @description 查看测评率
+* @description 查看参评率
 */
 export function GET_QUESTION_UNIY_BL(query) {
 	return request({

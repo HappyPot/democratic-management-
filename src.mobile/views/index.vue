@@ -25,14 +25,18 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "Index",
   data() {
     return {
       account: "", // 账号
       password: "", // 密码
+      question_id: undefined,
     };
+  },
+  computed: {
+    ...mapState("evaluationm/base", ["urlParams"]),
   },
   methods: {
     ...mapActions("evaluationm/account", ["login"]),
@@ -48,13 +52,13 @@ export default {
       const params = {
         code: this.account,
         pwd: this.password,
+        question_id: this.urlParams.question_id,
         subject_id: 1,
       };
       if (Object.keys(this.$route.query).length > 0) {
         const fieldList = href.split("&")[1].split("=");
         params.question_id = fieldList[1];
       }
-      console.log(1111, params);
       this.login(params).then(() => {
         // 重定向对象不存在则返回顶层路径
         this.$router.replace(this.$route.query.redirect || "/myassessment");

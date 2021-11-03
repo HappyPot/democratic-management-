@@ -58,12 +58,17 @@
             {{ scope.row.type == 1 ? "测评" : "问卷" }}
           </template>
         </el-table-column>
-        <el-table-column prop="start_time" label="调查时间" width="300">
+        <el-table-column prop="start_time" label="调查时间">
           <template slot-scope="scope">
             {{ scope.row.start_time }}至{{ scope.row.end_time }}
           </template>
         </el-table-column>
-        <el-table-column prop="status_name" label="状态" show-overflow-tooltip>
+        <el-table-column
+          prop="status_name"
+          label="状态"
+          show-overflow-tooltip
+          width="120"
+        >
           <template slot-scope="scope">
             <div v-if="scope.row.status_name == '未开始'" class="status_tiem">
               <i class="status noStart"></i>
@@ -86,7 +91,7 @@
             <!-- {{tableData[scope.$index].status?'未开始':"开始"}} -->
           </template>
         </el-table-column>
-        <el-table-column prop="isEnable" label="是否启用">
+        <el-table-column prop="isEnable" label="是否启用" width="140">
           <template slot-scope="scope">
             <el-switch v-model="tableData[scope.$index].isEnable"> </el-switch>
           </template>

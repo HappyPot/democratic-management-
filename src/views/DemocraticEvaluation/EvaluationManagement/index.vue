@@ -47,7 +47,7 @@
         <el-table-column prop="title" label="标题名称">
           <template slot-scope="scope">
             <el-popover
-              placement="top-start"
+              placement="right-end"
               width="200"
               trigger="hover"
               @show="showUrl(scope.row)"
@@ -64,17 +64,17 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="start_time" label="测评时间" width="300">
+        <el-table-column prop="start_time" label="测评时间" >
           <template slot-scope="scope">
             {{ scope.row.start_time }}至{{ scope.row.end_time }}
           </template>
         </el-table-column>
-        <el-table-column prop="form_type" label="评议类型" width="300">
+        <el-table-column prop="form_type" label="评议类型" width="120">
           <template slot-scope="scope">
             {{ scope.row.form_type == 1 ? "定向评议" : "社会评议" }}
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" show-overflow-tooltip>
+        <el-table-column prop="status" label="状态" show-overflow-tooltip width="120">
           <template slot-scope="scope">
             <div v-if="scope.row.status_name == '未开始'" class="status_tiem">
               <i class="status noStart"></i>
@@ -97,7 +97,7 @@
             <!-- {{tableData[scope.$index].status?'未开始':"开始"}} -->
           </template>
         </el-table-column>
-        <el-table-column prop="isEnable" label="是否启用" show-overflow-tooltip>
+        <el-table-column prop="isEnable" label="是否启用" show-overflow-tooltip width="140">
           <template slot-scope="scope">
             <el-switch v-model="tableData[scope.$index].isEnable"> </el-switch>
           </template>
@@ -108,7 +108,7 @@
               type="primary"
               style="margin-right: 12px"
               @click="showTestRate(scope.row, scope.$index)"
-              >查看测评率</el-link
+              >查看参评率</el-link
             >
             <el-link
               type="primary"
@@ -266,9 +266,9 @@
         <el-button @click="dialogTest = false">取 消</el-button>
       </span>
     </el-dialog>
-    <!--查看测评率 -->
+    <!--查看参评率 -->
     <el-dialog
-      title="查看测评率"
+      title="查看参评率"
       center
       :visible.sync="dialogTestRate"
       :close-on-click-modal="false"
@@ -327,7 +327,7 @@ export default {
   },
   data() {
     return {
-      tableDataTestRate: [], //查看测评率
+      tableDataTestRate: [], //查看参评率
       idInfo: {}, //包含id和question_id
       selection: [], //表格中被选中的
       typeTitle: "评议添加", //评议添加,评议编辑
@@ -337,7 +337,7 @@ export default {
       dialogPapers: false, //控制低稿框
       dialogDetail: false, //明细查询
       dialogTest: false, //测试地址二维码
-      dialogTestRate: false, //查看测评率
+      dialogTestRate: false, //查看参评率
       searchValue: "", //搜索值
       restaurants: [],
       tableData: [],
@@ -356,7 +356,7 @@ export default {
       urlParam: "",
       testTitle: "",
       urlText: "", //访问网址文字
-      testRateId: undefined, //查看测评旅id
+      testRateId: undefined, //查看参评率id
     };
   },
   mounted() {
@@ -382,7 +382,7 @@ export default {
         document.body.removeChild(link);
       });
     },
-    // 查看测评率
+    // 查看参评率
     showTestRate(row) {
       this.dialogTestRate = true;
       this.testRateId = row.id;
