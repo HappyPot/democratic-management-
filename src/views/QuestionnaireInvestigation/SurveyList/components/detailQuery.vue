@@ -1,160 +1,170 @@
 <template>
   <div class="review">
-    <div class="screen" @click="showScreen">
-      <img src="../../../../assets/image/screen.png" alt="" />
+    <div class="screen">
+      <div class="screen_item"
+           @click="showScreen">
+        <img src="../../../../assets/image/screen.svg"
+             style="margin-right: 4px;"
+             alt="" />
+        <div>筛选</div>
+      </div>
+      <div class="screen_item"
+           @click="getexport">
+        <img style="margin-left: 20px;margin-right: 4px;"
+             src="../../../../assets/image/exportlist.svg"
+             alt="" />
+        <div>导出数据</div>
+      </div>
     </div>
-    <div class="screen_content" v-if="isShowScreen">
+    <div class="screen_content"
+         v-if="isShowScreen">
       <div class="pc_head">
         <div>
-          <wlTreeSelect
-            leaf
-            width="200"
-            nodeKey="title"
-            placeholder="测评对象"
-            style="margin-right: 10px"
-            checkbox
-            :data="evaluationOptions"
-            @change="getTestList"
-            v-model="evaluation"
-          ></wlTreeSelect>
+          <wlTreeSelect leaf
+                        width="200"
+                        nodeKey="title"
+                        placeholder="测评对象"
+                        style="margin-right: 10px"
+                        :data="evaluationOptions"
+                        @change="getTestIdList"
+                        v-model="evaluation"></wlTreeSelect>
         </div>
         <div>
-          <wlTreeSelect
-            checkStrictly
-            width="200"
-            nodeKey="unit_name"
-            placeholder="选择单位"
-            style="margin-right: 10px"
-            checkbox
-            clearable
-            :data="superiorUnitOptions"
-            @change="getUnitIdList"
-            v-model="superiorUnit"
-          >
+          <wlTreeSelect checkStrictly
+                        width="200"
+                        collapse-tags
+                        nodeKey="unit_name"
+                        placeholder="选择单位"
+                        style="margin-right: 10px"
+                        clearable
+                        :data="superiorUnitOptions"
+                        @change="getUnitIdList"
+                        v-model="superiorUnit">
           </wlTreeSelect>
         </div>
         <div>
-          <wlTreeSelect
-            checkStrictly
-            width="200"
-            nodeKey="department_name"
-            placeholder="选择部门"
-            style="margin-right: 10px"
-            checkbox
-            clearable
-            :data="departmentOptions"
-            @change="getDepartmentIdList"
-            v-model="department_id_list"
-          >
+          <wlTreeSelect checkStrictly
+                        width="200"
+                        collapse-tags
+                        nodeKey="department_name"
+                        placeholder="选择部门"
+                        style="margin-right: 10px"
+                        clearable
+                        :data="departmentOptions"
+                        @change="getDepartmentIdList"
+                        v-model="department_id_list">
           </wlTreeSelect>
         </div>
         <div>
-          <wlTreeSelect
-            checkStrictly
-            width="200"
-            nodeKey="duty_name"
-            placeholder="选择职务"
-            style="margin-right: 10px"
-            checkbox
-            clearable
-            :data="jobOptions"
-            @change="getDutyIdList"
-            v-model="duty_id_list"
-          >
+          <wlTreeSelect checkStrictly
+                        width="200"
+                        collapse-tags
+                        nodeKey="duty_name"
+                        placeholder="选择职务"
+                        style="margin-right: 10px"
+                        clearable
+                        :data="jobOptions"
+                        @change="getDutyIdList"
+                        v-model="duty_id_list">
           </wlTreeSelect>
         </div>
         <div class="pc_item">
-          <el-button size="small" type="primary" plain @click="search"
-            >搜索</el-button
-          >
+          <el-button size="small"
+                     type="primary"
+                     plain
+                     @click="search">搜索</el-button>
         </div>
         <div class="pc_item"></div>
         <div class="pc_item"></div>
       </div>
     </div>
-    <el-tabs v-model="activeName" type="card">
-      <el-tab-pane label="测评明细" name="first">
+    <el-tabs v-model="activeName"
+             type="card">
+      <!-- <el-tab-pane label="测评明细"
+                   name="first">
         <div class="baseInfo">
           <div class="baseInfo_item">
             <div class="bt_title">{{ idInfo.name }}</div>
           </div>
-          <!-- 表格部分 -->
           <div class="base_table">
-            <el-table
-              ref="multipleTable"
-              :data="tableData"
-              tooltip-effect="dark"
-              style="width: 100%"
-              @selection-change="handleSelectionChange"
-            >
-              <el-table-column type="selection" width="55"> </el-table-column>
-              <el-table-column type="index" label="序号"> </el-table-column>
-              <el-table-column prop="code" label="人员编码"> </el-table-column>
-              <el-table-column prop="unit_name" label="单位名称">
+            <el-table ref="multipleTable"
+                      :data="tableData"
+                      tooltip-effect="dark"
+                      style="width: 100%"
+                      @selection-change="handleSelectionChange">
+              <el-table-column type="selection"
+                               width="55"> </el-table-column>
+              <el-table-column type="index"
+                               label="序号"> </el-table-column>
+              <el-table-column prop="code"
+                               label="人员编码"> </el-table-column>
+              <el-table-column prop="unit_name"
+                               label="单位名称">
               </el-table-column>
-              <el-table-column prop="department_name" label="部门名称">
+              <el-table-column prop="department_name"
+                               label="部门名称">
               </el-table-column>
-              <el-table-column prop="duty_name" label="人员类别">
+              <el-table-column prop="duty_name"
+                               label="人员类别">
               </el-table-column>
-              <el-table-column prop="subject_title" label="测评主体">
+              <el-table-column prop="subject_title"
+                               label="测评主体">
               </el-table-column>
-              <el-table-column
-                v-for="(item, index) in valueMap"
-                :key="index"
-                :prop="item.title"
-                :label="item.value"
-              >
+              <el-table-column v-for="(item, index) in valueMap"
+                               :key="index"
+                               :prop="item.title"
+                               :label="item.value">
                 <template slot-scope="scope">
                   <div v-show="scope.row[item.title] == item.prop">
-                    <img
-                      style="width: 16px; height: 16px"
-                      src="../../../../assets/image/dui.png"
-                      alt=""
-                    />
+                    <img style="width: 16px; height: 16px"
+                         src="../../../../assets/image/dui.png"
+                         alt="" />
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="created_at" label="提交时间">
+              <el-table-column prop="created_at"
+                               label="提交时间">
               </el-table-column>
             </el-table>
             <div class="pagination_my">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :total="total"
-                @pagination="getDutyList"
-                :page-sizes="[10, 20, 30, 40]"
-                layout="total, prev, pager, next, sizes,jumper"
-              >
+              <el-pagination @size-change="handleSizeChange"
+                             @current-change="handleCurrentChange"
+                             :total="total"
+                             @pagination="getDutyList"
+                             :page-sizes="[10, 20, 30, 40]"
+                             layout="total, prev, pager, next, sizes,jumper">
               </el-pagination>
             </div>
           </div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="测评对象汇总" name="second">
+      </el-tab-pane> -->
+      <el-tab-pane label="测评对象汇总"
+                   name="second">
         <div class="baseInfo">
           <div class="baseInfo_item">
             <div class="bt_title">{{ idInfo.name }}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
-            <el-table :data="tableDataEvaluation" style="width: 100%">
-              <el-table-column prop="title" label="测评对象"> </el-table-column>
-              <el-table-column prop="sum" label="总数"> </el-table-column>
-              <el-table-column
-                v-for="(item, index) in evaluationMap"
-                :key="index"
-                :label="item.label"
-              >
-                <el-table-column
-                  :prop="k.prop"
-                  v-for="(k, i) in item.props"
-                  :key="i + 1"
-                  :label="k.label"
-                >
+            <el-table :data="tableDataEvaluation"
+                      v-loading="tableDataEvaluationLoading"
+                      style="width: 100%">
+              <el-table-column type="index"
+                               label="序号"> </el-table-column>
+              <el-table-column prop="title"
+                               show-overflow-tooltip
+                               label="被评议部门"> </el-table-column>
+              <el-table-column v-for="(item, index) in evaluationMap"
+                               :key="index"
+                               :label="item.label">
+                <el-table-column :prop="k.prop"
+                                 v-for="(k, i) in item.props"
+                                 :key="i + 1"
+                                 :label="k.label">
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="date" label="弃权"> </el-table-column>
+              <!-- <el-table-column prop="date"
+                               label="弃权"> </el-table-column> -->
             </el-table>
             <div class="pagination_my">
               <!-- <pagination @current-change="handleCurrentChange"
@@ -168,30 +178,31 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="单位汇总" name="third">
+      <el-tab-pane label="单位汇总"
+                   name="third">
         <div class="baseInfo">
           <div class="baseInfo_item">
             <div class="bt_title">{{ idInfo.name }}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
-            <el-table :data="tableDataUnit" style="width: 100%">
-              <el-table-column prop="unit_name" label="单位"> </el-table-column>
-              <el-table-column prop="sum" label="总数"> </el-table-column>
-              <el-table-column
-                v-for="(item, index) in unitMap"
-                :key="index"
-                :label="item.label"
-              >
-                <el-table-column
-                  :prop="k.prop"
-                  v-for="(k, i) in item.props"
-                  :key="i + 1"
-                  :label="k.label"
-                >
+            <el-table :data="tableDataUnit"
+                      style="width: 100%">
+              <el-table-column prop="unit_name"
+                               label="单位"> </el-table-column>
+              <el-table-column prop="sum"
+                               label="总票数"> </el-table-column>
+              <el-table-column v-for="(item, index) in unitMap"
+                               :key="index"
+                               :label="item.label">
+                <el-table-column :prop="k.prop"
+                                 v-for="(k, i) in item.props"
+                                 :key="i + 1"
+                                 :label="k.label">
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="date" label="弃权"> </el-table-column>
+              <!-- <el-table-column prop="date"
+                               label="弃权"> </el-table-column> -->
             </el-table>
             <div class="pagination_my">
               <!-- <pagination @current-change="handleCurrentChange"
@@ -206,31 +217,32 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="部门汇总" name="fourth">
+      <el-tab-pane label="部门汇总"
+                   name="fourth">
         <div class="baseInfo">
           <div class="baseInfo_item">
             <div class="bt_title">{{ idInfo.name }}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
-            <el-table :data="tableDataDep" style="width: 100%">
-              <el-table-column prop="department_name" label="部门">
+            <el-table :data="tableDataDep"
+                      style="width: 100%">
+              <el-table-column prop="department_name"
+                               label="部门">
               </el-table-column>
-              <el-table-column prop="sum" label="总数"> </el-table-column>
-              <el-table-column
-                v-for="(item, index) in depMap"
-                :key="index"
-                :label="item.label"
-              >
-                <el-table-column
-                  :prop="k.prop"
-                  v-for="(k, i) in item.props"
-                  :key="i + 1"
-                  :label="k.label"
-                >
+              <el-table-column prop="sum"
+                               label="总票数"> </el-table-column>
+              <el-table-column v-for="(item, index) in depMap"
+                               :key="index"
+                               :label="item.label">
+                <el-table-column :prop="k.prop"
+                                 v-for="(k, i) in item.props"
+                                 :key="i + 1"
+                                 :label="k.label">
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="date" label="弃权"> </el-table-column>
+              <!-- <el-table-column prop="date"
+                               label="弃权"> </el-table-column> -->
             </el-table>
             <div class="pagination_my">
               <!-- <pagination @current-change="handleCurrentChange"
@@ -244,31 +256,32 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="人员类别汇总" name="five">
+      <el-tab-pane label="人员类别汇总"
+                   name="five">
         <div class="baseInfo">
           <div class="baseInfo_item">
             <div class="bt_title">{{ idInfo.name }}</div>
           </div>
           <!-- 表格部分 -->
           <div class="base_table">
-            <el-table :data="tableDataPeople" style="width: 100%">
-              <el-table-column prop="duty_name" label="人员类别">
+            <el-table :data="tableDataPeople"
+                      style="width: 100%">
+              <el-table-column prop="duty_name"
+                               label="人员类别">
               </el-table-column>
-              <el-table-column prop="sum" label="总数"> </el-table-column>
-              <el-table-column
-                v-for="(item, index) in peopleMap"
-                :key="index"
-                :label="item.label"
-              >
-                <el-table-column
-                  :prop="k.prop"
-                  v-for="(k, i) in item.props"
-                  :key="i + 1"
-                  :label="k.label"
-                >
+              <el-table-column prop="sum"
+                               label="总票数"> </el-table-column>
+              <el-table-column v-for="(item, index) in peopleMap"
+                               :key="index"
+                               :label="item.label">
+                <el-table-column :prop="k.prop"
+                                 v-for="(k, i) in item.props"
+                                 :key="i + 1"
+                                 :label="k.label">
                 </el-table-column>
               </el-table-column>
-              <el-table-column prop="date" label="弃权"> </el-table-column>
+              <!-- <el-table-column prop="date"
+                               label="弃权"> </el-table-column> -->
             </el-table>
             <div class="pagination_my">
               <!-- <pagination @current-change="handleCurrentChange"
@@ -292,41 +305,44 @@ import {
   GET_QUESTION_DEPARTMENT_DETAIL,
   GET_QUESTION_DUTY_DETAIL,
   GET_QUESTION_DETAIL,
-} from "@/api/questionnaireInvestigation.js";
+  GET_OBJECT,
+  GET_EXPORT
+} from '@/api/questionnaireInvestigation.js'
 import {
   GET_UNITTREE_LIST,
   GET_DUTY_LIST,
-  GET_DEPARTMENT_LIST,
-} from "@/api/personnelmanagement.js";
+  GET_DEPARTMENT_LIST
+} from '@/api/personnelmanagement.js'
 export default {
-  name: "DetailQuery",
+  name: 'DetailQuery',
   props: {
     idInfo: {
       require: true,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
+      tableDataEvaluationLoading: false, //测评对象汇总loading
       valueMap: [], //选项与value的映射
       defaultProps: {
-        children: "children",
-        label: "label",
+        children: 'children',
+        label: 'label'
       },
-      evaluation: "", //测评对象值
+      evaluation: '', //测评对象值
       evaluationOptions: [], //测评对象列表
-      superiorUnit: "", //单位
+      superiorUnit: '', //单位
       superiorUnitOptions: [], //单位列表,
-      department_id_list: "", //部门
+      department_id_list: '', //部门
       departmentOptions: [], //部门列表
-      duty_id_list: "", //职务
+      duty_id_list: '', //职务
       jobOptions: [], //职务列表
       isShowScreen: false,
-      activeName: "first", //默认标签框
+      activeName: 'second', //默认标签框
       queryParams: {
         //分页参数
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       tableData: [
         //测评明细
@@ -360,309 +376,347 @@ export default {
       commonParam: {
         question_issue_id: this.idInfo.group.id,
         question_id: this.idInfo.group.question_id,
-        duty_id_list: [],
-        question_top_id_list: [],
-        unit_id_list: [],
-        department_id_list: [],
+        question_top_id: '',
+        duty_id: '',
+        unit_id: '',
+        department_id: '',
         page: 1,
-        page_size: 10,
-      },
-    };
+        page_size: 10
+      }
+      //1:测评对象数据导出 2：单位汇总数据导出 3：部门汇总数据导出 4：人员类别数据导出
+    }
   },
   created() {
     // 单位
-    this.getUnitLIst();
+    this.getUnitLIst()
     // 职务
-    this.getDutyList();
+    this.getDutyList()
     // 部门
-    this.getDepartmentList();
-
-    // // 对象汇总
-    // this.getQuestionObjectDetail();
-    // // 单位汇总
-    // this.getQuestionUnitDetail();
-    // // 部门汇总
-    // this.getQuestionDepartmentDetail();
-    // // 人员汇总
-    // this.getQuestionDutyDetail();
+    this.getDepartmentList()
+    this.getObject()
+    this.getQuestionObjectDetail()
     // 搜索
-    this.search();
+    this.search()
   },
   methods: {
+    getexport() {
+      let map = {
+        second: 1,
+        third: 2,
+        fourth: 3,
+        five: 4
+      }
+      this.commonParam['type'] = map[this.activeName]
+      GET_EXPORT(this.commonParam).then(res => {
+        const blob = new Blob([res])
+        const fileName = '数据.xls'
+        const link = document.createElement('a')
+        link.download = fileName
+        link.style.display = 'none'
+        link.href = URL.createObjectURL(blob)
+        document.body.appendChild(link)
+        link.click()
+        URL.revokeObjectURL(link.href)
+        document.body.removeChild(link)
+      })
+    },
+    // 获取测评主体
+    getObject() {
+      GET_OBJECT({
+        question_id: this.commonParam.question_id
+      }).then(res => {
+        if (res.status === 0) {
+          this.evaluationOptions = res.data
+        }
+      })
+    },
     // 设置每页条数
     handleSizeChange(val) {
-      this.queryParams.page_size = val;
-      this.getQuestionDetail();
-      console.log(`每页 ${val} 条`);
+      this.queryParams.page_size = val
+      this.getQuestionDetail()
+      console.log(`每页 ${val} 条`)
     },
     // 触发分页
     handleCurrentChange(val) {
-      this.queryParams.page = val;
-      this.getQuestionDetail();
+      this.queryParams.page = val
+      this.getQuestionDetail()
     },
     // 搜索
     search() {
-      this.getQuestionObjectDetail();
-      this.getQuestionUnitDetail();
-      this.getQuestionDepartmentDetail();
-      this.getQuestionDutyDetail();
-      this.getQuestionDetail();
+      // this.getQuestionObjectDetail()
+      this.getQuestionUnitDetail()
+      this.getQuestionDepartmentDetail()
+      this.getQuestionDutyDetail()
+      // this.getQuestionDetail()
     },
     // 获取职务列表
     getDutyList() {
       GET_DUTY_LIST({
         subject_id: this.subjectId,
         page: 1,
-        page_size: 9999,
-      }).then((res) => {
+        page_size: 9999
+      }).then(res => {
         if (res.status === 0) {
-          console.log("获取职务列表", res.data.data);
-          this.jobOptions = res.data.data;
+          console.log('获取职务列表', res.data.data)
+          this.jobOptions = res.data.data
         }
-      });
+      })
     },
     // 获取部门列表
     getDepartmentList() {
       GET_DEPARTMENT_LIST({
         subject_id: this.subjectId,
         page: 1,
-        page_size: 9999,
-      }).then((res) => {
+        page_size: 9999
+      }).then(res => {
         if (res.status === 0) {
-          this.departmentOptions = res.data.data;
+          this.departmentOptions = res.data.data
         }
-      });
+      })
     },
     //获取单位列表
     getUnitLIst() {
       GET_UNITTREE_LIST({
-        subject_id: this.subjectId,
-      }).then((res) => {
+        subject_id: this.subjectId
+      }).then(res => {
         if (res.status === 0) {
-          this.superiorUnitOptions = res.data;
+          this.superiorUnitOptions = res.data
         }
-      });
+      })
     },
     // 获取测评明细
     getQuestionDetail() {
-      this.commonParam.page_size = this.queryParams.page_size;
-      this.commonParam.page = this.queryParams.page;
-      GET_QUESTION_DETAIL(this.commonParam).then((res) => {
+      this.commonParam.page_size = this.queryParams.page_size
+      this.commonParam.page = this.queryParams.page
+      GET_QUESTION_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
-          this.tableData = res.data.data;
-          let configarr = res.data.config.config;
-          this.total = res.data.total;
+          this.tableData = res.data.data
+          let configarr = res.data.config.config
+          this.total = res.data.total
           if (configarr.length > 0) {
             configarr.map((item, index) => {
               let obj = {
                 prop: item.value,
                 value: item.content,
-                title: "value" + index,
-              };
-              this.valueMap.push(obj);
-            });
+                title: 'value' + index
+              }
+              this.valueMap.push(obj)
+            })
           }
-          this.tableData.map((item) => {
+          this.tableData.map(item => {
             for (let j = 0; j < item.value.length; j++) {
               for (let i = 0; i < this.valueMap.length; i++) {
                 if (item.value[j] == this.valueMap[i].prop) {
-                  item[`${this.valueMap[i].title}`] = item.value[j];
+                  item[`${this.valueMap[i].title}`] = item.value[j]
                 }
               }
             }
-          });
+          })
         }
-      });
+      })
     },
     // 获取对象汇总
     getQuestionObjectDetail() {
-      this.tableDataEvaluation = [];
-      GET_QUESTION_OBJECT_DETAIL(this.commonParam).then((res) => {
+      this.tableDataEvaluationLoading = true
+      this.tableDataEvaluation = []
+      console.log('aaaaa', this.commonParam)
+      GET_QUESTION_OBJECT_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
-          console.log("对象汇总", res.data);
-          this.evaluationOptions = res.data;
-
+          this.tableDataEvaluationLoading = false
+          console.log('对象汇总', res.data)
+          // this.evaluationOptions = res.data.list
           // this.tableDataEvaluation = res.data
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
+          for (let index = 0; index < res.data.list.length; index++) {
+            const element = res.data.list[index]
             let obj = {
-              title: element.title,
-              sum: element.sum,
-            };
-            for (let i = 0; i < element.value.length; i++) {
-              var item = element.value[i];
+              title: element.title
+            }
+            for (let key in element.value) {
+              // }
+              // for (let i = 0; i < element.value.length; i++) {
+              var item = element.value[key]
               let testmap = {
-                label: item.question_name,
+                label: item.content,
                 props: [
                   {
-                    label: "票",
-                    prop: "p" + i,
+                    label: '票',
+                    prop: 'p' + key
                   },
                   {
-                    label: "率",
-                    prop: "l" + i,
-                  },
-                ],
-              };
-              obj["p" + i] = item.num;
-              obj["l" + i] = item.ratio;
+                    label: '率',
+                    prop: 'l' + key
+                  }
+                ]
+              }
+              obj['p' + key] = item.num
+              obj['l' + key] = item.bl + '%'
               if (index == 0) {
-                this.evaluationMap.push(testmap);
+                this.evaluationMap.push(testmap)
               }
             }
-            this.tableDataEvaluation.push(obj);
-            console.log("this.tableDataEvaluation", this.tableDataEvaluation);
+            this.tableDataEvaluation.push(obj)
+            console.log('this.tableDataEvaluation', this.tableDataEvaluation)
           }
         }
-      });
+      })
     },
     // 获取单位汇总
     getQuestionUnitDetail() {
-      GET_QUESTION_UNIT_DETAIL(this.commonParam).then((res) => {
+      GET_QUESTION_UNIT_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
+          console.log('单位汇总', res.data)
+          for (let index = 0; index < res.data.list.length; index++) {
+            const element = res.data.list[index]
             let obj = {
               unit_name: element.unit_name,
-              sum: element.sum,
-            };
-            for (let i = 0; i < element.value.length; i++) {
-              var item = element.value[i];
+              sum: element.value_sum
+            }
+            for (let key in element.value) {
+              // }
+              // for (let i = 0; i < element.value.length; i++) {
+              var item = element.value[key]
               let testmap = {
-                label: item.unit_name,
+                label: item.content,
                 props: [
                   {
-                    label: "票",
-                    prop: "p" + i,
+                    label: '票',
+                    prop: 'p' + key
                   },
                   {
-                    label: "率",
-                    prop: "l" + i,
-                  },
-                ],
-              };
-              obj["p" + i] = item.num;
-              obj["l" + i] = item.ratio;
+                    label: '率',
+                    prop: 'l' + key
+                  }
+                ]
+              }
+              obj['p' + key] = item.num
+              obj['l' + key] = item.bl + '%'
               if (index == 0) {
-                this.unitMap.push(testmap);
+                this.unitMap.push(testmap)
               }
             }
-            this.tableDataUnit.push(obj);
-            console.log("this.tableDataUnit", this.tableDataUnit);
+            this.tableDataUnit.push(obj)
+            console.log('this.tableDataUnit', this.tableDataUnit)
           }
         }
-      });
+      })
     },
     // 部门汇总
     getQuestionDepartmentDetail() {
-      GET_QUESTION_DEPARTMENT_DETAIL(this.commonParam).then((res) => {
+      GET_QUESTION_DEPARTMENT_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
-          console.log("部门汇总", res.data);
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
+          console.log('部门汇总', res.data)
+          for (let index = 0; index < res.data.list.length; index++) {
+            const element = res.data.list[index]
             let obj = {
               department_name: element.department_name,
-              sum: element.sum,
-            };
-            for (let i = 0; i < element.value.length; i++) {
-              var item = element.value[i];
+              sum: element.value_sum
+            }
+            for (let key in element.value) {
+              // }
+              // for (let i = 0; i < element.value.length; i++) {
+              var item = element.value[key]
               let testmap = {
-                label: item.department_name,
+                label: item.content,
                 props: [
                   {
-                    label: "票",
-                    prop: "p" + i,
+                    label: '票',
+                    prop: 'p' + key
                   },
                   {
-                    label: "率",
-                    prop: "l" + i,
-                  },
-                ],
-              };
-              obj["p" + i] = item.num;
-              obj["l" + i] = item.ratio;
+                    label: '率',
+                    prop: 'l' + key
+                  }
+                ]
+              }
+              obj['p' + key] = item.num
+              obj['l' + key] = item.bl + '%'
               if (index == 0) {
-                this.depMap.push(testmap);
+                this.depMap.push(testmap)
               }
             }
-            this.tableDataDep.push(obj);
-            console.log("this.tableDataDep", this.tableDataDep);
+            this.tableDataDep.push(obj)
+            console.log('this.tableDataDep', this.tableDataDep)
           }
         }
-      });
+      })
     },
     // 人员汇总
     getQuestionDutyDetail() {
-      GET_QUESTION_DUTY_DETAIL(this.commonParam).then((res) => {
+      GET_QUESTION_DUTY_DETAIL(this.commonParam).then(res => {
         if (res.status === 0) {
-          console.log("人员汇总", res.data);
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
+          console.log('人员汇总', res.data)
+          for (let index = 0; index < res.data.list.length; index++) {
+            const element = res.data.list[index]
             let obj = {
               duty_name: element.duty_name,
-              sum: element.sum,
-            };
-            for (let i = 0; i < element.value.length; i++) {
-              var item = element.value[i];
+              sum: element.value_sum
+            }
+            for (let key in element.value) {
+              // for (let i = 0; i < element.value.length; i++) {
+              var item = element.value[key]
               let testmap = {
-                label: item.duty_name,
+                label: item.content,
                 props: [
                   {
-                    label: "票",
-                    prop: "p" + i,
+                    label: '票',
+                    prop: 'p' + key
                   },
                   {
-                    label: "率",
-                    prop: "l" + i,
-                  },
-                ],
-              };
-              obj["p" + i] = item.num;
-              obj["l" + i] = item.ratio;
+                    label: '率',
+                    prop: 'l' + key
+                  }
+                ]
+              }
+              obj['p' + key] = item.num
+              obj['l' + key] = item.bl + '%'
               if (index == 0) {
-                this.peopleMap.push(testmap);
+                this.peopleMap.push(testmap)
               }
             }
-            this.tableDataPeople.push(obj);
-            console.log("this.tableDataDep", this.tableDataPeople);
+            this.tableDataPeople.push(obj)
+            console.log('this.tableDataDep', this.tableDataPeople)
           }
         }
-      });
+      })
     },
     handleSelectionChange(val) {},
     // 打开筛选款
     showScreen() {
-      this.isShowScreen = !this.isShowScreen;
+      this.isShowScreen = !this.isShowScreen
     },
     // 获取测评对象idlist
     getTestIdList(val) {
-      val.map((item) => {
-        this.commonParam.question_top_id_list.push(item.id);
-      });
+      this.commonParam.question_top_id = val[0].id
+      // val.map(item => {
+      //   this.commonParam.question_top_id.push(item.id)
+      // })
     },
     // 获取单位idlist
     getUnitIdList(val) {
-      val.map((item) => {
-        this.commonParam.unit_id_list.push(item.id);
-      });
+      this.commonParam.unit_id = val[0].id
+      // val.map(item => {
+      //   this.commonParam.unit_id_list.push(item.id)
+      // })
     },
     // 获取部门idlist
     getDepartmentIdList(val) {
-      val.map((item) => {
-        this.commonParam.department_id_list.push(item.id);
-      });
+      this.commonParam.department_id = val[0].id
+      // val.map(item => {
+      //   this.commonParam.department_id_list.push(item.id)
+      // })
     },
     // 获取职务idlist
     getDutyIdList(val) {
-      val.map((item) => {
-        this.commonParam.duty_id_list.push(item.id);
-      });
-    },
-  },
-};
+      this.commonParam.duty_id = val[0].id
+      // val.map(item => {
+      //   this.commonParam.duty_id_list.push(item.id)
+      // })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
-@import "../../../common/index.scss";
+@import '../../../common/index.scss';
 .review {
   padding: 0 12px;
 }
@@ -675,7 +729,9 @@ export default {
   margin-bottom: 12px;
 }
 .screen {
-  width: 16px;
+  display: flex;
+  align-items: center;
+  width: 149px;
   height: 16px;
   position: absolute;
   top: 92px;
@@ -731,5 +787,10 @@ export default {
 .base_table {
   position: relative;
   padding-bottom: 45px;
+}
+.screen_item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 </style>

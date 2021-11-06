@@ -223,75 +223,61 @@ export function GET_QUESTION_OBJECT_DETAIL(query) {
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
-			"data": [
-				{
-					"id": 1,
-					"question_id": 1,
-					"title": "纪检委机关",
-					"sort": 1,
-					"sum": 3,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							// "question_top_id": '满意',
-							"question_name": '满意',
-							"question_id": '1',
-							"ratio": "66.67"
+			"data": {
+				"title": "机关部门总体评议情况汇总表",
+				"title_c": [
+					"定向评议人"
+				],
+				"list": [
+					{
+						"department_name": "人大",
+						"value": {
+							"1": {
+								"id": 1,
+								"content": "满意",
+								"value": 1,
+								"num": 6,
+								"bl": "100.00"
+							},
+							"2": {
+								"id": 2,
+								"content": "较满意",
+								"value": 2,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"3": {
+								"id": 3,
+								"content": "一般",
+								"value": 3,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"4": {
+								"id": 4,
+								"content": "不满意",
+								"value": 4,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"5": {
+								"id": 5,
+								"content": "不了解",
+								"value": 5,
+								"num": "0.00",
+								"bl": "0.00"
+							}
 						},
-						{
-							"num": 1,
-							"value": "3",
-							// "question_top_id": '比较满意','
-							"question_name": '比较满意',
-							"question_id": '2',
-							"ratio": "33.33"
-						},
-						{
-							"num": 1,
-							"value": "4",
-							// "question_top_id": '比较满意','
-							"question_name": '一般',
-							"question_id": '3',
-							"ratio": "444.44"
-						}
-					]
-				},
-				{
-					"id": 2,
-					"question_id": 1,
-					"title": "办公厅",
-					"sort": 1,
-					"sum": 2,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							// "question_top_id": '满意',
-							"question_name": '满意',
-							"question_id": '1',
-							"ratio": "123"
-						},
-						{
-							"num": 1,
-							"value": "3",
-							// "question_top_id": '比较满意','
-							"question_name": '比较满意',
-							"question_id": '2',
-							"ratio": "321"
-						},
-						{
-							"num": 1,
-							"value": "4",
-							// "question_top_id": '比较满意','
-							"question_name": '一般',
-							"question_id": '3',
-							"ratio": "345"
-						}
-					]
-				},
-			]
+						"value_sum": 6
+					}
+				]
+			}
 		}))
+	// return requestForMock({
+	// 	url: '/admin/question/getQuestionObjectDetail',
+	// 	method: 'post',
+	// 	data: query
+	// })
 	return request({
 		url: '/admin/question/getQuestionObjectDetail',
 		method: 'post',
@@ -310,65 +296,61 @@ export function GET_QUESTION_UNIT_DETAIL(query) {
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
-			"data": [
-				{
-					"id": 1,
-					"unit_name": "西安凡数",
-					"unit_code": "100",
-					"parent_id": "0",
-					"subject_id": 1,
-					"sort": null,
-					"is_enable": 1,
-					"created_at": null,
-					"updated_at": null,
-					"sum": 3,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							"unit_id": 1,
-							"unit_name": '满意',
-							"ratio": "66.67"
+			"data": {
+				"title": "机关部门总体评议情况汇总表",
+				"title_c": [
+					"定向评议人"
+				],
+				"list": [
+					{
+						"unit_name": "一师",
+						"value": {
+							"1": {
+								"id": 1,
+								"content": "满意",
+								"value": 1,
+								"num": 154,
+								"bl": "93.90"
+							},
+							"2": {
+								"id": 2,
+								"content": "较满意",
+								"value": 2,
+								"num": 9,
+								"bl": "5.49"
+							},
+							"3": {
+								"id": 3,
+								"content": "一般",
+								"value": 3,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"4": {
+								"id": 4,
+								"content": "不满意",
+								"value": 4,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"5": {
+								"id": 5,
+								"content": "不了解",
+								"value": 5,
+								"num": 1,
+								"bl": "0.61"
+							}
 						},
-						{
-							"num": 1,
-							"value": "3",
-							"unit_id": 1,
-							"unit_name": '比较满意',
-							"ratio": "33.33"
-						}
-					]
-				},
-				{
-					"id": 2,
-					"unit_name": "凡数分公司",
-					"unit_code": "100100",
-					"parent_id": "100",
-					"subject_id": 1,
-					"sort": null,
-					"is_enable": 1,
-					"created_at": null,
-					"updated_at": null,
-					"sum": 2,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							"unit_id": 1,
-							"unit_name": '满意',
-							"ratio": "5555"
-						},
-						{
-							"num": 1,
-							"value": "3",
-							"unit_id": 1,
-							"unit_name": '比较满意',
-							"ratio": "8888"
-						}
-					]
-				},
-			]
+						"value_sum": 164
+					}
+				]
+			}
 		}))
+	// return requestForMock({
+	// 	url: '/admin/question/getQuestionUnitDetail',
+	// 	method: 'post',
+	// 	data: query
+	// })
 	return request({
 		url: '/admin/question/getQuestionUnitDetail',
 		method: 'post',
@@ -388,63 +370,61 @@ export function GET_QUESTION_DEPARTMENT_DETAIL(query) {
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
-			"data": [
-				{
-					"id": 1,
-					"department_name": "技术部",
-					"department_code": "1",
-					"subject_id": 1,
-					"sort": 1,
-					"is_enable": 1,
-					"created_at": null,
-					"updated_at": null,
-					"sum": 3,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							"department_id": 1,
-							"department_name": "满意",
-							"ratio": "6666"
+			"data": {
+				"title": "机关部门总体评议情况汇总表",
+				"title_c": [
+					"定向评议人"
+				],
+				"list": [
+					{
+						"department_name": "人大",
+						"value": {
+							"1": {
+								"id": 1,
+								"content": "满意",
+								"value": 1,
+								"num": 6,
+								"bl": "100.00"
+							},
+							"2": {
+								"id": 2,
+								"content": "较满意",
+								"value": 2,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"3": {
+								"id": 3,
+								"content": "一般",
+								"value": 3,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"4": {
+								"id": 4,
+								"content": "不满意",
+								"value": 4,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"5": {
+								"id": 5,
+								"content": "不了解",
+								"value": 5,
+								"num": "0.00",
+								"bl": "0.00"
+							}
 						},
-						{
-							"num": 1,
-							"value": "3",
-							"department_id": 1,
-							"department_name": "比较满意",
-							"ratio": "0000"
-						}
-					]
-				},
-				{
-					"id": 2,
-					"department_name": "财务部",
-					"department_code": "1",
-					"subject_id": 1,
-					"sort": 1,
-					"is_enable": null,
-					"created_at": null,
-					"updated_at": null,
-					"sum": 2,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							"department_id": 1,
-							"department_name": "满意",
-							"ratio": "6666"
-						},
-						{
-							"num": 1,
-							"value": "3",
-							"department_id": 1,
-							"department_name": "比较满意",
-							"ratio": "0000"
-						}
-					]
-				},
-			]
+						"value_sum": 6
+					}
+				]
+			}
 		}))
+	// return requestForMock({
+	// 	url: '/admin/question/getQuestionDepartmentDetail',
+	// 	method: 'post',
+	// 	data: query
+	// })
 	return request({
 		url: '/admin/question/getQuestionDepartmentDetail',
 		method: 'post',
@@ -463,33 +443,55 @@ export function GET_QUESTION_DUTY_DETAIL(query) {
 		.reply(config => tools.responseSuccess({
 			"status": 0,
 			"msg": "OK",
-			"data": [
-				{
-					"id": 1,
-					"duty_name": "师领导班子成员",
-					"duty_code": "10010002",
-					"subject_id": 1,
-					"sort": null,
-					"is_enable": null,
-					"sum": 3,
-					"value": [
-						{
-							"num": 2,
-							"value": "1",
-							"duty_id": 1,
-							"duty_name": "满意",
-							"ratio": "66.67"
+			"data": {
+				"title": "机关部门总体评议情况汇总表",
+				"title_c": [
+					"定向评议人"
+				],
+				"list": [
+					{
+						"duty_name": "师领导班子成员",
+						"value": {
+							"1": {
+								"id": 1,
+								"content": "满意",
+								"value": 1,
+								"num": 8,
+								"bl": "100.00"
+							},
+							"2": {
+								"id": 2,
+								"content": "较满意",
+								"value": 2,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"3": {
+								"id": 3,
+								"content": "一般",
+								"value": 3,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"4": {
+								"id": 4,
+								"content": "不满意",
+								"value": 4,
+								"num": "0.00",
+								"bl": "0.00"
+							},
+							"5": {
+								"id": 5,
+								"content": "不了解",
+								"value": 5,
+								"num": "0.00",
+								"bl": "0.00"
+							}
 						},
-						{
-							"num": 1,
-							"value": "3",
-							"duty_id": 1,
-							"duty_name": "比较满意",
-							"ratio": "33.33"
-						}
-					]
-				},
-			]
+						"value_sum": 8
+					}
+				]
+			}
 		}))
 	return request({
 		url: '/admin/question/getQuestionDutyDetail',
@@ -647,5 +649,97 @@ export function BACK_QUESTION_CONFIG(query) {
 		url: '/admin/question/backQuestionConfig',
 		method: 'get',
 		params: query
+	})
+}
+
+/**
+* @description 获取测评主体
+*/
+export function GET_OBJECT(query) {
+
+	return request({
+		url: '/admin/question/getObject',
+		method: 'get',
+		params: query
+	})
+}
+
+/**
+* @description 导出测评对象数据
+*/
+export function GET_EXPORT(query) {
+
+	return request({
+		url: '/admin/question/getQuestionExport',
+		method: 'post',
+		data: query,
+		responseType:"blob"
+	})
+}
+
+
+/**
+* @description 参评率导出
+*/
+export function GET_UNIT_BLEXPORT(query) {
+
+	return request({
+		url: '/admin/question/getUnitBlExport',
+		method: 'get',
+		params: query
+	})
+}
+
+/**
+* @description 获取未参与人员列表
+*/
+export function GET_QUESTIONNOTIN(query) {
+
+	return request({
+		url: '/admin/question/getQuestionNotIn',
+		method: 'get',
+		params: query
+	})
+}
+
+// 未参与人员导出
+
+/**
+* @description 获取未参与人员列表导出
+*/
+export function GET_QUESTIONNOTIN_EXPORT(query) {
+
+	return request({
+		url: '/admin/question/getQuestionNotInExprot',
+		method: 'get',
+		params: query,
+		responseType:"blob"
+	})
+}
+
+/**
+* @description 获取未参与人员列表导出
+*/
+export function GET_SOCIOLOGY_LIST(query) {
+
+	return request({
+		url: '/admin/question/getSociologyList',
+		method: 'get',
+		params: query,
+	})
+}
+
+
+// 社会评议导出
+/**
+* @description 获取未参与人员列表导出
+*/
+export function GET_SOCIOLOGY_EXPORT(query) {
+
+	return request({
+		url: '/admin/question/getSociologyListExport',
+		method: 'get',
+		params: query,
+		responseType:"blob"
 	})
 }
