@@ -544,7 +544,7 @@ export function GET_QUESTION_DETAIL(query) {
 						"question_top_id": 3,
 						"question_issue_id": 7,
 						"user_id": 2,
-						"value": [2,3],
+						"value": [2, 3],
 						"created_at": null,
 						"code": "10102930100002",
 						"department_id": 293,
@@ -558,7 +558,7 @@ export function GET_QUESTION_DETAIL(query) {
 						"question_top_id": 3,
 						"question_issue_id": 7,
 						"user_id": 2,
-						"value": [1,3],
+						"value": [1, 3],
 						"created_at": null,
 						"code": "10102930100002",
 						"department_id": 293,
@@ -673,10 +673,21 @@ export function GET_EXPORT(query) {
 		url: '/admin/question/getQuestionExport',
 		method: 'post',
 		data: query,
-		responseType:"blob"
+		responseType: "blob"
 	})
 }
+/**
+* @description 导出文本数据
+*/
+export function GET_EXPORT_TEXT(query) {
 
+	return request({
+		url: '/admin/question/getQuestionUserDetailExport',
+		method: 'post',
+		data: query,
+		responseType: "blob"
+	})
+}
 
 /**
 * @description 参评率导出
@@ -713,7 +724,7 @@ export function GET_QUESTIONNOTIN_EXPORT(query) {
 		url: '/admin/question/getQuestionNotInExprot',
 		method: 'get',
 		params: query,
-		responseType:"blob"
+		responseType: "blob"
 	})
 }
 
@@ -740,6 +751,6 @@ export function GET_SOCIOLOGY_EXPORT(query) {
 		url: '/admin/question/getSociologyListExport',
 		method: 'get',
 		params: query,
-		responseType:"blob"
+		responseType: "blob"
 	})
 }
