@@ -741,7 +741,6 @@ export function GET_SOCIOLOGY_LIST(query) {
 }
 
 
-// 社会评议导出
 /**
 * @description 获取未参与人员列表导出
 */
@@ -749,6 +748,31 @@ export function GET_SOCIOLOGY_EXPORT(query) {
 
 	return request({
 		url: '/admin/question/getSociologyListExport',
+		method: 'get',
+		params: query,
+		responseType: "blob"
+	})
+}
+
+/**
+* @description 获取单位下未完成测评的人员信息
+*/
+export function GET_QUESTION_UNIT_NOWCINFO(query) {
+
+	return request({
+		url: '/admin/question/getQuestionUnitNoWcInfo',
+		method: 'get',
+		params: query,
+	})
+}
+
+/**
+* @description 获取单位下未完成测评的人员信导出
+*/
+export function GET_QUESTION_UNIT_NOWCINFO_EXPORT(query) {
+
+	return request({
+		url: '/admin/question/getQuestionUnitNoWcInfoExport',
 		method: 'get',
 		params: query,
 		responseType: "blob"

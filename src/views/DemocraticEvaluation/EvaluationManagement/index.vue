@@ -286,7 +286,7 @@
       center
       :visible.sync="dialogTestRate"
       :close-on-click-modal="false"
-      width="1000px"
+      width="1050px"
     >
       <div class="testRate">
         <div class="exportList" @click="exportExcel">
@@ -308,6 +308,15 @@
             <template slot-scope="scope">
               <el-link type="primary" @click="showNoTest(scope.row)">{{
                 scope.row.no_cyrs
+              }}</el-link>
+            </template>
+          </el-table-column>
+          <el-table-column prop="wc_rs" label="完成人数"> </el-table-column>
+          <el-table-column prop="wc_rs_bl" label="完成率"> </el-table-column>
+          <el-table-column prop="no_wc_rs" label="未完成人数">
+            <template slot-scope="scope">
+              <el-link type="primary" @click="showNoTestPeople(scope.row)">{{
+                scope.row.no_wc_rs
               }}</el-link>
             </template>
           </el-table-column>
@@ -418,6 +427,41 @@
         <el-button @click="dialogTestRateNo = false">取 消</el-button>
       </span>
     </el-dialog>
+    <!-- 未完成人数 -->
+    <el-dialog
+      title="未完成人信息"
+      center
+      :visible.sync="dialogTestRateNoPeople"
+      :close-on-click-modal="false"
+      width="1000px"
+    >
+      <div class="testRate">
+        <div class="exportList" @click="getQuestionUnitNoWcInfoExport">
+          <img src="../../../assets/image/exportlist.svg" alt="" /> 批量导出
+        </div>
+        <div class="testRateNo">
+          <el-table
+            :data="tableDataTestRateNoPeople"
+            height="600"
+            v-loading="tableDataTestRateLoadingNoPeople"
+            style="width: 100%"
+          >
+            <el-table-column type="index" label="序号"> </el-table-column>
+            <el-table-column prop="code" label="人员账号"> </el-table-column>
+            <el-table-column prop="unit_name" label="单位名称">
+            </el-table-column>
+            <el-table-column prop="department_name" label="部门名称">
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogTestRateNo = false"
+          >确 定</el-button
+        >
+        <el-button @click="dialogTestRateNo = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </d2-container>
 </template>
 <script>
@@ -435,6 +479,8 @@ import {
   GET_QUESTIONNOTIN_EXPORT,
   GET_SOCIOLOGY_LIST,
   GET_SOCIOLOGY_EXPORT,
+  GET_QUESTION_UNIT_NOWCINFO,
+  GET_QUESTION_UNIT_NOWCINFO_EXPORT,
 } from "@/api/questionnaireInvestigation.js";
 import {
   SAVE_QUESTION,
@@ -456,15 +502,21 @@ export default {
   },
   data() {
     return {
+      testNoUnitPeopleId: undefined,
+      dialogTestRateNoPeople: false,
+      tableDataTestRateLoadingNoPeople: false,
       tableDataPublic: [], //社会公众评议列表
       tableDataPublicLoading: false, //社会公众评议列表loading
       testNoUnitId: 0,
       dialogTestRateNo: false, //未参与人数
+      dialogTestRateNoPeople: false, //未参与人数
       tableDataTestRateLoading: false, //参评率loading
       tableDataTestRateLoadingNo: false, //未参评率loading
       loading: false,
       tableDataTestRate: [], //查看参评率
       tableDataTestRateNo: [], //未参与人数
+      tableDataTestRateNoPeople: [], //未完成人数
+
       idInfo: {}, //包含id和question_id
       selection: [], //表格中被选中的
       typeTitle: "评议添加", //评议添加,评议编辑
@@ -506,6 +558,33 @@ export default {
     this.getQuestionList();
   },
   methods: {
+    // 导出未完成人数
+    getQuestionUnitNoWcInfoExport() {
+      GET_QUESTION_UNIT_NOWCINFO_EXPORT({
+        unit_id: this.testNoUnitPeopleId,
+      }).then((res) => {
+        const blob = new Blob([res]);
+        const fileName = "未完成人信息数据.xls";
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.style.display = "none";
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+      });
+    },
+    //获取单位未完成人数
+    getQuestionUnitNoWcInfo(unitid) {
+      this.tableDataTestRateLoadingNoPeople = true;
+      GET_QUESTION_UNIT_NOWCINFO({
+        unit_id: this.testNoUnitPeopleId,
+      }).then((res) => {
+        this.tableDataTestRateNoPeople = res.data;
+        this.tableDataTestRateLoadingNoPeople = false;
+      });
+    },
     //搜索社会
     searchPublicList() {
       let obj = {
@@ -559,6 +638,12 @@ export default {
       this.testNoUnitId = row.unit_id;
       this.dialogTestRateNo = true;
       this.getQuestionNotIn();
+    },
+    // 展示未完成人信息
+    showNoTestPeople(row) {
+      this.testNoUnitPeopleId = row.unit_id;
+      this.dialogTestRateNoPeople = true;
+      this.getQuestionUnitNoWcInfo();
     },
     // 未参与人员列表
     getQuestionNotIn() {
