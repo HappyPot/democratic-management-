@@ -43,9 +43,22 @@
         <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column prop="title" label="问卷标题">
           <template slot-scope="scope">
-            <el-button type="text" @click="showUrl(scope.row)">
-              {{ scope.row.title }}</el-button
+            <el-popover
+              placement="right-end"
+              width="200"
+              trigger="hover"
+              @show="showUrl(scope.row)"
             >
+              <div
+                ref="qrCodeUrl"
+                :id="'qrcode' + scope.row.id"
+                class="qrCodeUrl"
+              ></div>
+              <div class="qrCodeUrl_text">地址：{{ urlText }}</div>
+              <el-button type="text" slot="reference">
+                {{ scope.row.title }}</el-button
+              >
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column prop="form_type" label="问卷形式" width="100">
@@ -156,21 +169,24 @@
     </div>
     <!-- 统计 -->
     <el-dialog
-      title="统计结果"
+      :title="tjtitle"
       :close-on-click-modal="false"
       center
       class="dialogSelf"
       top="7vh"
       :visible.sync="dialogStatistics"
       width="972px"
+      :destroy-on-close="true"
     >
-      <Statistics
-        :statisticsData="statisticsData"
+      <SurveyStatistics
+        :questionId="question_id"
         @openDetail="openDetail"
         v-if="dialogStatistics"
-      ></Statistics>
+      ></SurveyStatistics>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="statisticalData">确 定</el-button>
+        <el-button type="primary" @click="dialogStatistics = false"
+          >确 定</el-button
+        >
         <el-button @click="dialogStatistics = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -218,34 +234,24 @@
       :visible.sync="dialogDetail"
       :close-on-click-modal="false"
       width="1000px"
+      :destroy-on-close="true"
     >
-      <DetailQuery v-if="dialogDetail" :idInfo="idInfo"></DetailQuery>
+      <QuestionDetailQuery
+        v-if="dialogDetail"
+        :idInfo="idInfo"
+      ></QuestionDetailQuery>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="showDetail">确 定</el-button>
         <el-button @click="dialogDetail = false">取 消</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      :title="testTitle"
-      center
-      :visible.sync="dialogTest"
-      :close-on-click-modal="false"
-      width="400px"
-    >
-      <div ref="qrCodeUrl" id="qrcode" class="qrCodeUrl"></div>
-      <div class="qrCodeUrl_text">地址：{{ urlText }}</div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogTest = false">确 定</el-button>
-        <el-button @click="dialogTest = false">取 消</el-button>
-      </span>
-    </el-dialog>
   </d2-container>
 </template>
 <script>
-import Statistics from "@/views/Sharing/components/statistics";
+import SurveyStatistics from "./components/surveyStatistics";
 import Configure from "@/views/Sharing/components/configure";
 import AddAndEdit from "./components/addAndEdit";
-import DetailQuery from "./components/detailQuery";
+import QuestionDetailQuery from "./components/questionDetailQuery";
 import QRCode from "qrcodejs2";
 import {
   GET_QUESTION_LIST,
@@ -257,17 +263,20 @@ import {
   SAVE_QUESTION,
   DEL_QUESTION,
 } from "@/api/evaluationanagement.js";
+import { GET_CHOICE_SUMMARY } from "@/api/question.js";
+
 import { mapState } from "vuex";
 
 export default {
   components: {
-    Statistics,
+    SurveyStatistics,
     Configure,
     AddAndEdit,
-    DetailQuery,
+    QuestionDetailQuery,
   },
   data() {
     return {
+      tjtitle: "", //统计表头
       idInfo: {}, //包含id和question_id
       selection: [],
       typeTitle: "新增", //新增或者编辑
@@ -303,17 +312,16 @@ export default {
       this.idInfo = group;
     },
     showUrl(row) {
-      this.dialogTest = true;
       this.urlParam = row.id;
       this.testTitle = row.title;
       this.$nextTick(() => {
-        const codeHtml = document.getElementById("qrcode");
+        const codeHtml = document.getElementById("qrcode" + row.id);
         codeHtml.innerHTML = "";
         let url = window.location.href;
         let urlarr = url.split("/");
-        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?&form_type=2&showSelect=0&question_id=${row.id}`;
+        this.urlText = `${urlarr[0]}//${urlarr[2]}/mobile#/questionmyassessment?&form_type=3&showSelect=0&question_id=${row.id}`;
         var qrcode = new QRCode(this.$refs.qrCodeUrl, {
-          text: `${urlarr[0]}//${urlarr[2]}/mobile#/myassessment?&form_type=2&showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
+          text: `${urlarr[0]}//${urlarr[2]}/mobile#/questionmyassessment?&form_type=3&showSelect=0&question_id=${row.id}`, // 需要转换为二维码的内容
           width: 200,
           height: 200,
           colorDark: "#000000",
@@ -390,7 +398,7 @@ export default {
       this.updateId = undefined;
       this.$nextTick(() => {
         this.initParam();
-        this.$refs["addAndEdit"].clearUserList();
+        // this.$refs["addAndEdit"].clearUserList();
       });
     },
     initParam() {
@@ -492,23 +500,18 @@ export default {
     },
     // 打开统计弹框
     showStatistical(row, index) {
+      this.question_id = row.id;
+      // 获取单选列表
       let obj = {
-        page_size: this.queryParams.page_size,
-        page: this.queryParams.page,
         question_id: row.id,
       };
-      console.log("统计查询参数", obj);
-      GET_COUNT_QUESTION(obj).then((res) => {
-        this.dialogStatistics = true;
-        let map = res.data[0].config;
-        this.statisticsData = res.data;
+      GET_CHOICE_SUMMARY(obj).then((res) => {
         if (res.status === 0) {
-          console.log("统计返回值", res.data);
+          this.dialogStatistics = true;
+          this.tjtitle = res.data.title;
         }
       });
     },
-    // 获取统计信息
-    statisticalData() {},
     // 展示配置框
     showConfig(row, index) {
       setTimeout(() => {

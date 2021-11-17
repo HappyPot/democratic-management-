@@ -9,6 +9,18 @@ const routes = [
     name: 'index',
     component: () => import('../views/index.vue')
   },
+  // 问卷调查的
+  {
+    path: '/questionevaluationdetails',
+    name: 'QuestionEvaluationDetails',
+    component: () => import('../views/QuestionEvaluationDetails/index.vue')
+  },
+  // 问卷调查的
+  {
+    path: '/questionmyassessment',
+    name: 'QuestionMyAssessment',
+    component: () => import('../views/QuestionMyAssessment/index.vue')
+  },
   {
     path: '/myassessment',
     name: 'MyAssessment',
@@ -29,6 +41,7 @@ const routes = [
     name: 'EvaluationObject',
     component: () => import('../views/EvaluationObject/index.vue')
   },
+
   {
     path: '/evaluationdetails',
     name: 'EvaluationDetails',

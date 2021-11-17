@@ -6,11 +6,7 @@
           <div class="baseInfo_item">
             <div class="bt_title">问卷标题</div>
             <div class="bt_input">
-              <el-input
-                size="medium"
-                v-model="review.title"
-                placeholder="请输入标题"
-              ></el-input>
+              <el-input size="medium" v-model="review.title" placeholder="请输入标题"></el-input>
               <span class="errorTip" data-name="title">
                 <i class="el-icon-circle-close"></i>
                 请输入标题，在提交</span
@@ -105,7 +101,7 @@
           </div> -->
           <div class="baseInfo_group">
             <div class="baseInfo_item">
-              <div class="bt_title">是否启用</div>
+              <div class="bt_title">是否允许弃权</div>
               <div class="bt_input" style="width: 376px">
                 <el-radio-group v-model="review.isWaiver">
                   <div class="radio_item">
@@ -139,7 +135,7 @@
             <el-input
               type="textarea"
               style="width: 500px"
-              :rows="20"
+              :rows="28"
               placeholder="请输入首页说明"
               v-model="review.textarea"
             >
@@ -340,6 +336,10 @@ export default {
       this.queryParams.page = val;
       this.getUserList();
     },
+    // 清空选项
+    clearUserList() {
+      this.$refs.multipleTable.clearSelection();
+    },
     // 表单校验
     checkFrom() {
       this.fromValidate(this.review);
@@ -379,7 +379,7 @@ export default {
                   return row.id == item.id;
                 });
                 if (val) {
-                  // this.$refs.multipleTable.toggleRowSelection(val, true);
+                  this.$refs.multipleTable.toggleRowSelection(val, true);
                 }
               });
             }
@@ -449,7 +449,7 @@ export default {
 .review {
   width: 624px;
   padding: 0 12px;
-  height: 557px;
+  height: 697px;
   overflow: auto;
 }
 .bt_title {
