@@ -69,11 +69,11 @@ export function GET_CHOICE_SUMMARY(query) {
 				]
 			}
 		}))
-	return requestForMock({
+	return request({
 		url: '/admin/paper/getChoiceSummary',
 		method: 'get',
+		params: query,
 	})
-	// params: query,
 }
 
 /**
@@ -120,11 +120,11 @@ export function GET_PAPER_TEXTLIST(query) {
 				}
 			]
 		}))
-	return requestForMock({
+	return request({
 		url: '/admin/paper/getPaperTextList',
 		method: 'get',
+		params: query,
 	})
-	// params: query,
 }
 
 
@@ -167,9 +167,9 @@ export function GET_PAPER_TEXTCONTENT(query) {
 				"total": 9
 			}
 		}))
-	return requestForMock({
+	return request({
 		url: '/admin/paper/getPaperTextContentL',
 		method: 'get',
+		params: query,
 	})
-	// params: query,
 }
